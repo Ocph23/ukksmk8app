@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('siswas', function (Blueprint $table) {
+        Schema::create('kompetensis', function (Blueprint $table) {
             $table->id();
-            $table->string("nis")->unique();
-            $table->string("nama");
-            $table->enum('jk', ['Pria','Wanita']);
-            $table->string("alamat");
+            $table->string('ElemenKompetensi');
+            $table->unsignedBigInteger('paket_id');
+            $table->foreign('paket_id')->references('id')->on('pakets')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('siswas');
+        Schema::dropIfExists('kompetensis');
     }
 };

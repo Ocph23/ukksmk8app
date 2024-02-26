@@ -11,21 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('siswas', function (Blueprint $table) {
+        Schema::create('aksesors', function (Blueprint $table) {
             $table->id();
-            $table->string("nis")->unique();
-            $table->string("nama");
+            $table->string('nama');
+            $table->string('instansi');
             $table->enum('jk', ['Pria','Wanita']);
-            $table->string("alamat");
+            $table->enum('jenis', ['Eksternal','Internal']);
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('siswas');
+        Schema::dropIfExists('aksesors');
     }
 };

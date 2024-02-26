@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JurusanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SiswaController;
@@ -37,3 +38,12 @@ Route::get('tahunajaran/{id}', [TahunAjaranController::class, 'byid']);
 Route::post('tahunajaran', [TahunAjaranController::class, 'post']);
 Route::put('tahunajaran/{id}', [TahunAjaranController::class, 'put']);
 Route::delete('tahunajaran/{id}', [TahunAjaranController::class, 'delete']);
+
+
+
+//jurusan
+Route::get('jurusan', [JurusanController::class, 'index']);
+Route::get('jurusan/{id}', [JurusanController::class, 'byid']);
+Route::post('jurusan', [JurusanController::class, 'post']);
+Route::put('jurusan/{id}', [JurusanController::class, 'put']);
+Route::delete('jurusan/{id}', [JurusanController::class, 'delete']);
