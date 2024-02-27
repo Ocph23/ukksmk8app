@@ -1,10 +1,10 @@
 @extends('admin')
 @section('content')
-<div ng-controller="jurusanController">
+<div ng-controller="tahunAjaranController">
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">DATA JURUSAN</h4>
+                <h4 class="card-title">DATA TAHUN AJARAN</h4>
                 <button ng-click="tambah()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                     Tambah
                 </button>
