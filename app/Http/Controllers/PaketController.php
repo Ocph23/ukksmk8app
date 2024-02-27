@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\DatabaseHelper;
+use App\Models\Kompetensi;
 use App\Models\Paket;
 use Illuminate\Http\Request;
 use Error;
+use Illuminate\Database\Eloquent\Collection;
 use PDOException;
 use Validator;
 
 class PaketController extends Controller
 {
 
-    private $fieldValidator=[
+    private $fieldValidator = [
         "kode" => "required",
         "alokasiwaktu" => "required",
         "bentukpenugasan" => "required",
@@ -47,28 +49,27 @@ class PaketController extends Controller
         }
     }
 
-    
-
     public function post(Request $req)
     {
         try {
 
-            $validator = Validator::make($req->all(),$this->fieldValidator);
-
+            $validator = Validator::make($req->all(), $this->fieldValidator);
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             } else {
                 $Paket = new Paket();
-                $Paket->kode = $req->kode;
-                $Paket->alokasiwaktu = $req->alokasiwaktu;
-                $Paket->bentukpenugasan = $req->bentukpenugasan;
-                $Paket->judultugas = $req->judultugas;
-                $Paket->jurusan_id = $req->jurusan_id;
-                $Paket->tahunajaran_id = $req->tahunajaran_id;
-                $Paket->aksesorinternal = $req->aksesorinternal;
-                $Paket->aksesoreksternal = $req->aksesoreksternal;
+                $this->setFieldData($Paket, $req);
                 $Paket->save();
-                return response()->json($Paket, 200);
+                $items = [];
+                foreach ($req->kompetensis as $row) {
+                    $komp = new Kompetensi($row);
+                    $komp->paket_id = $Paket->id;
+                    $komp->save();
+                }
+
+                $model = Paket::find($Paket->id);
+                $model->kompetensis;
+                return response()->json($model, 200);
             }
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
@@ -90,16 +91,20 @@ class PaketController extends Controller
                 $Paket = Paket::find($id);
                 if ($Paket == null)
                     throw new Error("Data Paket tidak ditemukan");
-
-                $Paket->kode = $req->kode;
-                $Paket->alokasiwaktu = $req->alokasiwaktu;
-                $Paket->bentukpenugasan = $req->bentukpenugasan;
-                $Paket->judultugas = $req->judultugas;
-                $Paket->jurusan_id = $req->jurusan_id;
-                $Paket->tahunajaran_id = $req->tahunajaran_id;
-                $Paket->aksesorinternal = $req->aksesorinternal;
-                $Paket->aksesoreksternal = $req->aksesoreksternal;
+                $this->setFieldData($Paket, $req);
                 $Paket->save();
+                foreach ($req->kompetensis as $row) {
+                    $komp = null;
+                    if ($row["id"]) {
+                        $komp = Kompetensi::find($row["id"]);
+                        $komp->elemen = $row['elemen'];
+                    } else {
+                        $komp = new Kompetensi($row);
+                        $komp->paket_id = $Paket->id;
+                    }
+                    $komp->save();
+                }
+                $Paket->kompetensis;
                 return response()->json($Paket, 200);
             }
         } catch (PDOException $ex) {
@@ -126,5 +131,18 @@ class PaketController extends Controller
             $errorMessage["messsage"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
+    }
+
+
+    private function setFieldData($Paket, $req)
+    {
+        $Paket->kode = $req->kode;
+        $Paket->alokasiwaktu = $req->alokasiwaktu;
+        $Paket->bentukpenugasan = $req->bentukpenugasan;
+        $Paket->judultugas = $req->judultugas;
+        $Paket->jurusan_id = $req->jurusan_id;
+        $Paket->tahunajaran_id = $req->tahunajaran_id;
+        $Paket->aksesorinternal = $req->aksesorinternal;
+        $Paket->aksesoreksternal = $req->aksesoreksternal;
     }
 }

@@ -18,10 +18,13 @@ Content-Type: application/json
 PUT {{url}}/1 HTTP/1.1
 Content-Type: application/json
 
-{
-    "nama":"Rekayasa Perangkat Lunak",
-    "deskripsi":"RPL"
-}
+ {
+    "id": 1,
+    "nama": "RPL",
+    "deskripsi": "Rekaya Perangkat Lunak",
+    "created_at": "2024-02-27T02:54:02.000000Z",
+    "updated_at": "2024-02-27T02:54:02.000000Z"
+  }
  
 #############
 

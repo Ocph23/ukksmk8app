@@ -9,7 +9,8 @@ class Kompetensi extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "elemenkompetensi" ,
+        "id" ,
+        "elemen" ,
     ];
 
 }
