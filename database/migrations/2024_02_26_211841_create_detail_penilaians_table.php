@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreign('penilaian_id')->references('id')->on('penilaians');
             $table->unsignedBigInteger('kompetensi_id');
             $table->foreign('kompetensi_id')->references('id')->on('kompetensis');
-            $table->timestamps();
         });
     }
 

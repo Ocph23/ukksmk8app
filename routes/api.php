@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AksesorController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\PaketController;
+use App\Http\Controllers\PenilaianController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SiswaController;
@@ -47,3 +50,30 @@ Route::get('jurusan/{id}', [JurusanController::class, 'byid']);
 Route::post('jurusan', [JurusanController::class, 'post']);
 Route::put('jurusan/{id}', [JurusanController::class, 'put']);
 Route::delete('jurusan/{id}', [JurusanController::class, 'delete']);
+
+
+//jurusan
+Route::get('aksesor', [AksesorController::class, 'index']);
+Route::get('aksesor/{id}', [AksesorController::class, 'byid']);
+Route::post('aksesor', [AksesorController::class, 'post']);
+Route::put('aksesor/{id}', [AksesorController::class, 'put']);
+Route::delete('aksesor/{id}', [AksesorController::class, 'delete']);
+
+
+//paket
+Route::get('paket', [PaketController::class, 'index']);
+Route::get('paket/{id}', [PaketController::class, 'byid']);
+Route::post('paket', [PaketController::class, 'post']);
+Route::put('paket/{id}', [PaketController::class, 'put']);
+Route::delete('paket/{id}', [PaketController::class, 'delete']);
+
+
+
+
+//penilaian
+Route::get('penilaian', [PenilaianController::class, 'index']);
+Route::get('penilaian/{id}', [PenilaianController::class, 'byid']);
+Route::post('penilaian', [PenilaianController::class, 'post']);
+Route::put('penilaian/{id}', [PenilaianController::class, 'put']);
+Route::delete('penilaian/{id}', [PenilaianController::class, 'delete']);
+

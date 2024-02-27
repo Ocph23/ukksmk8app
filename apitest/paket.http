@@ -1,0 +1,63 @@
+@url = http://localhost:8000/api/paket
+
+GET {{url}} HTTP/1.1
+#######
+
+GET {{url}}/3 HTTP/1.1
+####### 
+
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "kode" : "MP1212",
+    "alokasiwaktu" : "1 Jam",
+    "bentukpenugasan" : "Perorangan",
+    "judultugas" : "dwwsads",
+    "jurusan_id" : 1,
+    "tahunajaran_id" : 1,
+    "aksesorinternal" : 1,
+    "aksesoreksternal" : 2,
+    "kompetensis": [
+    {
+      "elemenkompetensi": "debug sssss aplikasi",
+      "created_at": null,
+      "updated_at": null
+    }
+  ]
+
+}
+#############
+     
+PUT {{url}}/3 HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 3,
+  "kode": "MP124",
+  "alokasiwaktu": "1 Jam",
+  "bentukpenugasan": "Perorangan",
+  "judultugas": "dwwsads",
+  "jurusan_id": 1,
+  "tahunajaran_id": 1,
+  "aksesoreksternal": 2,
+  "aksesorinternal": 1,
+  "created_at": "2024-02-26T22:33:04.000000Z",
+  "updated_at": "2024-02-26T22:33:04.000000Z",
+  "competensis": [
+    {
+      "id": 3,
+      "ElemenKompetensi": "xxxxx",
+      "paket_id": 3,
+      "created_at": null,
+      "updated_at": null
+    }
+  ]
+}
+#############
+
+
+   
+DELETE  {{url}}/3 HTTP/1.1
+Content-Type: application/json
+#############

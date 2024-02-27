@@ -10,8 +10,8 @@ POST {{url}} HTTP/1.1
 Content-Type: application/json
 
 {
-    "tahun":2025,
-    "deskripsi":"Budi Santoso"
+    "tahun":2023,
+    "deskripsi":"Tahun Baru"
 }
 #############
      

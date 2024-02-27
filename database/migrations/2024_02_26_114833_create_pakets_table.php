@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('pakets', function (Blueprint $table) {
             $table->id();
             $table->string('kode')->unique();
-            $table->string('AlokasiWaktu');
-            $table->string('BentukPenugasan');
-            $table->string('JudulTugas');
+            $table->string('alokasiwaktu');
+            $table->string('bentukpenugasan');
+            $table->string('judultugas');
             $table->unsignedBigInteger('jurusan_id');
             $table->foreign('jurusan_id')->references('id')->on('jurusans');
             $table->unsignedBigInteger('tahunajaran_id');

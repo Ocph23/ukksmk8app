@@ -1,0 +1,87 @@
+@url = http://localhost:8000/api/penilaian
+
+GET {{url}} HTTP/1.1
+
+
+####### 
+
+GET {{url}}/9 HTTP/1.1
+
+####### 
+
+
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "mulai":"2023-02-01",
+    "selesai":"2023-02-01",
+    "siswa_id":2,
+    "paket_id":1
+ 
+}
+ 
+#############
+     
+PUT {{url}}/9 HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 9,
+  "mulai": "2023-02-01 00:00:00",
+  "selesai": "2023-02-01 00:00:00",
+  "paket_id": 1,
+  "siswa_id": 2,
+  "created_at": "2024-02-27T00:24:21.000000Z",
+  "updated_at": "2024-02-27T00:24:21.000000Z",
+  "siswa": {
+    "id": 2,
+    "nis": "123344",
+    "nama": "Ajenk",
+    "jk": "Pria",
+    "alamat": "jln.",
+    "created_at": "2024-02-26T23:44:27.000000Z",
+    "updated_at": "2024-02-26T23:44:27.000000Z"
+  },
+  "paket": {
+    "id": 1,
+    "kode": "MP123",
+    "AlokasiWaktu": "1 Jam",
+    "BentukPenugasan": "Perorangan",
+    "JudulTugas": "Aplikasi",
+    "jurusan_id": 1,
+    "tahunajaran_id": 1,
+    "aksesoreksternal": 2,
+    "aksesorinternal": 1,
+    "created_at": "2024-02-26T22:08:18.000000Z",
+    "updated_at": "2024-02-26T22:08:18.000000Z",
+    "kompetensis": [
+      {
+        "id": 1,
+        "ElemenKompetensi": "debug aplikasi",
+        "paket_id": 1,
+        "created_at": null,
+        "updated_at": null
+      }
+    ]
+  },
+  "detail": [
+    {
+      "id": 3,
+      "nilai": 900,
+      "kompeten": 1,
+      "penilaian_id": 9,
+      "kompetensi_id": 1,
+      "created_at": null,
+      "updated_at": null
+    }
+  ]
+}
+ 
+#############
+
+
+   
+DELETE  {{url}}/2 HTTP/1.1
+Content-Type: application/json
+#############
