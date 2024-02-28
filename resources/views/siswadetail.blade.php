@@ -62,7 +62,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 200px;"> Kode </th>
-                                    <th> Elemen Kompetensi </th>
+                                    <th> Kompetensi </th>
                                     <th style="width: 75px;">Nilai</th>
                                     <th style="width: 75px;">Kompeten</th>
                                     <th style="width: 75px;"></th>
