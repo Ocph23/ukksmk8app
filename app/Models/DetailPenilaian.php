@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DetailPenilaian extends Model
 {
@@ -13,7 +14,14 @@ class DetailPenilaian extends Model
         'id',
         'nilai',
         'kompeten',
-        'penilaian_id',
+        'siswa_id',
         'kompetensi_id',
     ];
+
+    public $timestamps = false;
+
+    public function kompetensi():BelongsTo{
+        return $this->BelongsTo(Kompetensi::class);
+    }
+
 }

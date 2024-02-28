@@ -67,7 +67,7 @@ angular.module('siswaController', [])
             if (!param.id) {
                 siswaService.post(param)
                     .then(result => {
-                        $scope.data.push(result);
+                        $scope.datasiswa.push(result);
 
                         Swal.fire({
                             title: "Tersimpan!",

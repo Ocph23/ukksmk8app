@@ -18,7 +18,7 @@ class Siswa extends Model
         'alamat',
         'tahunajaran_id',
         'jurusan_id',
-        'paket_id'
+        'paket_id',
     ];
 
     

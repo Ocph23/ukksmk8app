@@ -15,9 +15,11 @@ angular.module('siswaDetailController', [])
                             var komp = $scope.siswa.penilaian.find(x => x.kompetensi_id == element.id);
                             if (!komp) {
                                 $scope.siswa.penilaian.push({
-                                    kompetensi_id: element.id,
+                                    id: 0,
                                     nilai: 0,
                                     kompeten: 0,
+                                    kompetensi_id: element.id,
+                                    siswa_id: $scope.siswa.id,
                                     kompetensi:element
 
                                 })
@@ -46,9 +48,20 @@ angular.module('siswaDetailController', [])
         $scope.save = () => {
             siswaService.put($scope.siswa)
                 .then(x => {
+                    Swal.fire({
+                        title: "Tersimpan!",
+                        text: "Data berhasil disimpan.",
+                        icon: "success"
+                    });
 
+                }, err => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: err.message,
+                        icon: "Error"
+                    });
 
-                }, err => { });
+                 });
 
 
         }
