@@ -11,6 +11,13 @@ use Validator;
 
 class AksesorController extends Controller
 {
+
+    private $fieldValidate = [
+        "nama" => "required",
+        "instansi" => "required",
+        "jk" => "required",
+        "jenis" => "required",
+    ];
     public function index()
     {
         $Aksesor = Aksesor::all();
@@ -29,7 +36,7 @@ class AksesorController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -38,28 +45,19 @@ class AksesorController extends Controller
     {
 
         try {
-            $validator = Validator::make($req->all(), [
-                "nama" => "required",
-                "instansi" => "required",
-                "jk" => "required",
-                "jenis" => "required",
-            ]);
+            $validator = Validator::make($req->all(), $this->fieldValidate);
 
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             } else {
-                $Aksesor = new Aksesor();
-                $Aksesor->nama = $req->nama;
-                $Aksesor->instansi = $req->instansi;
-                $Aksesor->jk = $req->jk;
-                $Aksesor->jenis = $req->jenis;
+                $Aksesor = new Aksesor($req->all());
                 $Aksesor->save();
                 return response()->json($Aksesor, 200);
             }
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -68,13 +66,7 @@ class AksesorController extends Controller
     public function put($id, Request $req)
     {
         try {
-            $validator = Validator::make($req->all(), [
-                "nama" => "required",
-                "instansi" => "required",
-                "jk" => "required",
-                "jenis" => "required",
-            ]);
-
+            $validator = Validator::make($req->all(), $this->fieldValidate);
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             } else {
@@ -82,17 +74,14 @@ class AksesorController extends Controller
                 if ($Aksesor == null)
                     throw new Error("Data Aksesor tidak ditemukan");
 
-                $Aksesor->nama = $req->nama;
-                $Aksesor->instansi = $req->instansi;
-                $Aksesor->jk = $req->jk;
-                $Aksesor->jenis = $req->jenis;
+                $Aksesor->fill($req->all());
                 $Aksesor->save();
                 return response()->json($Aksesor, 200);
             }
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -110,7 +99,7 @@ class AksesorController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }

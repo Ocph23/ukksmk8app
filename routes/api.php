@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //siswa
 Route::get('siswa', [SiswaController::class, 'index']);
 Route::get('siswa/{id}', [SiswaController::class, 'byid']);
+Route::get('siswa/bytahunajaran/{id}', [SiswaController::class, 'bytahunajaran']);
 Route::get('siswa/bynis/{nis}', [SiswaController::class, 'bynis']);
 Route::post('siswa', [SiswaController::class, 'post']);
 Route::put('siswa/{id}', [SiswaController::class, 'put']);
@@ -63,6 +64,7 @@ Route::delete('aksesor/{id}', [AksesorController::class, 'delete']);
 //paket
 Route::get('paket', [PaketController::class, 'index']);
 Route::get('paket/{id}', [PaketController::class, 'byid']);
+Route::get('paket/bytahunajaran/{id}', [PaketController::class, 'bytahunajaran']);
 Route::post('paket', [PaketController::class, 'post']);
 Route::put('paket/{id}', [PaketController::class, 'put']);
 Route::delete('paket/{id}', [PaketController::class, 'delete']);
@@ -73,6 +75,7 @@ Route::delete('paket/{id}', [PaketController::class, 'delete']);
 //penilaian
 Route::get('penilaian', [PenilaianController::class, 'index']);
 Route::get('penilaian/{id}', [PenilaianController::class, 'byid']);
+Route::get('penilaian/siswa/{id}', [PenilaianController::class, 'bysiswaid']);
 Route::post('penilaian', [PenilaianController::class, 'post']);
 Route::put('penilaian/{id}', [PenilaianController::class, 'put']);
 Route::delete('penilaian/{id}', [PenilaianController::class, 'delete']);

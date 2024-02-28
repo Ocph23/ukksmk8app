@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string("nama");
             $table->enum('jk', ['Pria','Wanita']);
             $table->string("alamat");
+            $table->unsignedBigInteger('tahunajaran_id');
+            $table->foreign('tahunajaran_id')->references('id')->on('tahun_ajarans');
+            $table->unsignedBigInteger('jurusan_id');
+            $table->foreign('jurusan_id')->references('id')->on('jurusans');
+            $table->unsignedBigInteger('paket_id');
+            $table->foreign('paket_id')->references('id')->on('pakets');
             $table->timestamps();
         });
     }

@@ -10,7 +10,9 @@ class Kompetensi extends Model
     use HasFactory;
     protected $fillable = [
         "id" ,
+        "kode" ,
         "elemen" ,
+        "paket_id" ,
     ];
 
 }

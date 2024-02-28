@@ -1,10 +1,10 @@
 @extends('admin')
 @section('content')
-<div ng-controller="jurusanController">
+<div ng-controller="aksesorController">
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">DATA JURUSAN</h4>
+                <h4 class="card-title">DATA AKSESOR</h4>
                 <button ng-click="tambah()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                     Tambah
                 </button>
@@ -13,9 +13,10 @@
                     <thead>
                         <tr>
                             <th>Nomor</th>
-                            <th>Nama Jurusan</th>
-                            <th>Kode</th>
-                            <th>Deskripsi</th>
+                            <th>Nama</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Tipe Aksesor</th>
+                            <th>Instansi</th>
                             <th style="text-align:right">Aksi</th>
                         </tr>
                     </thead>
@@ -23,8 +24,9 @@
                         <tr ng-repeat="item in data">
                             <td><% $index+1 %></td>
                             <td><% item.nama %></td>
-                            <td><% item.kode %></td>
-                            <td><% item.deskripsi %></td>
+                            <td><% item.jk %></td>
+                            <td><% item.jenis %></td>
+                            <td><% item.instansi %></td>
                             <td style="text-align:right">
                                 <button ng-click="edit(item)" type="button" class="btn btn-gradient-warning btn-icon">
                                     <i class="mdi mdi-pencil"></i>
@@ -53,19 +55,28 @@
                             <div class="modal-body">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title">Tahun Ajaran</h4>
+                                        <h4 class="card-title">Aksesor</h4>
                                         <form class="forms-sample">
                                             <div class="form-group">
-                                                <label for="exampleInputUsername1">Nama Jurusan</label>
-                                                <input ng-model="model.nama" type="text" class="form-control" placeholder="Jurusan">
+                                                <label >Nama </label>
+                                                <input ng-model="model.nama" type="text" class="form-control" placeholder="Nama">
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleInputUsername1">Kode</label>
-                                                <input ng-model="model.kode" type="text" class="form-control" placeholder="Kode">
+                                                <label >Jenis Kelamin</label>
+                                                <select ng-model="model.jk" class="form-control" ng-options="item as item for item in genders"></select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleTextarea1">Deskripsi</label>
-                                                <textarea ng-model="model.deskripsi" class="form-control"  rows="4"></textarea>
+                                                <label >Tipe Aksesor/Jenis</label>
+                                                <select ng-model="model.jenis" class="form-control" ng-options="item as item for item in aksesorsTypes" placeholder="Tipe Aksesor/Jenis"></select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label >Instansi/Asal</label>
+                                                <input ng-model="model.instansi" type="text" class="form-control" placeholder="Instansi/Asal">
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label >Catatan</label>
+                                                <textarea ng-model="model.catatan" class="form-control"  rows="4"></textarea>
                                             </div>
                                         </form>
                                     </div>

@@ -125,50 +125,25 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/charts/chartjs.html">
-              <span class="menu-title">Charts</span>
+            <a class="nav-link" href="/admin/aksesor">
+              <span class="menu-title">Aksesor</span>
               <i class="mdi mdi-chart-bar menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/tables/basic-table.html">
-              <span class="menu-title">Tables</span>
+            <a class="nav-link" href="/admin/paket">
+              <span class="menu-title">Paket</span>
               <i class="mdi mdi-table-large menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
-              <span class="menu-title">Sample Pages</span>
-              <i class="menu-arrow"></i>
-              <i class="mdi mdi-medical-bag menu-icon"></i>
+            <a class="nav-link" href="/admin/siswa">
+              <span class="menu-title">Siswa</span>
+              <i class="mdi mdi-table-large menu-icon"></i>
             </a>
-            <div class="collapse" id="general-pages">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
-              </ul>
-            </div>
           </li>
-          <li class="nav-item sidebar-actions">
-            <span class="nav-link">
-              <div class="border-bottom">
-                <h6 class="font-weight-normal mb-3">Projects</h6>
-              </div>
-              <button class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add a project</button>
-              <div class="mt-4">
-                <div class="border-bottom">
-                  <p class="text-secondary">Categories</p>
-                </div>
-                <ul class="gradient-bullet-list mt-4">
-                  <li>Free</li>
-                  <li>Pro</li>
-                </ul>
-              </div>
-            </span>
-          </li>
+         
+          
         </ul>
       </nav>
       <!-- partial -->
@@ -206,14 +181,37 @@
 
   <!-- endinject -->
   <!-- Custom js for this page -->
-  <script src="{{asset('assets/js/dashboard.js')}}"></script>
-  <script src="{{asset('assets/js/todolist.js')}}"></script>
-  <script src="{{asset('assets/js/angular.js')}}"></script>
-  <script src="{{asset('assets/js/app.js')}}"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <script src="{{asset('assets/js/dashboard.js')}}"></script>
+  <script src="{{asset('assets/js/todolist.js')}}"></script>
+  
+  
+  <script src="{{asset('assets/js/angular.js')}}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.17/angular-filter.min.js" integrity="sha512-f2q5tYQJ0pnslHkuVw7tm7GP7E0BF1YLckJjgLU5z4p1vNz78Jv+nPIEKtZerevbt/HwEfYnRrAo9U3u4m0UHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{{asset('assets/js/apps/app.js')}}"></script>
+
+  <script src="{{asset('assets/js/apps/services/service.js')}}"></script>
+  <script src="{{asset('assets/js/apps/services/helperService.js')}}"></script>
+  <script src="{{asset('assets/js/apps/services/jurusanService.js')}}"></script>
+  <script src="{{asset('assets/js/apps/services/tahunajaranService.js')}}"></script>
+  <script src="{{asset('assets/js/apps/services/aksesorService.js')}}"></script>
+  <script src="{{asset('assets/js/apps/services/paketService.js')}}"></script>
+  <script src="{{asset('assets/js/apps/services/siswaService.js')}}"></script>
+  <script src="{{asset('assets/js/apps/services/penilaianService.js')}}"></script>
+  
+  
+  <script src="{{asset('assets/js/apps/controllers/controller.js')}}"></script>
+  <script src="{{asset('assets/js/apps/controllers/jurusanController.js')}}"></script>
+  <script src="{{asset('assets/js/apps/controllers/tahunajaranController.js')}}"></script>
+  <script src="{{asset('assets/js/apps/controllers/aksesorController.js')}}"></script>
+  <script src="{{asset('assets/js/apps/controllers/paketController.js')}}"></script>
+  <script src="{{asset('assets/js/apps/controllers/siswaController.js')}}"></script>
+  <script src="{{asset('assets/js/apps/controllers/paketDetailController.js')}}"></script>
+  <script src="{{asset('assets/js/apps/controllers/siswaDetailController.js')}}"></script>
   <!-- End custom js for this page -->
 </body>
 <!-- 

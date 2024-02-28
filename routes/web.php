@@ -38,8 +38,18 @@ Route::get('/admin/siswa', function () {
     return view('siswa');
 });
 
+
+Route::get('/admin/siswa/{id}', function () {
+    return view('siswadetail');
+});
+
 Route::get('/admin/paket', function () {
     return view('paket');
+});
+
+
+Route::get('/admin/paket/{id}', function () {
+    return view('paketdetail');
 });
 
 Route::get('/admin/penilaian/{id}', function () {

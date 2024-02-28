@@ -1,6 +1,6 @@
 @extends('admin')
 @section('content')
-<div ng-controller="tahunAjaranController">
+<div ng-controller="tahunajaranController">
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -15,14 +15,19 @@
                             <th>Nomor</th>
                             <th>Tahun Ajaran</th>
                             <th>Deskripsi</th>
+                            <th>Aktif</th>
                             <th style="text-align:right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         <tr ng-repeat="item in data">
                             <td><% $index+1 %></td>
                             <td><% item.nama %></td>
                             <td><% item.deskripsi %></td>
+                            <td>
+                                <i ng-if="!item.aktif" class="mdi mdi mdi-checkbox-blank-outline"></i>
+                                <i ng-if="item.aktif" class="mdi mdi mdi-checkbox-marked"></i>
+                            </td>
                             <td style="text-align:right">
                                 <button ng-click="edit(item)" type="button" class="btn btn-gradient-warning btn-icon">
                                     <i class="mdi mdi-pencil"></i>
@@ -37,7 +42,7 @@
                 </table>
 
                 <!-- Button trigger modal -->
-               
+
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">

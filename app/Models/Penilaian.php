@@ -11,6 +11,7 @@ class Penilaian extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'mulai',
         'selesai',
         'paket_id',

@@ -26,37 +26,29 @@ Content-Type: application/json
 }
 #############
       
-PUT {{url}}/15 HTTP/1.1
+PUT {{url}}/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": 15,
-  "kode": "MP1223",
-  "alokasiwaktu": "1 Jam",
-  "bentukpenugasan": "Perorangan",
-  "judultugas": "dwwsads",
-  "jurusan_id": 1,
-  "tahunajaran_id": 1,
-  "aksesoreksternal": 2,
-  "aksesorinternal": 1,
-  "created_at": "2024-02-27T03:51:57.000000Z",
-  "updated_at": "2024-02-27T03:51:57.000000Z",
-  "kompetensis": [
-    {
-      "id": 2,
-      "elemen": "Kompetensi XXXXXX22222",
-      "paket_id": 15,
-      "created_at": "2024-02-27T03:51:57.000000Z",
-      "updated_at": "2024-02-27T04:53:22.000000Z"
-    },
-    {
-      "id": 3,
-      "elemen": "Kompetensi 2",
-      "paket_id": 15,
-      "created_at": "2024-02-27T05:00:01.000000Z",
-      "updated_at": "2024-02-27T05:00:01.000000Z"
-    }
-  ]
+    "id": 1,
+    "kode": "MP12323",
+    "alokasiwaktu": "1 Jam",
+    "bentukpenugasan": "Perorangan",
+    "judultugas": "aplikasi Kalkulator",
+    "jurusan_id": 1,
+    "tahunajaran_id": 1,
+    "aksesoreksternal": 2,
+    "aksesorinternal": 1,
+    "created_at": "2024-02-28T07:00:06.000000Z",
+    "updated_at": "2024-02-28T07:13:31.000000Z",
+    "kompetensis": [
+        {
+            "id": 0,
+            "paket_id": 1,
+            "kode": "d",
+            "elemen": "as"
+        }
+    ]
 }
 
 #############

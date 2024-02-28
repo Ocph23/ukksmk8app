@@ -31,12 +31,15 @@ class PaketController extends Controller
         return response()->json($Paket, 200);
     }
 
-
+    
     public function byid($id)
     {
         try {
             $Paket = Paket::find($id);
             $Paket->kompetensis;
+            $Paket->eksternal;
+            $Paket->eksternal;
+            $Paket->internal;
             if ($Paket == null) {
                 throw new Error("Data Paket  tidak ditemukan ! ");
             }
@@ -44,7 +47,25 @@ class PaketController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
+            return response()->json($errorMessage, 400);
+        }
+    }
+
+    public function bytahunajaran($id)
+    {
+        try {
+            $data = Paket::where("tahunajaran_id",$id)->get();
+            foreach ($data as $key => $value) {
+                $value->kompetensi;
+                $value->jurusan;
+            }
+            
+            return response()->json($data, 200);
+        } catch (PDOException $ex) {
+            return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
+        } catch (\Throwable $th) {
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -74,7 +95,7 @@ class PaketController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -91,16 +112,15 @@ class PaketController extends Controller
                 $Paket = Paket::find($id);
                 if ($Paket == null)
                     throw new Error("Data Paket tidak ditemukan");
-                $this->setFieldData($Paket, $req);
+               $Paket->fill($req->all());
                 $Paket->save();
                 foreach ($req->kompetensis as $row) {
                     $komp = null;
                     if ($row["id"]) {
                         $komp = Kompetensi::find($row["id"]);
-                        $komp->elemen = $row['elemen'];
+                        $komp->fill($row);
                     } else {
                         $komp = new Kompetensi($row);
-                        $komp->paket_id = $Paket->id;
                     }
                     $komp->save();
                 }
@@ -110,7 +130,7 @@ class PaketController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -128,7 +148,7 @@ class PaketController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }

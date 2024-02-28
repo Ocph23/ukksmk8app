@@ -11,6 +11,15 @@ use Validator;
 
 class SiswaController extends Controller
 {
+
+    private $fieldValidate=  [
+        "nis" => "required",
+        "nama" => "required",
+        "jk"  => "required",
+        "alamat"  => "required",
+        "jurusan_id"  => "required",
+        "tahunajaran_id"  => "required",
+    ];
     public function index()
     {
         $siswa = Siswa::all();
@@ -25,11 +34,14 @@ class SiswaController extends Controller
             if ($siswa == null) {
                 throw new Error("Data Siswa  tidak ditemukan ! ");
             }
+            $siswa->jurusan;
+            $siswa->paket;
+            $siswa->penilaian;
             return response()->json($siswa, 200);
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -46,7 +58,26 @@ class SiswaController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
+            return response()->json($errorMessage, 400);
+        }
+    }
+
+    
+    public function bytahunajaran($id)
+    {
+        try {
+            $data = Siswa::where("tahunajaran_id",$id)->get();
+            foreach ($data as $key => $value) {
+                $value->tahunajaran;
+                $value->jurusan;
+                $value->paket;
+            }
+            return response()->json($data, 200);
+        } catch (PDOException $ex) {
+            return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
+        } catch (\Throwable $th) {
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -55,28 +86,18 @@ class SiswaController extends Controller
     {
 
         try {
-            $validator = Validator::make($req->all(), [
-                "nis" => "required",
-                "nama" => "required",
-                "jk"  => "required",
-                "alamat"  => "required",
-            ]);
-
+            $validator = Validator::make($req->all(),$this->fieldValidate);
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             } else {
-                $siswa = new Siswa();
-                $siswa->nis = $req->nis;
-                $siswa->nama = $req->nama;
-                $siswa->jk = $req->jk;
-                $siswa->alamat = $req->alamat;
+                $siswa = new Siswa($req->all());
                 $siswa->save();
                 return response()->json($siswa, 200);
             }
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -85,12 +106,7 @@ class SiswaController extends Controller
     public function put($id, Request $req)
     {
         try {
-            $validator = Validator::make($req->all(), [
-                "nis" => "required",
-                "nama" => "required",
-                "jk"  => "required",
-                "alamat"  => "required",
-            ]);
+            $validator = Validator::make($req->all(),$this->fieldValidate);
 
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
@@ -98,18 +114,14 @@ class SiswaController extends Controller
                 $siswa = Siswa::find($id);
                 if ($siswa == null)
                     throw new Error("Data Siswa tidak ditemukan");
-
-                $siswa->nis = $req->nis;
-                $siswa->nama = $req->nama;
-                $siswa->jk = $req->jk;
-                $siswa->alamat = $req->alamat;
+                $siswa->fill($req->all());
                 $siswa->save();
                 return response()->json($siswa, 200);
             }
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -127,7 +139,7 @@ class SiswaController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }

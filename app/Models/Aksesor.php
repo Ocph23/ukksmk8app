@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Aksesor extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'id',
+        'nama',
+        'jk',
+        'instansi',
+        'jenis',
+        'catatan'
+    ];
 }

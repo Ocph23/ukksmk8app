@@ -6,9 +6,11 @@ use App\Http\DatabaseHelper;
 use App\Models\DetailPenilaian;
 use App\Models\Paket;
 use App\Models\Penilaian;
+use DateTime;
 use Illuminate\Http\Request;
 use Error;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use PDOException;
 use Validator;
@@ -43,7 +45,33 @@ class PenilaianController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
+            return response()->json($errorMessage, 400);
+        }
+    }
+
+    public function bysiswaid($id)
+    {
+        try {
+            $Penilaian = Penilaian::where('siswa_id','=',$id)->first();
+            if ($Penilaian == null) {
+               $Penilaian = new Penilaian();
+               $Penilaian->siswa_id=$id;
+               $Penilaian->mulai=new DateTime();
+               $Penilaian->selesai=new DateTime();
+               $Penilaian->save();
+            }
+
+
+            $Penilaian->siswa;
+            $Penilaian->paket;
+            $Penilaian->paket->kompetensis;
+            $Penilaian->detail;
+            return response()->json($Penilaian, 200);
+        } catch (PDOException $ex) {
+            return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
+        } catch (\Throwable $th) {
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -81,7 +109,7 @@ class PenilaianController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -113,7 +141,7 @@ class PenilaianController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -131,7 +159,7 @@ class PenilaianController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }

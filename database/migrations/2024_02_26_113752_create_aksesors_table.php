@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('instansi');
             $table->enum('jk', ['Pria','Wanita']);
             $table->enum('jenis', ['Eksternal','Internal']);
+            $table->string('catatan');
             $table->timestamps();
         });
     }

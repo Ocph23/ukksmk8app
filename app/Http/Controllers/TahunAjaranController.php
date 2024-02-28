@@ -29,7 +29,7 @@ class TahunAjaranController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -47,7 +47,7 @@ class TahunAjaranController extends Controller
                 throw new Error("Periksa Kembali Data Anda");
             } else {
                 $TahunAjaran = new TahunAjaran();
-                $TahunAjaran->tahun = $req->tahun;
+                $TahunAjaran->tahun = $req->tahun;  
                 $TahunAjaran->deskripsi = $req->deskripsi;
                 $TahunAjaran->save();
                 return response()->json($TahunAjaran, 200);
@@ -55,7 +55,7 @@ class TahunAjaranController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -85,7 +85,7 @@ class TahunAjaranController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }
@@ -103,7 +103,7 @@ class TahunAjaranController extends Controller
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
-            $errorMessage["messsage"] = $th->getMessage();
+            $errorMessage["message"] = $th->getMessage();
             return response()->json($errorMessage, 400);
         }
     }

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->double('nilai');
             $table->boolean('kompeten');
-            $table->unsignedBigInteger('penilaian_id');
-            $table->foreign('penilaian_id')->references('id')->on('penilaians');
+            $table->unsignedBigInteger('siswa_id');
+            $table->foreign('siswa_id')->references('id')->on('siswas');
             $table->unsignedBigInteger('kompetensi_id');
             $table->foreign('kompetensi_id')->references('id')->on('kompetensis');
         });
