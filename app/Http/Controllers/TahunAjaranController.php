@@ -17,14 +17,28 @@ class TahunAjaranController extends Controller
         return response()->json($TahunAjaran, 200);
     }
 
-
     public function byid($id)
     {
         try {
-            $TahunAjaran = TahunAjaran::find($id);
-            if ($TahunAjaran == null) {
-                throw new Error("Data TahunAjaran  tidak ditemukan ! ");
+
+            if($id=="aktif"){
+                $TahunAjaran = TahunAjaran::where('aktif', false)->first();
+            }else{
+                $TahunAjaran = TahunAjaran::find($id);
             }
+            return response()->json($TahunAjaran, 200);
+        } catch (PDOException $ex) {
+            return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
+        } catch (\Throwable $th) {
+            $errorMessage["message"] = $th->getMessage();
+            return response()->json($errorMessage, 400);
+        }
+    }
+
+    public function aktif()
+    {
+        try {
+            $TahunAjaran = TahunAjaran::where('aktif', true)->first();
             return response()->json($TahunAjaran, 200);
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
@@ -47,7 +61,7 @@ class TahunAjaranController extends Controller
                 throw new Error("Periksa Kembali Data Anda");
             } else {
                 $TahunAjaran = new TahunAjaran();
-                $TahunAjaran->tahun = $req->tahun;  
+                $TahunAjaran->tahun = $req->tahun;
                 $TahunAjaran->deskripsi = $req->deskripsi;
                 $TahunAjaran->save();
                 return response()->json($TahunAjaran, 200);
@@ -77,8 +91,8 @@ class TahunAjaranController extends Controller
                 if ($TahunAjaran == null)
                     throw new Error("Data TahunAjaran tidak ditemukan");
 
-                    $TahunAjaran->tahun = $req->tahun;
-                    $TahunAjaran->deskripsi = $req->deskripsi;
+                $TahunAjaran->tahun = $req->tahun;
+                $TahunAjaran->deskripsi = $req->deskripsi;
                 $TahunAjaran->save();
                 return response()->json($TahunAjaran, 200);
             }

@@ -1,4 +1,5 @@
 angular.module('app', ['app.service', 'app.controller', 'angular.filter'])
+   
     .config(function ($interpolateProvider, $locationProvider) {
 
         $interpolateProvider.startSymbol('<%');

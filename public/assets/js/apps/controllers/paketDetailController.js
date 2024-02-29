@@ -1,6 +1,7 @@
 angular.module('paketDetailController', [])
     .controller('paketDetailController', function ($scope, $location, paketService) {
-        var path = $location.$$path;
+        document.getElementById("content").style.display = 'block';
+         var path = $location.$$path;
         var pathData = path.split('/');
         var id = pathData[3];
 

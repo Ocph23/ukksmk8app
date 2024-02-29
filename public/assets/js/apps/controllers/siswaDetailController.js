@@ -3,7 +3,7 @@ angular.module('siswaDetailController', [])
         var path = $location.$$path;
         var pathData = path.split('/');
         var id = pathData[3];
-
+        $("#content").css('display','block');
         $scope.penilaian = {};
         siswaService.getById(id)
             .then(x => {

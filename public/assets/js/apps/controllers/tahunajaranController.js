@@ -1,6 +1,6 @@
 angular.module('tahunajaranController', [])
     .controller('tahunajaranController', function ($scope, $http, tahunajaranService) {
-        $model = {};
+        document.getElementById("content").style.display = 'block';  $model = {};
         $scope.data = [];
 
         tahunajaranService.get()

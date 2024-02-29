@@ -1,6 +1,6 @@
 angular.module('aksesorController', [])
     .controller('aksesorController', function ($scope, $http, aksesorService, helperService) {
-       
+        document.getElementById("content").style.display = 'block';
         $scope.data = [];
         $scope.genders = helperService.getGender();
         $scope.aksesorsTypes = helperService.getAccesorTypes();

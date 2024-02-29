@@ -1,8 +1,8 @@
 angular.module('jurusanController', [])
-    .controller('jurusanController', function ($scope, $http, jurusanService) {
+    .controller('jurusanController', function ($scope, $http, jurusanService, helperService, $compile) {
         $model = {};
         $scope.data = [];
-
+        document.getElementById("content").style.display = 'block';
         jurusanService.get()
             .then(result => {
                 $scope.data = result;

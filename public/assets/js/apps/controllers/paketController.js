@@ -1,11 +1,12 @@
 angular.module('paketController', [])
     .controller('paketController', function ($scope, $http, paketService, helperService, aksesorService, jurusanService, tahunajaranService) {
-        $scope.tahunajaran = [];
-
+        document.getElementById("content").style.display = 'block';
+          $scope.tahunajaran = [];
         //get Tahun ajaran
         tahunajaranService.get()
             .then(result => {
                 $scope.tahunajaran = result;
+                $scope.selectedTahunAjaran = result.find(x => x.aktif);
                 jurusanService.get()
                     .then(resultJurusan => {
                         $scope.dataJurusan = resultJurusan;
@@ -13,6 +14,9 @@ angular.module('paketController', [])
                             .then(resultAksesor => {
                                 $scope.aksesorInternal = resultAksesor.filter(x => x.jenis == "Internal");
                                 $scope.aksesorEksternal = resultAksesor.filter(x => x.jenis == "Eksternal");
+                                if ( $scope.selectedTahunAjaran != null) {
+                                    $scope.changeSelectedTahunAjaran($scope.selectedTahunAjaran);
+                                }
                             },
                                 err => { });
                     },

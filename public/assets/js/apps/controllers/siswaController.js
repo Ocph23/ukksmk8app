@@ -1,21 +1,21 @@
 angular.module('siswaController', [])
     .controller('siswaController', function ($scope, $http, siswaService, helperService, aksesorService,
         paketService, jurusanService, tahunajaranService) {
-        $scope.tahunajaran = [];
+        document.getElementById("content").style.display = 'block'; $scope.tahunajaran = [];
         $scope.genders = helperService.getGender();
         //get Tahun ajaran
         tahunajaranService.get()
             .then(result => {
                 $scope.tahunajaran = result;
+                $scope.selectedTahunAjaran = result.find(x => x.aktif);
                 jurusanService.get()
                     .then(resultJurusan => {
                         $scope.dataJurusan = resultJurusan;
+                        if ($scope.selectedTahunAjaran != null) {
+                            $scope.changeSelectedTahunAjaran($scope.selectedTahunAjaran);
+                        }
                     }, err => { });
             }, err => { });
-
-
-
-
 
         $scope.changeSelectedTahunAjaran = (tahunajaran) => {
             if (tahunajaran) {
@@ -144,6 +144,14 @@ angular.module('siswaController', [])
                     })
                 }
             });
+        }
+
+
+        $scope.nilaiStatus = (data) => {
+            if (data.penilaian == null || data.penilaian.length == 0) {
+                  return false;  
+            }
+            return true;
         }
 
     })
