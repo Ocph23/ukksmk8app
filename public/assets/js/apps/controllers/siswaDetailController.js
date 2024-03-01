@@ -1,13 +1,31 @@
 angular.module('siswaDetailController', [])
-    .controller('siswaDetailController', function ($scope, $location, siswaService, paketService) {
+    .controller('siswaDetailController', function ($scope, $location, siswaService, paketService, helperService) {
         var path = $location.$$path;
         var pathData = path.split('/');
         var id = pathData[3];
-        $("#content").css('display','block');
+        $("#content").css('display', 'block');
         $scope.penilaian = {};
         siswaService.getById(id)
             .then(x => {
                 $scope.siswa = x;
+                if (!$scope.siswa.sertifikat) {
+                    var sertifikat = { id: 0 };
+                    sertifikat.instansi = $scope.siswa.paket.eksternal.instansi;
+                    sertifikat.siswa_id = x.id;
+                    sertifikat.nomor = "";
+                    sertifikat.nomorseri = "";
+                    sertifikat.diambiloleh = "";
+                    sertifikat.ketuapenguji = $scope.siswa.paket.eksternal.nama;
+                    sertifikat.tanggalpenetapan = null;
+                    sertifikat.tanggalcetak = null;
+                    sertifikat.tanggalambil = null;
+                    $scope.siswa.sertifikat = sertifikat;
+                } else {
+                    $scope.siswa.sertifikat.tanggalpenetapan = new Date($scope.siswa.sertifikat.tanggalpenetapan);
+                    $scope.siswa.sertifikat.tanggalcetak = helperService.toDate($scope.siswa.sertifikat.tanggalcetak);
+                    $scope.siswa.sertifikat.tanggalambil = $scope.siswa.sertifikat.tanggalambil == null ? null : new Date($scope.siswa.sertifikat.tanggalambil);
+                }
+
                 paketService.getById(x.paket_id)
                     .then(x => {
                         $scope.pakets = x;
@@ -20,7 +38,7 @@ angular.module('siswaDetailController', [])
                                     kompeten: 0,
                                     kompetensi_id: element.id,
                                     siswa_id: $scope.siswa.id,
-                                    kompetensi:element
+                                    kompetensi: element
 
                                 })
                             }
@@ -58,13 +76,72 @@ angular.module('siswaDetailController', [])
                     Swal.fire({
                         title: "Error!",
                         text: err.message,
-                        icon: "Error"
+                        icon: "error"
                     });
 
-                 });
+                });
 
 
         }
 
+        $scope.updateSertifikat = (sertifikat) => {
+            siswaService.updateSertifikat(sertifikat)
+                .then(x => {
+                    Swal.fire({
+                        title: "Tersimpan!",
+                        text: "Data berhasil disimpan.",
+                        icon: "success"
+                    });
+
+                }, err => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: err.data.message,
+                        icon: "error"
+                    });
+
+                });
+        }
+
+
+        $scope.showSertifikatPanel = () => {
+            if ($scope.siswa != null && $scope.siswa.penilaian != null &&
+                $scope.rata2Penilaian($scope.siswa.penilaian) > 0) {
+                return true;
+            }
+            return false;
+
+        }
+
+        $scope.rata2Penilaian = (penilaian) => {
+            if (penilaian) {
+                var rata2 = penilaian.reduce((x, i) => {
+                    return x + i.nilai
+                }, 0);
+                return $scope.rata2 = rata2 / penilaian.length;
+            }
+            return 0;
+        }
+
+        $scope.canPrint = () => {
+            if ($scope.siswa != null && $scope.siswa.penilaian != null && $scope.siswa.sertifikat) {
+                var sertifikat = $scope.siswa.sertifikat;
+                if (sertifikat.id && sertifikat.instansi && sertifikat.nomor && sertifikat.nomorseri) {
+                    return true;
+                }
+
+            }
+            return false;
+
+        }
+
+
+        $scope.print = () => {
+            window.print();
+            window.onafterprint = function () {
+                $scope.siswa.sertifikat.tanggalcetak = new Date();
+                $scope.updateSertifikat($scope.siswa.sertifikat);
+            }
+        }
 
     })

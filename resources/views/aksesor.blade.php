@@ -18,6 +18,7 @@
                                 <th>Jenis Kelamin</th>
                                 <th>Tipe Aksesor</th>
                                 <th>Instansi</th>
+                                <th>Logo Instansi</th>
                                 <th style="text-align:right">Aksi</th>
                             </tr>
                         </thead>
@@ -28,11 +29,14 @@
                                 <td><% item.jk %></td>
                                 <td><% item.jenis %></td>
                                 <td><% item.instansi %></td>
+                                <td>
+                                    <button ng-click="showLogo(item.logo)" ng-if="item.logo" type="button" class="btn btn-gradient-success btn-sm">View</button>
+                                </td>
                                 <td style="text-align:right">
-                                    <button ng-click="edit(item)" type="button" class="btn btn-gradient-warning btn-icon">
+                                    <button ng-click="edit(item)" type="button" class="btn btn-inverse-warning btn-icon">
                                         <i class="mdi mdi-pencil"></i>
                                     </button>
-                                    <button ng-click="delete(item)" type="button" class="btn btn-gradient-danger btn-icon">
+                                    <button ng-click="delete(item)" type="button" class="btn btn-inverse-danger btn-icon">
                                         <i class="mdi mdi-delete"></i>
                                     </button>
                                 </td>
@@ -45,7 +49,7 @@
 
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-dialog  modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Form</h5>
@@ -74,12 +78,41 @@
                                                     <label>Instansi/Asal</label>
                                                     <input ng-model="model.instansi" type="text" class="form-control" placeholder="Instansi/Asal">
                                                 </div>
+                                                <div class="form-group">
+                                                    <label>Logo Instansi</label>
+                                                    <input type="file" file-model="model.file" class="form-control" name="fileToUpload" id="fileToUpload">
+                                                </div>
 
                                                 <div class="form-group">
                                                     <label>Catatan</label>
                                                     <textarea ng-model="model.catatan" class="form-control" rows="4"></textarea>
                                                 </div>
                                             </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+                                    <button type="button" ng-click="simpan(model)" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="logoModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog  modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Form</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <img style="width: 100%;" src="/storage/instansi/<%logoInstansi%>" />
                                         </div>
                                     </div>
                                 </div>

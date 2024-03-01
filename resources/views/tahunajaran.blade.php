@@ -21,19 +21,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in data">
+                            <tr ng-repeat="item in data | orderBy:'-id'">
                                 <td><% $index+1 %></td>
                                 <td><% item.nama %></td>
                                 <td><% item.deskripsi %></td>
                                 <td>
-                                    <i ng-if="!item.aktif" class="mdi mdi mdi-checkbox-blank-outline"></i>
-                                    <i ng-if="item.aktif" class="mdi mdi mdi-checkbox-marked"></i>
+                                    <i style="font-size: 20px; color:#b66dff" ng-if="!item.aktif" class="mdi mdi mdi-checkbox-blank-outline"></i>
+                                    <i style="font-size: 20px;color:#b66dff" ng-if="item.aktif" class="mdi mdi mdi-checkbox-marked"></i>
                                 </td>
                                 <td style="text-align:right">
-                                    <button ng-click="edit(item)" type="button" class="btn btn-gradient-warning btn-icon">
+                                    
+                                <button ng-click="edit(item)" type="button" class="btn btn-inverse-warning btn-icon">
                                         <i class="mdi mdi-pencil"></i>
                                     </button>
-                                    <button ng-click="delete(item)" type="button" class="btn btn-gradient-danger btn-icon">
+                                    <button ng-click="delete(item)" type="button" class="btn btn-inverse-danger btn-icon">
                                         <i class="mdi mdi-delete"></i>
                                     </button>
                                 </td>

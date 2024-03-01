@@ -1,6 +1,6 @@
 @extends('admin')
 @section('content')
-<div ng-controller="jurusanController"  >
+<div ng-controller="jurusanController">
     <ng-template style="display: none;" id="content">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -9,7 +9,6 @@
                     <button ng-click="tambah()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                         Tambah
                     </button>
-
                     <table class="table">
                         <thead>
                             <tr>
@@ -27,10 +26,10 @@
                                 <td><% item.kode %></td>
                                 <td><% item.deskripsi %></td>
                                 <td style="text-align:right">
-                                    <button ng-click="edit(item)" type="button" class="btn btn-gradient-warning btn-icon">
+                                    <button ng-click="edit(item)" type="button" class="btn btn-inverse-warning btn-icon">
                                         <i class="mdi mdi-pencil"></i>
                                     </button>
-                                    <button ng-click="delete(item)" type="button" class="btn btn-gradient-danger btn-icon">
+                                    <button ng-click="delete(item)" type="button" class="btn btn-inverse-danger btn-icon">
                                         <i class="mdi mdi-delete"></i>
                                     </button>
                                 </td>

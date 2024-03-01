@@ -23,7 +23,7 @@
                                 <th>NIS</th>
                                 <th>Nama</th>
                                 <th>Jenis Kelamin</th>
-                                <th>Alamat</th>
+                                <th>Tempat, Tanggal Lahir</th>
                                 <th>Penilaian</th>
                                 <th style="text-align:right">Aksi</th>
                             </tr>
@@ -37,20 +37,20 @@
                                 <td><% item.nis %></td>
                                 <td><% item.nama %></td>
                                 <td><% item.jk %></td>
-                                <td><% item.alamat %></td>
+                                <td><% item.tempatlahir %>, <% helper.toDate(item.tanggallahir) %></td>
                                 <td>
                                     <i ng-if="!nilaiStatus(item)" class="mdi mdi-checkbox-blank-outline" style="font-size: 20px;color: #b66dff;"></i>
                                     <i ng-if="nilaiStatus(item)" class="mdi mdi-checkbox-marked" style="font-size: 20px;color: #b66dff;"></i>
                                 </td>
                                 <td style="text-align:right">
-                                    <button ng-click="edit(item)" type="button" class="btn btn-gradient-warning btn-icon">
+                                    <button ng-click="edit(item)" type="button" class="btn btn-inverse-warning btn-icon">
                                         <i class="mdi mdi-pencil"></i>
                                     </button>
-                                    <button ng-click="delete(item)" type="button" class="btn btn-gradient-danger btn-icon">
+                                    <button ng-click="delete(item)" type="button" class="btn btn-inverse-danger btn-icon">
                                         <i class="mdi mdi-delete"></i>
                                     </button>
                                     <a ng-href="/admin/siswa/<%item.id%>">
-                                        <button type="button" class="btn btn-gradient-danger btn-icon">
+                                        <button type="button" class="btn btn-inverse-info btn-icon">
                                             <i class="mdi mdi-format-list-bulleted"></i>
                                         </button>
                                     </a>
@@ -89,6 +89,14 @@
                                                 <div class="form-group">
                                                     <label>Jenis Kelamin</label>
                                                     <select ng-model="model.jk" class="form-control" ng-options="item as item for item in genders"></select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Tempat Lahir </label>
+                                                    <input ng-model="model.tempatlahir" type="text" class="form-control" placeholder="Nama Siswa">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Tanggal Lahir </label>
+                                                    <input ng-model="model.tanggallahir" type="date" class="form-control" placeholder="Nama Siswa">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Alamat </label>

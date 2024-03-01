@@ -1,6 +1,8 @@
 angular.module('siswaController', [])
     .controller('siswaController', function ($scope, $http, siswaService, helperService, aksesorService,
         paketService, jurusanService, tahunajaranService) {
+
+        $scope.helper = helperService;        
         document.getElementById("content").style.display = 'block'; $scope.tahunajaran = [];
         $scope.genders = helperService.getGender();
         //get Tahun ajaran
@@ -49,6 +51,7 @@ angular.module('siswaController', [])
         $scope.edit = (item) => {
             $scope.changeSelectedjurusan(item.jurusan_id);
             $scope.model = JSON.parse(JSON.stringify(item));
+            $scope.model.tanggallahir = new Date($scope.model.tanggallahir);
             $('#exampleModal').modal('show')
         };
 

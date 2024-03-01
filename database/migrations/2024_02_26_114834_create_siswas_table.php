@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string("nis")->unique();
             $table->string("nama");
             $table->enum('jk', ['Pria','Wanita']);
+            $table->string("tempatlahir");
+            $table->date("tanggallahir");
             $table->string("alamat");
             $table->unsignedBigInteger('tahunajaran_id');
             $table->foreign('tahunajaran_id')->references('id')->on('tahun_ajarans');

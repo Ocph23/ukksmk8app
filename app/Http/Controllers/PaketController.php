@@ -31,7 +31,7 @@ class PaketController extends Controller
         return response()->json($Paket, 200);
     }
 
-    
+
     public function byid($id)
     {
         try {
@@ -55,12 +55,12 @@ class PaketController extends Controller
     public function bytahunajaran($id)
     {
         try {
-            $data = Paket::where("tahunajaran_id",$id)->get();
+            $data = Paket::where("tahunajaran_id", $id)->get();
             foreach ($data as $key => $value) {
                 $value->kompetensi;
                 $value->jurusan;
             }
-            
+
             return response()->json($data, 200);
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
@@ -112,9 +112,10 @@ class PaketController extends Controller
                 $Paket = Paket::find($id);
                 if ($Paket == null)
                     throw new Error("Data Paket tidak ditemukan");
-               $Paket->fill($req->all());
+                $Paket->fill($req->all());
                 $Paket->save();
-                foreach ($req->kompetensis as $row) {
+                $kompetensis = $req->kompetensis;
+                foreach ($kompetensis as $key=> $row) {
                     $komp = null;
                     if ($row["id"]) {
                         $komp = Kompetensi::find($row["id"]);
@@ -122,9 +123,21 @@ class PaketController extends Controller
                     } else {
                         $komp = new Kompetensi($row);
                     }
-                    $komp->save();
+                    $komp->save();  
+                    $kompetensis[$key]['id']=$komp->id;
                 }
-                $Paket->kompetensis;
+
+
+                $dataInDatabase = Kompetensi::where('paket_id', $Paket->id)->get();
+                $dataInDatabaseArr = $dataInDatabase->all();
+
+                foreach ($dataInDatabaseArr as $key => $value) {
+                    $data = collect($kompetensis)->where('id', $value->id)->first();
+                    if (!$data) {
+                        $value->delete();
+                    }
+                }
+
                 return response()->json($Paket, 200);
             }
         } catch (PDOException $ex) {

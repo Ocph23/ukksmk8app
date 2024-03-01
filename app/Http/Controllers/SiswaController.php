@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\DatabaseHelper;
 use App\Models\DetailPenilaian;
 use App\Models\Penilaian;
+use App\Models\Sertifikat;
 use App\Models\Siswa;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Error;
+use Illuminate\Support\Facades\Date;
 use PDOException;
 use Validator;
 
@@ -18,9 +22,12 @@ class SiswaController extends Controller
         "nis" => "required",
         "nama" => "required",
         "jk"  => "required",
+        'tempatlahir' => "required",
+        'tanggallahir' => "required",
         "alamat"  => "required",
         "jurusan_id"  => "required",
         "tahunajaran_id"  => "required",
+        "paket_id"  => "required",
     ];
     public function index()
     {
@@ -37,7 +44,9 @@ class SiswaController extends Controller
                 throw new Error("Data Siswa  tidak ditemukan ! ");
             }
             $siswa->jurusan;
-            $siswa->paket;
+            $siswa->sertifikat;
+
+            $siswa->paket->eksternal;
             foreach ($siswa->penilaian as $key => $value) {
                 # code...
                 $value->kompetensi;
@@ -97,6 +106,8 @@ class SiswaController extends Controller
                 throw new Error("Periksa Kembali Data Anda");
             } else {
                 $siswa = new Siswa($req->all());
+                $tgl = new DateTime($siswa->tanggallahir);
+                $siswa->tanggallahir = $tgl->format('Y-m-d');
                 $siswa->save();
                 return response()->json($siswa, 200);
             }
@@ -107,6 +118,51 @@ class SiswaController extends Controller
             return response()->json($errorMessage, 400);
         }
     }
+
+
+
+    public function updateSertifikat(Request $req)
+    {
+
+        try {
+            $validator = Validator::make(
+                $req->all(),
+                [
+                    'instansi' => "required",
+                    'ketuapenguji' => "required",
+                    'nomorseri' => "required",
+                    'nomor' => "required",
+                    'tanggalpenetapan' => "required",
+                    'siswa_id' => "required"
+                ]
+            );
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                throw new Error("Periksa Kembali Data Anda");
+            } else {
+                if (!$req->id) {
+                    $sertifikat = new Sertifikat($req->all());
+                    $sertifikat->tanggalpenetapan = Carbon::createFromDate($sertifikat->tanggalpenetapan);
+                    $sertifikat->save();
+                } else {
+                    $sertifikat = Sertifikat::find($req->id);
+                    $sertifikat->fill($req->all());
+                    $sertifikat->tanggalpenetapan = Carbon::createFromDate($sertifikat->tanggalpenetapan);
+                    $sertifikat->tanggalcetak = Carbon::createFromDate($sertifikat->tanggalcetak);
+                    $sertifikat->tanggalambil = Carbon::createFromDate($sertifikat->tanggalambil);
+                    $sertifikat->save();
+                }
+
+                return response()->json($sertifikat, 200);
+            }
+        } catch (PDOException $ex) {
+            return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
+        } catch (\Throwable $th) {
+            $errorMessage["message"] = $th->getMessage();
+            return response()->json($errorMessage, 400);
+        }
+    }
+
 
 
     public function put($id, Request $req)
@@ -121,6 +177,8 @@ class SiswaController extends Controller
                 if ($siswa == null)
                     throw new Error("Data Siswa tidak ditemukan");
                 $siswa->fill($req->all());
+                $tgl = new DateTime($siswa->tanggallahir);
+                $siswa->tanggallahir = $tgl->format('Y-m-d');
                 $siswa->save();
                 if ($req->penilaian) {
                     foreach ($req->penilaian as $key => $value) {
@@ -129,23 +187,15 @@ class SiswaController extends Controller
                             $row->save();
                         } else {
                             $row = DetailPenilaian::find($value['id']);
-                            if($value['kompetensi']['paket_id']!=$siswa->paket_id){
+                            if ($value['kompetensi']['paket_id'] != $siswa->paket_id) {
                                 $row->delete();
-                            }else{
+                            } else {
                                 $row->fill($value);
                                 $row->save();
                             }
-
-
-
                         }
                     }
                 }
-
-
-
-
-
                 return response()->json($siswa, 200);
             }
         } catch (PDOException $ex) {

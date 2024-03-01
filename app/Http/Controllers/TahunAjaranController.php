@@ -21,9 +21,9 @@ class TahunAjaranController extends Controller
     {
         try {
 
-            if($id=="aktif"){
+            if ($id == "aktif") {
                 $TahunAjaran = TahunAjaran::where('aktif', false)->first();
-            }else{
+            } else {
                 $TahunAjaran = TahunAjaran::find($id);
             }
             return response()->json($TahunAjaran, 200);
@@ -60,9 +60,11 @@ class TahunAjaranController extends Controller
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             } else {
+                TahunAjaran::whereIn('aktif', [true])->update(['aktif' => false]);
                 $TahunAjaran = new TahunAjaran();
                 $TahunAjaran->tahun = $req->tahun;
                 $TahunAjaran->deskripsi = $req->deskripsi;
+                $TahunAjaran->aktif = $req->aktif;
                 $TahunAjaran->save();
                 return response()->json($TahunAjaran, 200);
             }

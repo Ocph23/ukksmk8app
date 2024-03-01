@@ -24,6 +24,11 @@ class JurusanController extends Controller
     }
 
 
+    public function getJurusan(){
+        return view('jurusan',["data"=>Jurusan::all()]);
+    }
+
+
     public function byid($id)
     {
         try {

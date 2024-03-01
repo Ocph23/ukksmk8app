@@ -11,6 +11,7 @@ function siswaService($http, $q) {
         post: post,
         put: put,
         delete: remove,
+        updateSertifikat:updateSertifikat
     }
 
     function get() {
@@ -68,6 +69,8 @@ function siswaService($http, $q) {
     }
 
 
+
+
     function put(data) {
         defer = $q.defer();
         if (data.lenght > 0) {
@@ -86,6 +89,27 @@ function siswaService($http, $q) {
         }
         return defer.promise;
     }
+
+    function updateSertifikat(data) {
+        defer = $q.defer();
+        if (data.lenght > 0) {
+            result = data.find(x => x.id == id);
+            defer.resolve(result);
+        } else {
+            $http({
+                method: "PUT",
+                url: url + '/' + data.id +"/sertifikat",
+                data: data
+            }).then(function (res) {
+                defer.resolve(res.data);
+            }, function (err) {
+                defer.reject(err);
+            })
+        }
+        return defer.promise;
+    }
+
+    
 
 
 

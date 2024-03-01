@@ -20,10 +20,13 @@ angular.module('tahunajaranController', [])
 
         $scope.simpan = (param) => {
             if (!param.id) {
+                param.aktif=true;
                 tahunajaranService.post(param)
                     .then(result => {
+                        $scope.data.forEach(element => {
+                            element.aktif=false;
+                        });
                         $scope.data.push(result);
-
                         Swal.fire({
                             title: "Tersimpan!",
                             text: "Data berhasil disimpan.",

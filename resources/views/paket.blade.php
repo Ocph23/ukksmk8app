@@ -38,14 +38,14 @@
                                 <td><% item.bentukpenugasan %></td>
                                 <td><% item.judultugas %></td>
                                 <td style="text-align:right">
-                                    <button ng-click="edit(item)" type="button" class="btn btn-gradient-warning btn-icon">
+                                    <button ng-click="edit(item)" type="button" class="btn btn-inverse-warning btn-icon">
                                         <i class="mdi mdi-pencil"></i>
                                     </button>
-                                    <button ng-click="delete(item)" type="button" class="btn btn-gradient-danger btn-icon">
+                                    <button ng-click="delete(item)" type="button" class="btn btn-inverse-danger btn-icon">
                                         <i class="mdi mdi-delete"></i>
                                     </button>
                                     <a href="/admin/paketdetail/<% item.id %>">
-                                        <button type="button" class="btn btn-gradient-danger btn-icon">
+                                        <button type="button" class="btn btn-inverse-info btn-icon">
                                             <i class="mdi mdi-format-list-bulleted"></i>
                                         </button>
                                     </a>

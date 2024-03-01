@@ -29,9 +29,7 @@ angular.module('jurusanController', [])
                             text: "Data berhasil disimpan.",
                             icon: "success"
                         });
-                        setTimeout(x => {
-                            $('#exampleModal').modal('hide')
-                        }, 500)
+                        $('#exampleModal').modal('hide')
 
                     }, err => {
                         Swal.fire({

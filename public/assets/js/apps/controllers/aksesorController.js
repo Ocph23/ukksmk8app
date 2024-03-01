@@ -12,8 +12,8 @@ angular.module('aksesorController', [])
 
         $scope.tambah = () => {
             $scope.model = {}
-            $scope.model.jk="Pria";
-            $scope.model.jenis="Internal";
+            $scope.model.jk = "Pria";
+            $scope.model.jenis = "Internal";
         };
 
         $scope.edit = (item) => {
@@ -21,12 +21,33 @@ angular.module('aksesorController', [])
             $('#exampleModal').modal('show')
         };
 
-        $scope.simpan = (param) => {
+        function getBase64(file) {
+            let myPromise = new Promise(function (resolve, reject) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    resolve(reader.result);
+                };
+                reader.onerror = function (error) {
+                    reject();
+                };
+            });
+            return myPromise;
+        }
+
+        $scope.simpan = async (param) => {
+
+            if (param.file) {
+                var data = await getBase64(param.file);
+                if (data) {
+                    param.dataLogo = data.split(',')[1];
+                }
+            }
             if (!param.id) {
                 aksesorService.post(param)
                     .then(result => {
                         $scope.data.push(result);
-
+                        param.id = result.id;
                         Swal.fire({
                             title: "Tersimpan!",
                             text: "Data berhasil disimpan.",
@@ -53,6 +74,7 @@ angular.module('aksesorController', [])
                             exsistData.jenis = result.jenis;
                             exsistData.instansi = result.instansi;
                             exsistData.catatan = result.catatan;
+                            exsistData.logo = result.logo;
                         }
                         $('#exampleModal').modal('hide')
                         Swal.fire({
@@ -101,6 +123,11 @@ angular.module('aksesorController', [])
                     })
                 }
             });
+        }
+
+        $scope.showLogo = (logo) => {
+            $scope.logoInstansi = logo;
+            $('#logoModal').modal('show')
         }
 
     })

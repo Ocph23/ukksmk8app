@@ -72,7 +72,7 @@
                                         <td> <input type="text" class="form-control" ng-model="item.kode"> </td>
                                         <td> <input type="text" class="form-control" ng-model="item.elemen"> </td>
                                         <td>
-                                            <button ng-click="delete(item)" type="button" class="btn btn-gradient-danger btn-icon">
+                                            <button ng-click="delete(item)" type="button" class="btn btn-inverse-danger btn-icon">
                                                 <i class="mdi mdi-delete"></i>
                                             </button>
                                         </td>

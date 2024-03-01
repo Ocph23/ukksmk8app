@@ -31,8 +31,8 @@ Route::get('siswa/bytahunajaran/{id}', [SiswaController::class, 'bytahunajaran']
 Route::get('siswa/bynis/{nis}', [SiswaController::class, 'bynis']);
 Route::post('siswa', [SiswaController::class, 'post']);
 Route::put('siswa/{id}', [SiswaController::class, 'put']);
+Route::put('siswa/{id}/sertifikat', [SiswaController::class, 'updateSertifikat']);
 Route::delete('siswa/{id}', [SiswaController::class, 'delete']);
-
 
 //
 

@@ -1,25 +1,13 @@
 <?php
 
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 
 Route::get('/auth/login', [LoginController::class, 'show'])->name('login');
@@ -36,9 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
         return view('home');
     });
 
-    Route::get('/admin/jurusan', function () {
-        return view('jurusan', ["showData"=>false]);
-    });
+    Route::get('/admin/jurusan',[JurusanController::class,'getJurusan']);
 
     Route::get('/admin/tahunajaran', function () {
         return view('tahunajaran');

@@ -18,8 +18,8 @@ angular.module('paketDetailController', [])
         }
 
         $scope.delete = (obj) => {
-            var index = $scope.paket.indexOf(obj);
-            $scope.paket.splice(index, 1);
+            var index = $scope.paket.kompetensis.indexOf(obj);
+            $scope.paket.kompetensis.splice(index, 1);
         }
 
         $scope.save = () => {
@@ -31,7 +31,14 @@ angular.module('paketDetailController', [])
                         icon: "success"
                     });
 
-                }, err => { });
+                }, err => {
+                    Swal.fire({
+                        title: "Error ",
+                        text: err.message,
+                        icon: "error"
+                    });
+
+                 });
 
 
         }

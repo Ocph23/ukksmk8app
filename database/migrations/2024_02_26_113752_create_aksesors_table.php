@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('instansi');
+            $table->string('logo');
             $table->enum('jk', ['Pria','Wanita']);
             $table->enum('jenis', ['Eksternal','Internal']);
             $table->string('catatan');

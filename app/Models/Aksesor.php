@@ -13,6 +13,7 @@ class Aksesor extends Model
         'nama',
         'jk',
         'instansi',
+        'logo',
         'jenis',
         'catatan'
     ];

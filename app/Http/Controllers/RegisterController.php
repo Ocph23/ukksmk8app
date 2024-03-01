@@ -36,9 +36,7 @@ class RegisterController extends Controller
             }
             $user = User::create($request->all());
 
-            auth()->login($user);
-
-            return redirect('/')->with('success', "Account successfully registered.");
+            return redirect('/auth/login')->with('success', "Account successfully registered.");
             //code...
         } catch (\Throwable $th) {
            $err = $th->getMessage();
