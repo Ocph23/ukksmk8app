@@ -1,6 +1,6 @@
 @extends('admin')
 @section('content')
-<div >
+<div class="noprint">
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -16,5 +16,10 @@
         </div>
     </div>
 </div>
+<div class="justprint">
+    <label>Tes</label>
+</div>
 
 @stop
+
+

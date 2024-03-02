@@ -144,4 +144,10 @@ angular.module('siswaDetailController', [])
             }
         }
 
+
+        $scope.penetapan=(date)=>{
+            return helperService.getPenetapan(date);
+
+        }
+
     })

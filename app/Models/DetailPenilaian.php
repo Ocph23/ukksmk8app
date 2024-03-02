@@ -23,5 +23,6 @@ class DetailPenilaian extends Model
     public function kompetensi():BelongsTo{
         return $this->BelongsTo(Kompetensi::class);
     }
+    protected $casts = ['kompeten' => 'boolean'];
 
 }
