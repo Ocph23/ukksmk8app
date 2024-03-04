@@ -13,6 +13,7 @@ class Paket extends Model
     protected $fillable = [
         "id" ,
         "kode" ,
+        "basisnilai",
         "alokasiwaktu" ,
         "bentukpenugasan" ,
         "judultugas" ,
@@ -21,6 +22,9 @@ class Paket extends Model
         "aksesorinternal" ,
         "aksesoreksternal" ,
     ];
+  
+   // protected $casts = ['basisnilai' => 'boolean'];
+
 
 
     public function kompetensis(): HasMany

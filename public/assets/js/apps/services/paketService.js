@@ -10,6 +10,7 @@ function paketService($http, $q) {
         getByTahunAjaran: getByTahunAjaran,
         post: post,
         put: put,
+        putDetail: putDetail,
         delete: remove,
     }
 
@@ -77,6 +78,25 @@ function paketService($http, $q) {
             $http({
                 method: "PUT",
                 url: url + '/' + data.id,
+                data: data
+            }).then(function (res) {
+                defer.resolve(res.data);
+            }, function (err) {
+                defer.reject(err);
+            })
+        }
+        return defer.promise;
+    }
+
+    function putDetail(data) {
+        defer = $q.defer();
+        if (data.lenght > 0) {
+            result = data.find(x => x.id == id);
+            defer.resolve(result);
+        } else {
+            $http({
+                method: "PUT",
+                url: url + '/' + data.id+ '/detail',
                 data: data
             }).then(function (res) {
                 defer.resolve(res.data);

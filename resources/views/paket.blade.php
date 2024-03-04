@@ -85,6 +85,13 @@
                                                     <input ng-model="model.judultugas" type="text" class="form-control" placeholder="Judul Tugas">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label>Base Penilaian </label>
+                                                    <div class="d-flex">
+                                                        <input class="ml-3 mr-1" name="basisnilai" type="radio" ng-model="model.basisnilai" value="1"> Nilai
+                                                        <input class="ml-3 mr-1" name="basisnilai" type="radio" ng-model="model.basisnilai" value="0"> Check List
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label>Alokasi Waktu </label>
                                                     <input ng-model="model.alokasiwaktu" type="text" class="form-control" placeholder="Alokasi Waktu">
                                                 </div>

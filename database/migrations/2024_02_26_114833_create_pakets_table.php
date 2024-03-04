@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pakets', function (Blueprint $table) {
             $table->id();
             $table->string('kode')->unique();
-            $table->string('alokasiwaktu');
+            $table->boolean('basisnilai');
             $table->string('bentukpenugasan');
             $table->string('judultugas');
             $table->unsignedBigInteger('jurusan_id');

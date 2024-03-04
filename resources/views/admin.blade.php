@@ -175,6 +175,7 @@
   <script src="{{asset('assets/js/apps/services/aksesorService.js')}}"></script>
   <script src="{{asset('assets/js/apps/services/paketService.js')}}"></script>
   <script src="{{asset('assets/js/apps/services/siswaService.js')}}"></script>
+  <script src="{{asset('assets/js/apps/services/laporanService.js')}}"></script>
   <script src="{{asset('assets/js/apps/services/penilaianService.js')}}"></script>
   
   
@@ -184,6 +185,7 @@
   <script src="{{asset('assets/js/apps/controllers/aksesorController.js')}}"></script>
   <script src="{{asset('assets/js/apps/controllers/paketController.js')}}"></script>
   <script src="{{asset('assets/js/apps/controllers/siswaController.js')}}"></script>
+  <script src="{{asset('assets/js/apps/controllers/laporanController.js')}}"></script>
   <script src="{{asset('assets/js/apps/controllers/paketDetailController.js')}}"></script>
   <script src="{{asset('assets/js/apps/controllers/siswaDetailController.js')}}"></script>
   <!-- End custom js for this page -->

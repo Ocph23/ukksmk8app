@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AksesorController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\PenilaianController;
 use Illuminate\Http\Request;
@@ -67,6 +68,7 @@ Route::get('paket/{id}', [PaketController::class, 'byid']);
 Route::get('paket/bytahunajaran/{id}', [PaketController::class, 'bytahunajaran']);
 Route::post('paket', [PaketController::class, 'post']);
 Route::put('paket/{id}', [PaketController::class, 'put']);
+Route::put('paket/{id}/detail', [PaketController::class, 'putDetail']);
 Route::delete('paket/{id}', [PaketController::class, 'delete']);
 
 
@@ -80,3 +82,5 @@ Route::post('penilaian', [PenilaianController::class, 'post']);
 Route::put('penilaian/{id}', [PenilaianController::class, 'put']);
 Route::delete('penilaian/{id}', [PenilaianController::class, 'delete']);
 
+//penilaian
+Route::get('laporan/{ta}/{jurusan}', [LaporanController::class, 'laporanKelulusan']);

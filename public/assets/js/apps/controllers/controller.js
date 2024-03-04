@@ -4,6 +4,7 @@ angular.module('app.controller', [
     'aksesorController',
     'paketController',
     'siswaController',
+    'laporanController',
     'paketDetailController',
     'siswaDetailController',
     

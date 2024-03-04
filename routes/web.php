@@ -24,7 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
         return view('home');
     });
 
-    Route::get('/admin/jurusan',[JurusanController::class,'getJurusan']);
+    Route::get('/admin/jurusan', [JurusanController::class, 'getJurusan']);
 
     Route::get('/admin/tahunajaran', function () {
         return view('tahunajaran');
@@ -55,4 +55,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin/penilaian/{id}', function () {
         return view('penilaian');
     });
+
+
+    //laporan
+    
+    Route::get('/admin/lkelulusan', function () {
+        return view('laporanKelulusan');
+    });
+
+
 });

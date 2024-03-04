@@ -64,7 +64,7 @@ angular.module('paketController', [])
             if (!param.id) {
                 paketService.post(param)
                     .then(result => {
-                        $scope.data.push(result);
+                        $scope.dataPaket.push(result);
 
                         Swal.fire({
                             title: "Tersimpan!",
@@ -85,7 +85,7 @@ angular.module('paketController', [])
             } else {
                 paketService.put(param)
                     .then(result => {
-                        var exsistData = $scope.data.find(x => x.id == param.id);
+                        var exsistData = $scope.dataPaket.find(x => x.id == param.id);
                         if (exsistData) {
                             exsistData.nama = result.nama;
                             exsistData.kode = result.kode;
@@ -126,8 +126,8 @@ angular.module('paketController', [])
                         url: '/api/paket/' + data.id,
                         data: data
                     }).then(function (res) {
-                        var index = $scope.data.indexOf(data);
-                        $scope.data.splice(index, 1);
+                        var index = $scope.dataPaket.indexOf(data);
+                        $scope.dataPaket.splice(index, 1);
                         Swal.fire({
                             title: "Terhapus!",
                             text: "Data berhasil dihapus.",

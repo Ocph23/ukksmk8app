@@ -1,0 +1,4 @@
+@url = http://localhost:8000/api/laporan
+
+GET {{url}}/1/1 HTTP/1.1
+####### 

@@ -16,6 +16,7 @@ class PaketController extends Controller
 
     private $fieldValidator = [
         "kode" => "required",
+        "basisnilai" => "required",
         "alokasiwaktu" => "required",
         "bentukpenugasan" => "required",
         "judultugas" => "required",
@@ -114,31 +115,51 @@ class PaketController extends Controller
                     throw new Error("Data Paket tidak ditemukan");
                 $Paket->fill($req->all());
                 $Paket->save();
-                $kompetensis = $req->kompetensis;
-                foreach ($kompetensis as $key=> $row) {
-                    $komp = null;
-                    if ($row["id"]) {
-                        $komp = Kompetensi::find($row["id"]);
-                        $komp->fill($row);
-                    } else {
-                        $komp = new Kompetensi($row);
-                    }
-                    $komp->save();  
-                    $kompetensis[$key]['id']=$komp->id;
-                }
-
-
-                $dataInDatabase = Kompetensi::where('paket_id', $Paket->id)->get();
-                $dataInDatabaseArr = $dataInDatabase->all();
-
-                foreach ($dataInDatabaseArr as $key => $value) {
-                    $data = collect($kompetensis)->where('id', $value->id)->first();
-                    if (!$data) {
-                        $value->delete();
-                    }
-                }
-
                 return response()->json($Paket, 200);
+            }
+        } catch (PDOException $ex) {
+            return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
+        } catch (\Throwable $th) {
+            $errorMessage["message"] = $th->getMessage();
+            return response()->json($errorMessage, 400);
+        }
+    }
+
+    public function putDetail($id, Request $req)
+    {
+        try {
+            $validator = Validator::make($req->all(), ['kompetensis' => 'required']);
+            if ($validator->fails()) {
+                throw new Error("Periksa Kembali Data Anda");
+            } else {
+                if ($req->kompetensis != null) {
+                    $kompetensis = $req->kompetensis;
+                    foreach ($kompetensis as $key => $row) {
+                        $komp = null;
+                        if ($row["id"]) {
+                            $komp = Kompetensi::find($row["id"]);
+                            $komp->fill($row);
+                        } else {
+                            $komp = new Kompetensi($row);
+                        }
+                        $komp->save();
+                        $kompetensis[$key]['id'] = $komp->id;
+                    }
+
+                    $dataInDatabase = Kompetensi::where('paket_id', $id)->get();
+                    $dataInDatabaseArr = $dataInDatabase->all();
+
+                    foreach ($dataInDatabaseArr as $key => $value) {
+                        $data = collect($kompetensis)->where('id', $value->id)->first();
+                        if (!$data) {
+                            $value->delete();
+                        }
+                    }
+                    return response()->json($kompetensis, 200);
+                }
+
+                $errorMessage["message"] = "Maaf  terjadi kesalahan, silahkan ulangi";
+                return response()->json($errorMessage, 400);
             }
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);

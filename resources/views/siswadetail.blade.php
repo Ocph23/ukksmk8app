@@ -145,7 +145,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </ng-template>
 
@@ -232,13 +231,13 @@
                 <h3 class="text-uppercase">daftar kompetensi/subkompetensi </h3>
             </div>
         </div>
-        <div style=" display: flex; flex-direction:column">
+        <div style="display: flex; flex-direction:column">
             <div style="padding:20px">
                 <h4 class="text-left mb-3"><b>Tugas : <% siswa.paket.kode %> - <% siswa.paket.judultugas %></b> </h4>
                 <table class="table" id="nilai">
                     <thead>
-                        <tr>
-                            <th style="width: 50px;"> No. </th>
+                        <tr style="height: 35px;">
+                            <th  style="width: 50px;  vertical-align: baseline;"> No. </th>
                             <th style="width: 150px;"> Kode </th>
                             <th> Kompetensi </th>
                             <th style="width: 100px;">Nilai</th>
@@ -250,13 +249,13 @@
                             <td> <% $index+1 %> </td>
                             <td> <% item.kompetensi.kode %> </td>
                             <td> <% item.kompetensi.elemen %> </td>
-                            <td> <% item.nilai %> </td>
+                            <td style="width: 100px; text-align:center "> <% item.nilai %> </td>
                             <td style="width: 100px; text-align:center "> <input style="font-size:12px" type="checkbox" ng-model="item.kompeten"> </td>
                             
                         </tr>
-                        <tr style="background-color: #ebebeb">
-                            <td colspan="3"> Nilai Rata-Rata </td>
-                            <td> <% rata2 %> </td>
+                        <tr >
+                            <td class="text-center" style="height: 35px;" colspan="3"> <b>Nilai Rata-Rata</b> </td>
+                            <td style="width: 100px; text-align:center "> <b><% rata2 %></b> </td>
                             <td>
                         </tr>
                     </tbody>
@@ -271,9 +270,15 @@
                 border: 2px solid;
                 border-radius: 0px;
             }
+
+            th{
+                vertical-align: middle !important;
+                text-align: center;
+            }
            #nilai tr td, #nilai tr th{
                 border: 1px solid;
                 padding: 0.4rem;
+                background-color: transparent !important;
             }
         </style>
     </div>

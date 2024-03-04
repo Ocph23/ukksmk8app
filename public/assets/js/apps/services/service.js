@@ -5,6 +5,7 @@ angular.module('app.service', [
     'service.paket',
     'service.siswa',
     'service.penilaian',
+    'service.laporan',
     'service.aksesor'
 ])
 

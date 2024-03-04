@@ -23,7 +23,7 @@ angular.module('paketDetailController', [])
         }
 
         $scope.save = () => {
-            paketService.put($scope.paket)
+            paketService.putDetail($scope.paket)
                 .then(x => {
                     Swal.fire({
                         title: "Tersimpan!",
