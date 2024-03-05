@@ -37,5 +37,19 @@ angular
                     );
                 }
             };
+
+
+            $scope.searchAksesor = (ta) => {
+                if (ta) {
+                    laporanService.aksesor(ta.id).then(
+                        (result) => {
+                            $scope.data = result;
+                        },
+                        (err) => {
+
+                        }
+                    );
+                }
+            };
         }
     );

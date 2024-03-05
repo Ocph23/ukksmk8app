@@ -63,5 +63,9 @@ Route::group(['middleware' => ['auth']], function () {
         return view('laporanKelulusan');
     });
 
+    Route::get('/admin/laksesor', function () {
+        return view('laporanAksesor');
+    });
+
 
 });

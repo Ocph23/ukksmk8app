@@ -84,3 +84,4 @@ Route::delete('penilaian/{id}', [PenilaianController::class, 'delete']);
 
 //penilaian
 Route::get('laporan/{ta}/{jurusan}', [LaporanController::class, 'laporanKelulusan']);
+Route::get('laporan/{ta}', [LaporanController::class, 'laporanAksesor']);

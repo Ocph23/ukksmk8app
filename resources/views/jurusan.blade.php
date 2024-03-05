@@ -53,7 +53,7 @@
                                 <div class="modal-body">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h4 class="card-title">Tahun Ajaran</h4>
+                                            <h4 class="card-title">JURUSAN</h4>
                                             <form class="forms-sample">
                                                 <div class="form-group">
                                                     <label for="exampleInputUsername1">Nama Jurusan</label>

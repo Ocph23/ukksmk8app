@@ -115,8 +115,18 @@
               <i class="mdi mdi-table-large menu-icon"></i>
             </a>
           </li>
-         
-          
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/lkelulusan">
+              <span class="menu-title">Laporan KELULUSAN</span>
+              <i class="mdi mdi-table-large menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/laksesor">
+              <span class="menu-title">Laporan Aksesor</span>
+              <i class="mdi mdi-table-large menu-icon"></i>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
