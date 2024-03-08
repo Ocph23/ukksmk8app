@@ -59,6 +59,12 @@
   display: block !important;
 }
 
+
+.btn.btn-icon {
+  width: 30px !important;
+  height: 30px !important;
+}
+
 @media print {
   @page {
     size: A4 landscape;

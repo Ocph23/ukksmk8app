@@ -79,19 +79,18 @@ class PaketController extends Controller
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             } else {
-                $Paket = new Paket();
-                $this->setFieldData($Paket, $req);
+                $Paket = new Paket($req->all());
                 $Paket->save();
                 $items = [];
-                foreach ($req->kompetensis as $row) {
-                    $komp = new Kompetensi($row);
-                    $komp->paket_id = $Paket->id;
-                    $komp->save();
-                }
+                // foreach ($req->kompetensis as $row) {
+                //     $komp = new Kompetensi($row);
+                //     $komp->paket_id = $Paket->id;
+                //     $komp->save();
+                // }
 
-                $model = Paket::find($Paket->id);
-                $model->kompetensis;
-                return response()->json($model, 200);
+                // $model = Paket::find($Paket->id);
+                // $model->kompetensis;
+                return response()->json($Paket, 200);
             }
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
@@ -188,15 +187,5 @@ class PaketController extends Controller
     }
 
 
-    private function setFieldData($Paket, $req)
-    {
-        $Paket->kode = $req->kode;
-        $Paket->alokasiwaktu = $req->alokasiwaktu;
-        $Paket->bentukpenugasan = $req->bentukpenugasan;
-        $Paket->judultugas = $req->judultugas;
-        $Paket->jurusan_id = $req->jurusan_id;
-        $Paket->tahunajaran_id = $req->tahunajaran_id;
-        $Paket->aksesorinternal = $req->aksesorinternal;
-        $Paket->aksesoreksternal = $req->aksesoreksternal;
-    }
+   
 }

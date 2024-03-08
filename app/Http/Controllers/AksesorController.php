@@ -22,6 +22,8 @@ class AksesorController extends Controller
         "jk" => "required",
         "jenis" => "required",
     ];
+
+
     public function index()
     {
         $Aksesor = Aksesor::all();
@@ -48,20 +50,14 @@ class AksesorController extends Controller
     public function post(Request $req)
     {
         try {
-            $validator = Validator::make($req->all(), $this->fieldValidate);
-
-            if ($validator->fails()) {
-                throw new Error("Periksa Kembali Data Anda");
-            } else {
-
-                $Aksesor = new Aksesor($req->all());
-                if ($req->dataLogo) {
-                    $logo = $req->dataLogo;
-                    $Aksesor->logo = $this->saveFile($logo);
-                }
-                $Aksesor->save();
-                return response()->json($Aksesor, 200);
+            $data = $req->validate($this->fieldValidate);
+            $Aksesor = new Aksesor($data);
+            if ($req->dataLogo) {
+                $logo = $req->dataLogo;
+                $Aksesor->logo = $this->saveFile($logo);
             }
+            $Aksesor->save();
+            return response()->json($Aksesor, 200);
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {
@@ -89,24 +85,20 @@ class AksesorController extends Controller
     public function put($id, Request $req)
     {
         try {
-            $validator = Validator::make($req->all(), $this->fieldValidate);
-            if ($validator->fails()) {
-                throw new Error("Periksa Kembali Data Anda");
-            } else {
-                $Aksesor = Aksesor::find($id);
-                if ($Aksesor == null)
-                    throw new Error("Data Aksesor tidak ditemukan");
+            $data = $req->validate($this->fieldValidate);
+            $Aksesor = Aksesor::find($id);
+            if ($Aksesor == null)
+                throw new Error("Data Aksesor tidak ditemukan");
 
-                $Aksesor->fill($req->all());
+            $Aksesor->fill($data);
 
-                if ($req->dataLogo) {
-                    $logo = $req->dataLogo;
-                    $Aksesor->logo = $this->saveFile($logo);
-                }
-
-                $Aksesor->save();
-                return response()->json($Aksesor, 200);
+            if ($req->dataLogo) {
+                $logo = $req->dataLogo;
+                $Aksesor->logo = $this->saveFile($logo);
             }
+
+            $Aksesor->save();
+            return response()->json($Aksesor, 200);
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {

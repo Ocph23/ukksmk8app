@@ -25,6 +25,8 @@ class Siswa extends Model
     ];
 
     
+    protected $casts=['jurusan_id'=>'int', 'paket_id'=>'int'];
+
     public function paket():BelongsTo
     {
         return $this->belongsTo(Paket::class);

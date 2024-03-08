@@ -25,7 +25,7 @@ class Paket extends Model
   
    // protected $casts = ['basisnilai' => 'boolean'];
 
-
+    protected $casts =['basisnilai'=>'boolean'];
 
     public function kompetensis(): HasMany
     {

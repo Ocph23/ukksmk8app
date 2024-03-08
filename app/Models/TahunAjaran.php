@@ -18,6 +18,7 @@ class TahunAjaran extends Model
         'nama',
     ];
     
+    protected $casts = ['aktif' => 'boolean'];
 
     public function getNamaAttribute()
     {

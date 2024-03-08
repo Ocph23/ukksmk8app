@@ -87,6 +87,8 @@ angular.module('siswaDetailController', [])
         $scope.updateSertifikat = (sertifikat) => {
             siswaService.updateSertifikat(sertifikat)
                 .then(x => {
+                    sertifikat.id=x.id;
+                    canPrint();    
                     Swal.fire({
                         title: "Tersimpan!",
                         text: "Data berhasil disimpan.",

@@ -70,6 +70,7 @@ angular.module('siswaController', [])
             if (!param.id) {
                 siswaService.post(param)
                     .then(result => {
+                        param.id=result.id;
                         $scope.datasiswa.push(result);
 
                         Swal.fire({
@@ -143,7 +144,11 @@ angular.module('siswaController', [])
                             icon: "success"
                         });
                     }, function (err) {
-                        alert(err.data.message);
+                        Swal.fire({
+                            title: "Error",
+                            text: err.data.message,
+                            icon: "error"
+                        });
                     })
                 }
             });

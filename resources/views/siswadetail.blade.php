@@ -121,22 +121,20 @@
                                             <th style="width: 100px;"> Kode </th>
                                             <th> Kompetensi </th>
                                             <th style="width: 75px;">Nilai</th>
-                                            <th style="width: 40px; text-align:center">Kompeten</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in siswa.penilaian">
                                             <td> <% item.kompetensi.kode %> </td>
                                             <td> <% item.kompetensi.elemen %> </td>
-                                            <td> <input type="number" ng-change="rata2Penilaian(siswa.penilaian)" class="form-control" ng-model="item.nilai"> </td>
-                                            <td style="text-align:center "> <input style="font-size:12px" type="checkbox" ng-model="item.kompeten"> </td>
+                                            <td ng-if="siswa.paket.basisnilai"> <input type="number" max="100" ng-change="rata2Penilaian(siswa.penilaian)" class="form-control" ng-model="item.nilai"> </td>
+                                            <td ng-if="!siswa.paket.basisnilai" style="text-align:center "> <input style="font-size:12px" type="checkbox" ng-model="item.kompeten"> </td>
 
                                         </tr>
-                                        <tr style="background-color: #ebebeb">
+                                        <tr style="background-color: #ebebeb" ng-if="siswa.paket.basisnilai">
                                             <td colspan="2"> Nilai Rata-Rata </td>
-                                            <td style="width: 150px"> <input readonly type="number" class="form-control" value="<% rata2 %>"> </td>
-                                            </td>
-                                            <td>
+                                            <td  style="width: 150px"> <input readonly type="number" class="form-control" value="<% rata2.toFixed(2) %>"> </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -163,15 +161,15 @@
                     Telp (0967) 5170108, email : smkn8.kotajayapura@gmail.com
                 </p>
             </div>
-            <img style="width: 10%; height:30%" src="/storage/instansi/<%siswa.paket.eksternal.logo%>">
+            <img ng-if="siswa.paket.eksternal.logo" style="width: 10%; height:30%" src="/storage/instansi/<%siswa.paket.eksternal.logo%>">
         </div>
         <hr />
         <div style=" display: flex; flex-direction:column">
-            <label class="text-right">Nomor Seri : 422222222</label>
+            <label class="text-right">Nomor Seri : <%siswa.sertifikat.nomorseri%></label>
             <div class="text-center">
                 <h3 class="font-italic" style="text-decoration: underline; line-height:15px"><b>SERTIFIKAT KOMPETENSI</b></h3>
                 <h4>Certificate Of Competency</h4>
-                <h4>Nomor : 0001/UKK-TKJ/IV/2022</h4>
+                <h4>Nomor :  <%siswa.sertifikat.nomor%></h4>
             </div>
             <div style="padding:10px 30px">
                 <p>Sertifikasi ini diselenggaranan berdasarkan Pedoman Penyelenggaraan Uji Kompetensi Keahlian Sekolah Menengah Kejuruan Tahun 2002</p>
@@ -237,26 +235,24 @@
                 <table class="table" id="nilai">
                     <thead>
                         <tr style="height: 35px;">
-                            <th  style="width: 50px;  vertical-align: baseline;"> No. </th>
+                            <th style="width: 50px;  vertical-align: baseline;"> No. </th>
                             <th style="width: 150px;"> Kode </th>
                             <th> Kompetensi </th>
                             <th style="width: 100px;">Nilai</th>
-                            <th style="width: 50px;" style="width: 40px; text-align:center">Kompeten</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in siswa.penilaian">
-                            <td> <% $index+1 %> </td>
+                            <td class="text-center"> <% $index+1 %> </td>
                             <td> <% item.kompetensi.kode %> </td>
                             <td> <% item.kompetensi.elemen %> </td>
-                            <td style="width: 100px; text-align:center "> <% item.nilai %> </td>
-                            <td style="width: 100px; text-align:center "> <input style="font-size:12px" type="checkbox" ng-model="item.kompeten"> </td>
-                            
+                            <td ng-if="siswa.paket.basisnilai" style="width: 100px; text-align:center "> <% item.nilai %> </td>
+                            <td ng-if="!siswa.paket.basisnilai" style="width: 100px; text-align:center "> <input style="font-size:12px" type="checkbox" ng-model="item.kompeten"> </td>
+
                         </tr>
-                        <tr >
+                        <tr ng-if="siswa.paket.basisnilai">
                             <td class="text-center" style="height: 35px;" colspan="3"> <b>Nilai Rata-Rata</b> </td>
-                            <td style="width: 100px; text-align:center "> <b><% rata2 %></b> </td>
-                            <td>
+                            <td style="width: 100px; text-align:center "> <b><% rata2.toFixed(2) %></b> </td>
                         </tr>
                     </tbody>
                 </table>
@@ -271,11 +267,13 @@
                 border-radius: 0px;
             }
 
-            th{
+            th {
                 vertical-align: middle !important;
                 text-align: center;
             }
-           #nilai tr td, #nilai tr th{
+
+            #nilai tr td,
+            #nilai tr th {
                 border: 1px solid;
                 padding: 0.4rem;
                 background-color: transparent !important;

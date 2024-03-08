@@ -19,10 +19,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Nomor</th>
+                                <th>No</th>
                                 <th>Kode</th>
                                 <th>Waktu</th>
-                                <th>Bentuk Penugasan</th>
+                                <th>Bentuk</th>
                                 <th>Judul</th>
                                 <th style="text-align:right">Aksi</th>
                             </tr>
@@ -58,12 +58,12 @@
                     <!-- Button trigger modal -->
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Form</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <h5 class="modal-title" >Form</h5>
+                                    <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -87,8 +87,7 @@
                                                 <div class="form-group">
                                                     <label>Base Penilaian </label>
                                                     <div class="d-flex">
-                                                        <input class="ml-3 mr-1" name="basisnilai" type="radio" ng-model="model.basisnilai" value="1"> Nilai
-                                                        <input class="ml-3 mr-1" name="basisnilai" type="radio" ng-model="model.basisnilai" value="0"> Check List
+                                                        <input class="ml-3 mr-1"  type="checkbox" ng-model="model.basisnilai"> Nilai
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -113,7 +112,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keluar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Keluar</button>
                                     <button type="button" ng-click="simpan(model)" class="btn btn-primary">Simpan</button>
                                 </div>
                             </div>

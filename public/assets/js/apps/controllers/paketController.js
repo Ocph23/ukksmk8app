@@ -41,7 +41,7 @@ angular.module('paketController', [])
 
 
         $scope.tambah = () => {
-            $scope.model = {}
+            $scope.model = {basisnilai:true};
         };
 
         $scope.edit = (item) => {
@@ -66,14 +66,12 @@ angular.module('paketController', [])
                     .then(result => {
                         $scope.dataPaket.push(result);
 
+                        $('#exampleModal').modal('hide')
                         Swal.fire({
                             title: "Tersimpan!",
                             text: "Data berhasil disimpan.",
                             icon: "success"
                         });
-                        setTimeout(x => {
-                            $('#exampleModal').modal('hide')
-                        }, 500)
 
                     }, err => {
                         Swal.fire({
@@ -134,7 +132,11 @@ angular.module('paketController', [])
                             icon: "success"
                         });
                     }, function (err) {
-                        alert(err.data.message);
+                        Swal.fire({
+                            title: "Error",
+                            text: err.data.message,
+                            icon: "error"
+                        });
                     })
                 }
             });

@@ -21,12 +21,12 @@
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
 </head>
 
-<body ng-app="app" >
+<body ng-app="app">
     <div style="height: 100vh; display: flex; flex-direction:column; ">
         @if (Route::has('login'))
         <div class="m-5">
             @auth
-            <a class="nav-link" href="{{ url('/home') }}">Home</a>
+            <a style="font-size: 20px;" class="nav-link text-right" href="{{ url('admin') }}">Admin</a>
             @else
             <a style="font-size: 20px;" class="nav-link text-right" href="{{ route('login') }}">Log in</a>
 
@@ -37,17 +37,17 @@
         </div>
         @endif
 
-        <div >
+        <div>
             <div style="display:flex; justify-content: center; ALIGN-ITEMS:CENTER; flex-direction:column">
                 <img style="width: 10%;" src="/assets/images/smk8logotransparant.png">
                 <h1 class="mt-5">SISTEM INFORMASI </h1>
                 <h1>UJI KOMPETENSI KEAHLIAN </h1>
-            
+
             </div>
         </div>
 
         <div>
-        <div style="align-items:self-end; display:flex; justify-content: center; ALIGN-ITEMS:CENTER; flex-direction:column">
+            <div style="align-items:self-end; display:flex; justify-content: center; ALIGN-ITEMS:CENTER; flex-direction:column">
                 <h4 style="margin-top: 100px;">SMK NEGERI 8 TEKNOLOGI INFORMASI DAN KOMUNIKASI</h4>
                 <h4>JAYAPURA</h4>
                 <h6>@2024 - Ocph23</h6>

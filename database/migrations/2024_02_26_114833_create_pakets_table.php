@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('basisnilai');
             $table->string('bentukpenugasan');
             $table->string('judultugas');
+            $table->string('alokasiwaktu');
             $table->unsignedBigInteger('jurusan_id');
             $table->foreign('jurusan_id')->references('id')->on('jurusans');
             $table->unsignedBigInteger('tahunajaran_id');

@@ -119,7 +119,11 @@ angular.module('aksesorController', [])
                             icon: "success"
                         });
                     }, function (err) {
-                        alert(err.data.message);
+                        Swal.fire({
+                            title: "Error",
+                            text: err.data.message,
+                            icon: "error"
+                        });
                     })
                 }
             });

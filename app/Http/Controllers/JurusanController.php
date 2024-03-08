@@ -7,7 +7,7 @@ use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use Error;
 use PDOException;
-use Validator;
+use Validator as xvalidator;
 
 class JurusanController extends Controller
 {
@@ -49,15 +49,12 @@ class JurusanController extends Controller
     {
 
         try {
-            $validator = Validator::make($req->all(), $this->fieldValidator);
+            $validator =Validator::make($req->all(), $this->fieldValidator);
 
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             } else {
-                $Jurusan = new Jurusan();
-                $Jurusan->nama = $req->nama;
-                $Jurusan->kode = $req->kode;
-                $Jurusan->deskripsi = $req->deskripsi;
+                $Jurusan = new Jurusan($req->all());
                 $Jurusan->save();
                 return response()->json($Jurusan, 200);
             }
