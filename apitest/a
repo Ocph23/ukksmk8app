@@ -1,0 +1,38 @@
+<VirtualHost *:*>
+    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+</VirtualHost>
+
+<VirtualHost *:80>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:5001/
+    ProxyPassReverse / http://localhost:5001/
+       ServerName www.chatapp.com
+    ServerAlias *.chatapp.com
+    ErrorLog /var/log/apache2/chatapp-error.log
+    CustomLog /var/log/apache2/chatapp-access.log common
+</VirtualHost>
+
+
+
+[Unit]
+Description=Aplikasi Absen Koordinat
+
+[Service]
+WorkingDirectory=/var/www/chatapp
+ExecStart=/usr/bin/dotnet /var/www/chatapp/ChatApp.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-example
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+@url = http://chatapp.ocph23.tech/api/account
+
+POST {{url}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "UserName":"admin@gmail.com",
+    "Password":"Sony@77"
+}
+
+###
