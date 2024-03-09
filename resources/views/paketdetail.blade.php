@@ -1,7 +1,7 @@
 @extends('admin')
 @section('content')
-<div ng-controller="paketDetailController">
-    <ng-template style="display: none;" id="content">
+<div id="controller" ng-controller="paketDetailController">
+    <div  id="contentx">
         <div class="row">
             <div class="col-lg-4 grid-margin stretch-card">
                 <div class="card">
@@ -84,7 +84,13 @@
                 </div>
             </div>
         </div>
-    </ng-template>
+    </div>
 </div>
 
+<script>
+    setTimeout(() => {
+        // var element = document.getElementById('controller');
+        // element.setAttribute("ng-controller", "paketDetailController");
+    }, 500)
+</script>
 @stop

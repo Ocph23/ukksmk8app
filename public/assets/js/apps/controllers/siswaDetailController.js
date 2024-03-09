@@ -1,9 +1,9 @@
 angular.module('siswaDetailController', [])
-    .controller('siswaDetailController', function ($scope, $location, siswaService, paketService, helperService) {
-        var path = $location.$$path;
+    .controller('siswaDetailController', function ($scope, siswaService, paketService, helperService) {
+        var path = window.location.href;
         var pathData = path.split('/');
-        var id = pathData[3];
-        $("#content").css('display', 'block');
+        var id = pathData[5];
+        $("#contentx").css('display', 'block');
         $scope.penilaian = {};
         siswaService.getById(id)
             .then(x => {

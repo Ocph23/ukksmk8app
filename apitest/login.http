@@ -1,11 +1,28 @@
-@url = http://chatapp.ocph23.tech/api/account
+##@url = http://localhost:5072
+@url=http://chatapp.ocph23.tech
+@token = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NDI2YzAzLTdjNTktNGU1Yy05NzA4LWU0ZDQ0NDM0ZjNhZCIsIm5hbWUiOiJhbGRyaWNoQGdtYWlsLmNvbSIsInN1YiI6ImFsZHJpY2hAZ21haWwuY29tIiwiZW1haWwiOiJhbGRyaWNoQGdtYWlsLmNvbSIsImp0aSI6ImJiYWEzMTljLTA3NmEtNDFiZC05NTY3LWQ5ZWZlYjI2NmU0MyIsInJvbGUiOiJVc2VyIiwibmJmIjoxNzA5OTQ3MTkzLCJleHAiOjE3MTA1NTE5OTMsImlhdCI6MTcwOTk0NzE5MywiaXNzIjoiaHR0cHM6Ly9jaGF0YXBwLm9jcGgyMy50ZWNoLyIsImF1ZCI6Imh0dHBzOi8vY2hhdGFwcC5vY3BoMjMudGVjaC8ifQ.IpgI12APZvAzU91OSMBPFSIxZbdov0-NukUqrWuysSRQJdVHcMNdWmNunCUfOvJiocXNs5Tg7xpk7_3Js5uSiQ
 
-POST {{url}}/login HTTP/1.1
+
+POST {{url}}/login/api/account HTTP/1.1
 Content-Type: application/json
 
 {
-    "UserName":"admin@gmail.com",
+    "UserName":"aldrich@gmail.com",
     "Password":"Sony@77"
 }
+
+###
+
+
+POST {{url}}/api/files/uploadprivatefile?temainId=f7426c03-7c59-4e5c-9708-e4d44434f3ad
+Authorization: {{token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="index.html"
+Content-Type: text/plain
+
+< ./index.html
+--boundary--
 
 ###

@@ -1,10 +1,9 @@
 angular.module('paketDetailController', [])
-    .controller('paketDetailController', function ($scope, $location, paketService) {
-        document.getElementById("content").style.display = 'block';
-         var path = $location.$$path;
+    .controller('paketDetailController', function ($scope,  paketService) {
+        var path = window.location.href;
         var pathData = path.split('/');
-        var id = pathData[3];
-
+        var id = pathData[5];
+        document.getElementById("contentx").style.display = 'block';
         paketService.getById(id)
             .then(x => {
                 $scope.paket = x;

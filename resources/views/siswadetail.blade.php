@@ -1,7 +1,7 @@
 @extends('admin')
 @section('content')
 <div ng-controller="siswaDetailController">
-    <ng-template style="display: none;" id="content">
+    <ng-template style="display: none;" id="contentx">
         <div class="noprint">
             <div class="row ">
                 <div class="col-lg-6 grid-margin stretch-card">
@@ -134,7 +134,7 @@
                                         </tr>
                                         <tr style="background-color: #ebebeb" ng-if="siswa.paket.basisnilai">
                                             <td colspan="2"> Nilai Rata-Rata </td>
-                                            <td  style="width: 150px"> <input readonly type="number" class="form-control" value="<% rata2.toFixed(2) %>"> </td>
+                                            <td style="width: 150px"> <input readonly type="number" class="form-control" value="<% rata2.toFixed(2) %>"> </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -169,7 +169,7 @@
             <div class="text-center">
                 <h3 class="font-italic" style="text-decoration: underline; line-height:15px"><b>SERTIFIKAT KOMPETENSI</b></h3>
                 <h4>Certificate Of Competency</h4>
-                <h4>Nomor :  <%siswa.sertifikat.nomor%></h4>
+                <h4>Nomor : <%siswa.sertifikat.nomor%></h4>
             </div>
             <div style="padding:10px 30px">
                 <p>Sertifikasi ini diselenggaranan berdasarkan Pedoman Penyelenggaraan Uji Kompetensi Keahlian Sekolah Menengah Kejuruan Tahun 2002</p>

@@ -26,7 +26,7 @@
     <!-- partial:partials/_navbar.html -->
     <nav id="nav" class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo"  href="/admin">
+        <a class="navbar-brand brand-logo" href="/admin">
           <img style="width: 50px !important; height:50px" src="{{asset('assets/images/smk8logo.jpeg')}}" alt="logo" /></a>
         <a class="navbar-brand brand-logo-mini" href="/admin"><img src="{{asset('assets/images/smk8logo.png')}}" alt="logo" /></a>
       </div>
@@ -116,6 +116,9 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/admin/2/belajar">Belajar</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/admin/lkelulusan">
               <span class="menu-title">Laporan KELULUSAN</span>
               <i class="mdi mdi-table-large menu-icon"></i>
@@ -148,7 +151,7 @@
       <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
- 
+
   </div>
   <!-- container-scroller -->
   <script src="{{asset('assets/js/angular.js')}}"></script>
@@ -170,11 +173,11 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
+
   <script src="{{asset('assets/js/dashboard.js')}}"></script>
   <script src="{{asset('assets/js/todolist.js')}}"></script>
-  
-  
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.17/angular-filter.min.js" integrity="sha512-f2q5tYQJ0pnslHkuVw7tm7GP7E0BF1YLckJjgLU5z4p1vNz78Jv+nPIEKtZerevbt/HwEfYnRrAo9U3u4m0UHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="{{asset('assets/js/apps/app.js')}}"></script>
 
@@ -187,8 +190,8 @@
   <script src="{{asset('assets/js/apps/services/siswaService.js')}}"></script>
   <script src="{{asset('assets/js/apps/services/laporanService.js')}}"></script>
   <script src="{{asset('assets/js/apps/services/penilaianService.js')}}"></script>
-  
-  
+
+
   <script src="{{asset('assets/js/apps/controllers/controller.js')}}"></script>
   <script src="{{asset('assets/js/apps/controllers/jurusanController.js')}}"></script>
   <script src="{{asset('assets/js/apps/controllers/tahunajaranController.js')}}"></script>
@@ -198,32 +201,6 @@
   <script src="{{asset('assets/js/apps/controllers/laporanController.js')}}"></script>
   <script src="{{asset('assets/js/apps/controllers/paketDetailController.js')}}"></script>
   <script src="{{asset('assets/js/apps/controllers/siswaDetailController.js')}}"></script>
-  <!-- End custom js for this page -->
 </body>
-<!-- 
-<body class="antialiased">
-    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-        @if (Route::has('login'))
-        <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-            @auth
-            <a href="{{ url('/home') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
-            @else
-            <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-
-            @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-            @endif
-            @endauth
-        </div>
-        @endif
-
-        <div class="max-w-7xl mx-auto p-6 lg:p-8">
-            <h1>INI ADALAH YANG SELALU LAyout</h1>
-            <div id="main" class="row">
-                @yield('content')
-            </div>
-        </div>
-    </div>
-</body> -->
 
 </html>

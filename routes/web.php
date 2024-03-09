@@ -42,7 +42,6 @@ Route::group(['middleware' => ['auth']], function () {
         return view('siswa');
     })->name('siswa');
 
-
     Route::get('/admin/siswa/{id}', function () {
         return view('siswadetail');
     })->name('siswadetail');
@@ -51,8 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
         return view('paket');
     });
 
-
-    Route::get('/admin/paketdetail/{id}', function () {
+    Route::get('/admin/paket/{id}', function () {
         return view('paketdetail');
     });
 

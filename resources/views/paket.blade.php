@@ -44,7 +44,7 @@
                                     <button ng-click="delete(item)" type="button" class="btn btn-inverse-danger btn-icon">
                                         <i class="mdi mdi-delete"></i>
                                     </button>
-                                    <a href="/admin/paketdetail/<% item.id %>">
+                                    <a href="/admin/paket/<%item.id%>">
                                         <button type="button" class="btn btn-inverse-info btn-icon">
                                             <i class="mdi mdi-format-list-bulleted"></i>
                                         </button>
