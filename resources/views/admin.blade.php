@@ -116,9 +116,6 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/admin/2/belajar">Belajar</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="/admin/lkelulusan">
               <span class="menu-title">Laporan KELULUSAN</span>
               <i class="mdi mdi-table-large menu-icon"></i>

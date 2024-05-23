@@ -21,6 +21,7 @@ class AksesorController extends Controller
         "instansi" => "required",
         "jk" => "required",
         "jenis" => "required",
+        "catatan" => "required"
     ];
 
 
