@@ -202,7 +202,7 @@
                 <div style="display: flex; flex-direction:column">
                     <label>Mengetahui,</label>
                     <label style="line-height:2px">Kepala Sekolah</label>
-                    <label style="margin-top: 60px;" class="font-weight-bold"><u>Feronika Munthe, SP.Pd. , M.Pd.</u></label>
+                    <label style="margin-top: 60px;" class="font-weight-bold"><u>Feronika Munthe, S.Pd. , M.Pd.</u></label>
                     <label style="line-height:2px">NIP : 19780713 200502 2009</label>
                 </div>
 
