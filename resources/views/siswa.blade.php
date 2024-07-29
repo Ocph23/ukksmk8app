@@ -32,7 +32,7 @@
                             <tr class="bg-gradient-info" data-toggle="collapse" data-target="#collapseOne<% group[0].jurusan.id %>">
                                 <td colspan="7"><% group[0].jurusan.nama %></td>
                             </tr>
-                            <tr ng-repeat="item in group" class="collapse" id="collapseOne<% group[0].jurusan.id %>">
+                            <tr ng-repeat="item in group" class="collapsed" id="collapseOne<% group[0].jurusan.id %>">
                                 <td><% $index+1 %></td>
                                 <td><% item.nis %></td>
                                 <td><% item.nama %></td>

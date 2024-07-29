@@ -148,17 +148,19 @@
 
     <div class="justprint" style="height:100vh; width: 100%; padding:90px; background-size:100% 100%; background-image:url('/assets/images/certificate2.jpg')">
         <div style="width: 100%; display: flex; align-items:center; justify-content:space-between">
-            <img style="width: 10%; height:20%" src="/assets/images/smk8logotransparant.png">
+            <img style="width: 10%; height:20%" src="/assets/images/LOGO_SMKN8.png">
             <div style="display:flex; justify-content:center; align-items: center; flex-direction:column">
-                <h2 style="line-height: 15px;">PEMERINTAH PROVINSI PAPUA</h2>
-                <h4 line-height: 15px;>DINAS PENDIDIKAN, PERPUSTAKAAN DAN ARSIP NEGARA</h4>
-                <h3 style="font-size: 20px;"><b style="color: #6696fc;">SMK NEGERI 8 TEKNOLOGI INFORMASI DAN KOMUNIKASI JAYAPURA</b></h3>
+                <h2 style="line-height: 15px;">PEMERINTAH KOTA JAYAPURA</h2>
+                <h4 line-height: 15px;>DINAS PENDIDIKAN DAN KEBUDAYAAN</h4>
+                <h3 style="font-size: 18px;"><b style="color: #6696fc;">SMK NEGERI 8 TEKNOLOGI INFORMASI DAN KOMUNIKASI KOTA JAYAPURA</b></h3>
 
                 <p class="text-capitalize" style="line-height: 5px;">
                     JL. gelanggang II RT 04 RW 01 kelurahan waena, distrik heram, kota jayapura, kode pos 99358
                 </p>
                 <p style="line-height: 5px;">
-                    Telp (0967) 5170108, email : smkn8.kotajayapura@gmail.com
+                    <i class="mdi mdi-phone-outline"></i> (0967) 5170108;
+                    <i class="mdi mdi-email-outline"></i> smkn8.kotajayapura@gmail.com;
+                    <i class="mdi mdi-web"></i> https://smkn8tikjayapura.sch.id
                 </p>
             </div>
             <img ng-if="siswa.paket.eksternal.logo" style="width: 10%; height:30%" src="/storage/instansi/<%siswa.paket.eksternal.logo%>">
@@ -172,7 +174,8 @@
                 <h4>Nomor : <%siswa.sertifikat.nomor%></h4>
             </div>
             <div style="padding:10px 30px">
-                <p>Sertifikasi ini diselenggaranan berdasarkan Pedoman Penyelenggaraan Uji Kompetensi Keahlian Sekolah Menengah Kejuruan Tahun 2002</p>
+                <p>Sertifikasi ini diselenggaranan berdasarkan Pedoman Penyelenggaraan Uji Kompetensi
+                    Keahlian Sekolah Menengah Kejuruan Tahun <% siswa.sertifikat.tanggalpenetapan.getFullYear() %></p>
                 <h4 class="text-center">Menyatakan Bahwa : </h4>
                 <table>
                     <tr>
@@ -180,12 +183,12 @@
                         <td>: <% siswa.nama %></td>
                     </tr>
                     <tr>
-                        <td>Tempat/Tanggal Lahir</td>
-                        <td>: <% siswa.tempatlahir %>, <% penetapan(siswa.tanggallahir) %> </td>
+                        <td>Tempat, Tanggal Lahir</td>
+                        <td>: <% siswa.tempatlahir %>,  <% penetapan(siswa.tanggallahir) %> </td>
                     </tr>
                     <tr>
                         <td>Sekolah</td>
-                        <td>: SMK Negeri 8 Teknologi Informasi dan Komunikasi Jayapura</td>
+                        <td>: SMK Negeri 8 Teknologi Informasi dan Komunikasi Kota Jayapura</td>
                     </tr>
                     <tr>
                         <td>Jurusan</td>
@@ -199,7 +202,7 @@
                 <div style="display: flex; flex-direction:column">
                     <label>Mengetahui,</label>
                     <label style="line-height:2px">Kepala Sekolah</label>
-                    <label style="margin-top: 60px;" class="font-weight-bold"><u>Feronika Munthe, SP.Pd. M.Pd</u></label>
+                    <label style="margin-top: 60px;" class="font-weight-bold"><u>Feronika Munthe, S.Pd. , M.Pd.</u></label>
                     <label style="line-height:2px">NIP : 19780713 200502 2009</label>
                 </div>
 
@@ -247,7 +250,11 @@
                             <td> <% item.kompetensi.kode %> </td>
                             <td> <% item.kompetensi.elemen %> </td>
                             <td ng-if="siswa.paket.basisnilai" style="width: 100px; text-align:center "> <% item.nilai %> </td>
-                            <td ng-if="!siswa.paket.basisnilai" style="width: 100px; text-align:center "> <input style="font-size:12px" type="checkbox" ng-model="item.kompeten"> </td>
+                            <td ng-if="!siswa.paket.basisnilai" style="width: 100px; text-align:center ">
+                                <i style="font-size: 16px;" ng-if="item.kompeten" class="mdi mdi-checkbox-marked-outline"></i>
+                                <i style="font-size: 16px;" ng-if="!item.kompeten" class="mdi mdi-checkbox-blank-outline"></i>
+                            </td>
+
 
                         </tr>
                         <tr ng-if="siswa.paket.basisnilai">

@@ -93,13 +93,13 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/admin/tahunajaran">
-              <span class="menu-title">Tahun jaran</span>
+              <span class="menu-title">Tahun Ajaran</span>
               <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/admin/aksesor">
-              <span class="menu-title">Aksesor</span>
+              <span class="menu-title">Asesor</span>
               <i class="mdi mdi-chart-bar menu-icon"></i>
             </a>
           </li>
@@ -114,9 +114,6 @@
               <span class="menu-title">Siswa</span>
               <i class="mdi mdi-table-large menu-icon"></i>
             </a>
-          </li>
-          <li class="nav-item">
-            <a href="/admin/2/belajar">Belajar</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/admin/lkelulusan">

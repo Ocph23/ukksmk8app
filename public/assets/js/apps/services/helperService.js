@@ -19,7 +19,7 @@ function helperService($http, $q) {
     function toDate(date) {
         if (!date) return "";
         var xDate = new Date(date);
-        return [xDate.getDate(), xDate.getMonth(), xDate.getFullYear()].join(
+        return [xDate.getDate(), xDate.getMonth()+1, xDate.getFullYear()].join(
             "-"
         );
     }
@@ -38,27 +38,27 @@ function helperService($http, $q) {
         switch (bulan) {
             case 0:
                 return "Januari";
-            case 0:
+            case 1:
                 return "Februari";
-            case 0:
+            case 2:
                 return "Maret";
-            case 0:
+            case 3:
                 return "April";
-            case 0:
+            case 4:
                 return "Mei";
-            case 0:
+            case 5:
                 return "Juni";
-            case 0:
+            case 6:
                 return "Juli";
-            case 0:
+            case 7:
                 return "Agustus";
-            case 0:
+            case 8:
                 return "September";
-            case 0:
+            case 9:
                 return "Oktober";
-            case 0:
+            case 10:
                 return "November";
-            case 0:
+            case 11:
                 return "Desember";
 
             default:

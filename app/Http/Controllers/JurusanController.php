@@ -7,7 +7,7 @@ use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use Error;
 use PDOException;
-use Validator as xvalidator;
+use Validator;
 
 class JurusanController extends Controller
 {
