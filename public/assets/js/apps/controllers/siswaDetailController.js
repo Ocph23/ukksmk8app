@@ -174,10 +174,7 @@ angular
 
             $scope.getKompeten = (penilaian) => {
                 if (penilaian) {
-                    return (
-                        penilaian.filter((x) => x.kompeten).length ==
-                        penilaian.length
-                    );
+                    return (penilaian.filter((x) => x.kompeten).length ==penilaian.length);
                 }
                 return false;
             };

@@ -114,7 +114,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" ng-if="siswa.penilaian">
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -146,7 +146,7 @@
         </div>
     </ng-template>
 
-    <div class="justprint" style="height:100vh; width: 100%; padding:90px; background-size:100% 100%; background-image:url('/assets/images/certificate2.jpg')">
+    <div ng-if="siswa.penilaian" class="justprint" style="height:100vh; width: 100%; padding:90px; background-size:100% 100%; background-image:url('/assets/images/certificate2.jpg')">
         <div style="width: 100%; display: flex; align-items:center; justify-content:space-between">
             <img style="width: 10%; height:20%" src="/assets/images/LOGO_SMKN8.png">
             <div style="display:flex; justify-content:center; align-items: center; flex-direction:column">
@@ -225,7 +225,7 @@
         </style>
     </div>
 
-    <div class="justprint" style="height:100vh; width: 100%; padding:100px 70px; background-size:100% 100%; background-image:url('/assets/images/certificate2.jpg')">
+    <div ng-if="siswa.penilaian" class="justprint" style="height:100vh; width: 100%; padding:100px 70px; background-size:100% 100%; background-image:url('/assets/images/certificate2.jpg')">
         <div style="width: 100%; display: flex; align-items:center; justify-content:center">
             <div style="display:flex; justify-content:center; align-items: center; flex-direction:column">
                 <h3 class="text-uppercase">kompetensi keahlian <% siswa.jurusan.nama %> </h3>
