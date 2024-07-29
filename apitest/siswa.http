@@ -5,7 +5,7 @@ GET {{url}} HTTP/1.1
 
 #######
 
-GET {{url}}/1 HTTP/1.1
+GET https://ukk.smkn8tikjayapura.sch.id/admin/siswa/9 HTTP/1.1
 
 ####### 
  
