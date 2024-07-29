@@ -128,7 +128,9 @@
                                         <tr ng-repeat="item in siswa.penilaian">
                                             <td> <% item.kompetensi.kode %> </td>
                                             <td> <% item.kompetensi.elemen %> </td>
-                                            <td ng-if="siswa.paket.basisnilai"> <input type="number" max="100" ng-change="rata2Penilaian(siswa.penilaian)" class="form-control" ng-model="item.nilai"> </td>
+                                            <td ng-if="siswa.paket.basisnilai"> 
+                                                {{ item.nilai }}
+                                                <input type="number" max="100" ng-change="rata2Penilaian(siswa.penilaian)" class="form-control" ng-model="item.nilai"> </td>
                                             <td ng-if="!siswa.paket.basisnilai" style="text-align:center "> <input style="font-size:12px" type="checkbox" ng-model="item.kompeten"> </td>
 
                                         </tr>
