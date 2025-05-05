@@ -37,8 +37,8 @@ angular
                             $scope.siswa.sertifikat.tanggalambil == null
                                 ? null
                                 : new Date(
-                                      $scope.siswa.sertifikat.tanggalambil
-                                  );
+                                    $scope.siswa.sertifikat.tanggalambil
+                                );
                     }
 
                     paketService.getById(x.paket_id).then(
@@ -60,10 +60,10 @@ angular
                                 }
                             });
                         },
-                        (err) => {}
+                        (err) => { }
                     );
                 },
-                (err) => {}
+                (err) => { }
             );
 
             $scope.add = () => {
@@ -122,7 +122,7 @@ angular
 
             $scope.showSertifikatPanel = () => {
                 if (
-                    ($scope.siswa != null &&
+                    ($scope.siswa &&
                         $scope.siswa.penilaian != null &&
                         $scope.rata2Penilaian($scope.siswa.penilaian) > 0) || $scope.getKompeten($scope.siswa.penilaian)
                 ) {
@@ -174,7 +174,7 @@ angular
 
             $scope.getKompeten = (penilaian) => {
                 if (penilaian) {
-                    return (penilaian.filter((x) => x.kompeten).length ==penilaian.length);
+                    return (penilaian.filter((x) => x.kompeten).length == penilaian.length);
                 }
                 return false;
             };

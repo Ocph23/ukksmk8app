@@ -12,7 +12,10 @@ angular
             jurusanService,
             tahunajaranService
         ) {
-            $scope.helper = helperService;
+
+
+
+
             document.getElementById("content").style.display = "block";
             $scope.tahunajaran = [];
             $scope.genders = helperService.getGender();
@@ -20,7 +23,20 @@ angular
             tahunajaranService.get().then(
                 (result) => {
                     $scope.tahunajaran = result;
-                    $scope.selectedTahunAjaran = result.find((x) => x.aktif);
+                    $scope.helper = helperService;
+                    var storageTahunAjaran = helperService.storageGetItem(
+                        "tahunajaran"
+                    );
+                    if (storageTahunAjaran) {
+                        $scope.selectedTahunAjaran = JSON.parse(
+                            storageTahunAjaran
+                        );
+                    } else {
+                        $scope.selectedTahunAjaran = result.find(
+                            (x) => x.aktif
+                        );
+                    }
+
                     jurusanService.get().then(
                         (resultJurusan) => {
                             $scope.dataJurusan = resultJurusan;
@@ -30,15 +46,23 @@ angular
                                 );
                             }
                         },
-                        (err) => {}
+                        (err) => { }
                     );
                 },
-                (err) => {}
+                (err) => { }
             );
 
             $scope.changeSelectedTahunAjaran = (tahunajaran) => {
                 if (tahunajaran) {
                     //get siswa By tahun ajaran
+
+                    helperService.storageSetItem(
+                        "tahunajaran",
+                        JSON.stringify(tahunajaran)
+                    );
+                    $scope.selectedTahunAjaran = tahunajaran;
+
+
                     paketService
                         .getByTahunAjaran($scope.selectedTahunAjaran.id)
                         .then(
@@ -50,10 +74,10 @@ angular
                                         (result) => {
                                             $scope.datasiswa = result;
                                         },
-                                        (err) => {}
+                                        (err) => { }
                                     );
                             },
-                            (err) => {}
+                            (err) => { }
                         );
                 }
             };
@@ -94,7 +118,7 @@ angular
                             param.id = result.id;
                             $scope.datasiswa.push(param);
 
-                            $scope.model={};
+                            $scope.model = {};
                             setTimeout((x) => {
                                 $("#exampleModal").modal("hide");
                             }, 1000);
@@ -126,6 +150,9 @@ angular
                                 exsistData.alamat = result.alamat;
                                 exsistData.jurusan = result.jurusan;
                                 exsistData.tahunajaran = result.tahunajaran;
+                                exsistData.paket = result.paket;
+                                exsistData.tanggallahir = result.tanggallahir;
+                                exsistData.tempatlahir = result.tempatlahir;
                             }
                             $("#exampleModal").modal("hide");
                             Swal.fire({

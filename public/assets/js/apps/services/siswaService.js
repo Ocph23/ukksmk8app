@@ -3,7 +3,7 @@ angular.module('service.siswa', [])
 
 
 function siswaService($http, $q) {
-   var url = "/api/siswa"
+    var url = "/api/siswa"
     return {
         get: get,
         getById: getById,
@@ -11,7 +11,7 @@ function siswaService($http, $q) {
         post: post,
         put: put,
         delete: remove,
-        updateSertifikat:updateSertifikat
+        updateSertifikat: updateSertifikat
     }
 
     function get() {
@@ -55,6 +55,10 @@ function siswaService($http, $q) {
 
 
     function post(data) {
+
+        data.tanggallahir = new Date(data.tanggallahir).toISOString().slice(0, 10);
+
+
         defer = $q.defer();
         $http({
             method: "POST",
@@ -77,6 +81,7 @@ function siswaService($http, $q) {
             result = data.find(x => x.id == id);
             defer.resolve(result);
         } else {
+            data.tanggallahir = new Date(data.tanggallahir).toISOString().slice(0, 10);
             $http({
                 method: "PUT",
                 url: url + '/' + data.id,
@@ -96,9 +101,23 @@ function siswaService($http, $q) {
             result = data.find(x => x.id == id);
             defer.resolve(result);
         } else {
+            data.tanggalpenetapan = new Date(data.tanggalpenetapan).toISOString().slice(0, 10);
+
+            if (data.tanggalcetak != null) {
+                data.tanggalcetak = new Date(data.tanggalcetak).toISOString().slice(0, 10);
+            } else {
+                data.tanggalcetak = null;
+            }
+
+            if (data.tanggalambil != null) {
+                data.tanggalambil = new Date(data.tanggalambil).toISOString().slice(0, 10);
+            } else {
+                data.tanggalambil = null;
+            }
+
             $http({
                 method: "PUT",
-                url: url + '/' + data.id +"/sertifikat",
+                url: url + '/' + data.id + "/sertifikat",
                 data: data
             }).then(function (res) {
                 defer.resolve(res.data);
@@ -109,7 +128,7 @@ function siswaService($http, $q) {
         return defer.promise;
     }
 
-    
+
 
 
 

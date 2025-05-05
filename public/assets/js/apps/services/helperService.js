@@ -5,7 +5,11 @@ function helperService($http, $q) {
         getGender: getGender,
         getAccesorTypes: getAccesorTypes,
         toDate: toDate,
-        getPenetapan:getPenetapan
+        getPenetapan: getPenetapan,
+        storageClear: storageClear,
+        storageGetItem: storageGetItem,
+        storageSetItem: storageSetItem,
+        storageRemoveItem: storageRemoveItem,
     };
 
     function getGender() {
@@ -19,7 +23,7 @@ function helperService($http, $q) {
     function toDate(date) {
         if (!date) return "";
         var xDate = new Date(date);
-        return [xDate.getDate(), xDate.getMonth()+1, xDate.getFullYear()].join(
+        return [xDate.getDate(), xDate.getMonth() + 1, xDate.getFullYear()].join(
             "-"
         );
     }
@@ -65,4 +69,19 @@ function helperService($http, $q) {
                 return "Januari";
         }
     }
+
+
+    function storageGetItem(key) {
+        return localStorage.getItem(key);
+    }
+    function storageSetItem(key, value) {
+        localStorage.setItem(key, value);
+    }
+    function storageRemoveItem(key) {
+        localStorage.removeItem(key);
+    }
+    function storageClear() {
+        localStorage.clear();
+    }
+
 }

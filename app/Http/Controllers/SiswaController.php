@@ -106,8 +106,8 @@ class SiswaController extends Controller
                 throw new Error("Periksa Kembali Data Anda");
             } else {
                 $siswa = new Siswa($req->all());
-                $tgl = new DateTime($siswa->tanggallahir);
-                $siswa->tanggallahir = $tgl->format('Y-m-d');
+                // $tgl = new DateTime($siswa->tanggallahir);
+                // $siswa->tanggallahir = $tgl->format('Y-m-d');
                 $siswa->save();
                 return response()->json($siswa, 200);
             }
@@ -177,8 +177,8 @@ class SiswaController extends Controller
                 if ($siswa == null)
                     throw new Error("Data Siswa tidak ditemukan");
                 $siswa->fill($req->all());
-                $tgl = new DateTime($siswa->tanggallahir);
-                $siswa->tanggallahir = $tgl->format('Y-m-d');
+                // $tgl = new DateTime($siswa->tanggallahir);
+                // $siswa->tanggallahir = $tgl->format('Y-m-d');
                 $siswa->save();
                 if ($req->penilaian) {
                     foreach ($req->penilaian as $key => $value) {
@@ -187,11 +187,13 @@ class SiswaController extends Controller
                             $row->save();
                         } else {
                             $row = DetailPenilaian::find($value['id']);
-                            if ($value['kompetensi']['paket_id'] != $siswa->paket_id) {
-                                $row->delete();
-                            } else {
-                                $row->fill($value);
-                                $row->save();
+                            if (isset($value['kompetensi'])) {
+                                if ($value['kompetensi']['paket_id'] != $siswa->paket_id) {
+                                    $row->delete();
+                                } else {
+                                    $row->fill($value);
+                                    $row->save();
+                                }
                             }
                         }
                     }
