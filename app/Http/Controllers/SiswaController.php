@@ -185,6 +185,7 @@ class SiswaController extends Controller
                         if (!$value['id']) {
                             $row = new DetailPenilaian($value);
                             $row->save();
+                            $value['id'] = $row->id;
                         } else {
                             $row = DetailPenilaian::find($value['id']);
                             if (isset($value['kompetensi'])) {
@@ -197,6 +198,8 @@ class SiswaController extends Controller
                             }
                         }
                     }
+
+                    $siswa->penilaian = $siswa->penilaian()->get();
                 }
                 return response()->json($siswa, 200);
             }

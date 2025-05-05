@@ -83,6 +83,15 @@ angular
             $scope.save = () => {
                 siswaService.put($scope.siswa).then(
                     (x) => {
+
+                        if ($scope.siswa.penilaian) {
+                            for (var i = 0; i < $scope.siswa.penilaian.length; i++) {
+                                if ($scope.siswa.penilaian[i].id == 0) {
+                                    $scope.siswa.penilaian[i].id = x.penilaian[i].id;
+                                }
+                            }
+                        }
+
                         Swal.fire({
                             title: "Tersimpan!",
                             text: "Data berhasil disimpan.",
@@ -103,7 +112,7 @@ angular
                 siswaService.updateSertifikat(sertifikat).then(
                     (x) => {
                         sertifikat.id = x.id;
-                        canPrint();
+                        $scope.canPrint();
                         Swal.fire({
                             title: "Tersimpan!",
                             text: "Data berhasil disimpan.",
@@ -123,7 +132,7 @@ angular
             $scope.showSertifikatPanel = () => {
                 if (
                     ($scope.siswa &&
-                        $scope.siswa.penilaian != null &&
+                        $scope.siswa.penilaian != undefined &&
                         $scope.rata2Penilaian($scope.siswa.penilaian) > 0) || $scope.getKompeten($scope.siswa.penilaian)
                 ) {
                     return true;
