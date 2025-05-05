@@ -195,7 +195,7 @@
                     <h4>Nomor : <%siswa.sertifikat.nomor%></h4>
                 </div>
                 <div style="padding:10px 30px">
-                    <p>Sertifikasi ini diselenggaranan berdasarkan Pedoman Penyelenggaraan Uji Kompetensi
+                    <p>Sertifikasi ini diselenggarakan berdasarkan Pedoman Penyelenggaraan Uji Kompetensi
                         Keahlian Sekolah Menengah Kejuruan Tahun <% siswa.sertifikat.tanggalpenetapan.getFullYear() %></p>
                     <h4 class="text-center">Menyatakan Bahwa : </h4>
                     <table>
