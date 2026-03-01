@@ -39,12 +39,10 @@ class SiswaController extends Controller
     public function byid($id)
     {
         try {
-            $siswa = Siswa::find($id);
+            $siswa = Siswa::with(['jurusan', 'sertifikat', 'tahunajaran'])->findOrFail($id);
             if ($siswa == null) {
                 throw new Error("Data Siswa  tidak ditemukan ! ");
             }
-            $siswa->jurusan;
-            $siswa->sertifikat;
 
             $siswa->paket->eksternal;
             foreach ($siswa->penilaian as $key => $value) {

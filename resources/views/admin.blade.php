@@ -18,6 +18,7 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link id="paperx" rel="stylesheet" href="{{ asset('assets/css/landscape.css') }}">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
 </head>

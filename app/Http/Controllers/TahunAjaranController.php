@@ -54,6 +54,8 @@ class TahunAjaranController extends Controller
         try {
             $validator = Validator::make($req->all(), [
                 "tahun" => "required",
+                "kepala_sekolah" => "required",
+                "nip" => "required",
                 "deskripsi" => "required",
             ]);
 
@@ -63,6 +65,8 @@ class TahunAjaranController extends Controller
                 TahunAjaran::whereIn('aktif', [true])->update(['aktif' => false]);
                 $TahunAjaran = new TahunAjaran();
                 $TahunAjaran->tahun = $req->tahun;
+                $TahunAjaran->kepala_sekolah = $req->kepala_sekolah;
+                $TahunAjaran->nip = $req->nip;
                 $TahunAjaran->deskripsi = $req->deskripsi;
                 $TahunAjaran->aktif = $req->aktif;
                 $TahunAjaran->save();
@@ -82,6 +86,8 @@ class TahunAjaranController extends Controller
         try {
             $validator = Validator::make($req->all(), [
                 "tahun" => "required",
+                "kepala_sekolah" => "required",
+                "nip" => "required",
                 "deskripsi" => "required",
 
             ]);
@@ -94,6 +100,8 @@ class TahunAjaranController extends Controller
                     throw new Error("Data TahunAjaran tidak ditemukan");
 
                 $TahunAjaran->tahun = $req->tahun;
+                $TahunAjaran->kepala_sekolah = $req->kepala_sekolah;
+                $TahunAjaran->nip = $req->nip;
                 $TahunAjaran->deskripsi = $req->deskripsi;
                 $TahunAjaran->save();
                 return response()->json($TahunAjaran, 200);

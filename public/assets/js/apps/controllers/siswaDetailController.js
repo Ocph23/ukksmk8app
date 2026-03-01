@@ -170,6 +170,12 @@ angular
             };
 
             $scope.print = () => {
+                
+                 document.getElementById('paperx').href =
+                    $scope.siswa.tahunajaran.tahun >= 2025
+                        ? '/assets/css/portrait.css'
+                        : '/assets/css/landscape.css';
+
                 window.print();
                 window.onafterprint = function () {
                     $scope.siswa.sertifikat.tanggalcetak = new Date();
