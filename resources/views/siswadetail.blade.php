@@ -166,16 +166,35 @@
 
         <!-- NEW TEMPLATE -->
         <div ng-if="siswa.tahunajaran.tahun > 2024" class="justprint">
-            <div ng-if="siswa.penilaian" class="justprint"
-                style="height:100vh; width: 100%; padding:90px; background-size:100% 100%">
-
-                <div style="display: flex; justify-content: center; align-items: center; flex-direction: column">
-                    <img style="width: 150px; height:150px" src="/assets/images/LOGO_SMKN8.png">
-                    <h1 class="uppercase">sertifikat kompetensi</h1>
-                    <h4 class="uppercase italic">certificate of competency</h4>
-                    <h1 class="uppercase">NOMOR : <% siswa.sertifikat.nomor %>/h1>
-                        <h1 class="uppercase">NOMOR : <% siswa.nama %>/h1>
-
+            <div ng-if="siswa.penilaian" class="justprint" style="height:100vh; width: 100%; background-size:100% 100%">
+                <div class="sertifikat">
+                    <img style="width: 100px; height:100px" src="/assets/images/LOGO_SMKN8.png">
+                    <div class="uppercase title">sertifikat kompetensi</div>
+                    <div class="uppercase title-english">certificate of competency</div>
+                    <div class="uppercase title">NOMOR : <% siswa.sertifikat.nomor %></div>
+                    <div class="sg">
+                        <div class="title">Dengan ini menyatakan bahwa</div>
+                        <div class="title-english">this is to certify that</div>
+                    </div>
+                    <div class="sg">
+                        <div class="title">Telah mengikuti Uji Kompetensi Keahlian</div>
+                        <div class="title-english">has taken the competency test</div>
+                    </div>
+                    <div class="sg">
+                        <div class="title">pada kompetensi keahlian </div>
+                        <div class="title-english">in competency of</div>
+                    </div>
+                    <div class="sg">
+                        <div class="title">Rekayasa Perangkat Lunak </div>
+                    </div>
+                    <div class="sg">
+                        <div class="title">pada judul penugasan </div>
+                        <div class="title-english">on assignment</div>
+                    </div>
+                    <div class="sg">
+                        <div class="title"><%siswa.paket.judul%></div>
+                        <div class="title-english">on assignment</div>
+                    </div>
 
                 </div>
 
@@ -220,7 +239,8 @@
                     </div>
                     <div style="padding:10px 30px">
                         <p>Sertifikasi ini diselenggarakan berdasarkan Pedoman Penyelenggaraan Uji Kompetensi
-                            Keahlian Sekolah Menengah Kejuruan Tahun <% siswa.sertifikat.tanggalpenetapan.getFullYear() %>
+                            Keahlian Sekolah Menengah Kejuruan Tahun
+                            <% siswa.sertifikat.tanggalpenetapan.getFullYear() %>
                         </p>
                         <h4 class="text-center">Menyatakan Bahwa : </h4>
                         <table>
@@ -241,7 +261,8 @@
                                 <td>: <% siswa.jurusan.nama %></td>
                             </tr>
                         </table>
-                        <p class="mt-2">Dinyatakan <span class="font-italic"><b>LULUS</b></span> Uji Kompetensi Kejuruan
+                        <p class="mt-2">Dinyatakan <span class="font-italic"><b>LULUS</b></span> Uji Kompetensi
+                            Kejuruan
                             dan
                             diakui telah memiliki kompetensi seperti tercantum di balik sertifikat ini</p>
                     </div>
@@ -313,7 +334,8 @@
 
                                 </tr>
                                 <tr ng-if="siswa.paket.basisnilai">
-                                    <td class="text-center" style="height: 35px;" colspan="3"> <b>Nilai Rata-Rata</b>
+                                    <td class="text-center" style="height: 35px;" colspan="3"> <b>Nilai
+                                            Rata-Rata</b>
                                     </td>
                                     <td style="width: 100px; text-align:center "> <b><% rata2.toFixed(2) %></b> </td>
                                 </tr>
@@ -350,6 +372,25 @@
 
 
 <style>
+    .sertifikat {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 5px;
+
+    }
+
+    .sertifikat .sg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
     .underline {
         text-decoration: underline;
     }
@@ -360,5 +401,14 @@
 
     .italic {
         font-style: italic;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+
+    .title-english {
+        font-style: italic;
+        font-size: 18px;
     }
 </style>
