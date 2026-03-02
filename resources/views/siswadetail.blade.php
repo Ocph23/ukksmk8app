@@ -168,13 +168,17 @@
         <div ng-if="siswa.tahunajaran.tahun > 2024" class="justprint">
             <div ng-if="siswa.penilaian" class="justprint" style="height:100vh; width: 100%; background-size:100% 100%">
                 <div class="sertifikat">
-                    <img style="width: 100px; height:100px" src="/assets/images/LOGO_SMKN8.png">
+                    <img style="width: 150px; height:150px; margin-bottom: 30px" src="/assets/images/tutwuri.png">
                     <div class="uppercase title">sertifikat kompetensi</div>
                     <div class="uppercase title-english">certificate of competency</div>
                     <div class="uppercase title">NOMOR : <% siswa.sertifikat.nomor %></div>
                     <div class="sg">
                         <div class="title">Dengan ini menyatakan bahwa</div>
                         <div class="title-english">this is to certify that</div>
+                    </div>
+                    <div class="sg">
+                        <div class="title-name uppercase"><% siswa.nama %></div>
+                        <div class="title-nis">NISN. <% siswa.nis %></div>
                     </div>
                     <div class="sg">
                         <div class="title">Telah mengikuti Uji Kompetensi Keahlian</div>
@@ -185,21 +189,136 @@
                         <div class="title-english">in competency of</div>
                     </div>
                     <div class="sg">
-                        <div class="title">Rekayasa Perangkat Lunak </div>
+                        <div class="title"><% siswa.jurusan.nama %> </div>
                     </div>
                     <div class="sg">
                         <div class="title">pada judul penugasan </div>
                         <div class="title-english">on assignment</div>
                     </div>
                     <div class="sg">
-                        <div class="title"><%siswa.paket.judul%></div>
-                        <div class="title-english">on assignment</div>
+                        <div class="title"><%siswa.paket.judultugas%></div>
+                    </div>
+                    <div class="sg">
+                        <div class="title">dengan predikat </div>
+                        <div class="title-english">with achievement level</div>
+                    </div>
+                    <div class="sg">
+                        <div class="title"> <%kompetensi%> </div>
+                        <div class="title-english"><%competency%></div>
+                    </div>
+                    <div class="sg">
+                        <div class="title">Sertifi kat ini berlaku untuk : 3 (tiga) Tahun </div>
+                        <div class="title-english">This certifi cate is valid for : 3 (three) Years</div>
+                    </div>
+                    <div class="sg">
+                        <div class="title">Kota Jayapura, <% penetapan(siswa.sertifikat.tanggalpenetapan) %>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-left:20px; margin-right:20px">
+                    <div class="sg">
+                        <div class="title">Atas Nama/On Behalf Of</div>
+                        <div class="title">SMK Negeri 8 TIK Kota Jayapura</div>
+                        <div style="margin-top: 100px" class="title"><% siswa.tahunajaran.kepala_sekolah %></div>
+                        <div class="title">Kepala Sekolah </div>
+                        <div class="title-english">School Principal</div>
+                    </div>
+                    <div class="sg">
+                        <div class="title" style="color: white">.</div>
+                        <div class="title"><%siswa.paket.eksternal.instansi%></div>
+                        <div style="margin-top: 100px" class="title"><%siswa.paket.eksternal.nama%></div>
+                        <div class="title">Penguji Eksternal</div>
+                        <div class="title-english">External Assessor</div>
                     </div>
 
                 </div>
 
             </div>
+            <div ng-if="siswa.penilaian" class="justprint"
+                style="height:100vh; width: 100%; background-size:100% 100%; ">
+                <div style="width: 100%; display: flex; align-items:center; justify-content:center; ">
+                    <div
+                        style="margin-top: 50px; display:flex; justify-content:center; align-items: center; flex-direction:column;">
+                        <h3 class="text-uppercase">DAFTAR KOMPETENSI </h3>
+                        <h4 class="text-uppercase">List Of Competency </h4>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction:column">
+                    <div style="padding:20px">
+                        <div>
+                            <div style="display: flex">
+                                <h5 class="list-label">Kopetensi Keahlian</h5>
+                                <h5>: <% siswa.jurusan.nama %></h5>
+                            </div>
+                            <div style="display: flex">
+                                <h5 class="list-label">Kode Penugasan</h5>
+                                <h5>: <% siswa.paket.kode %></h5>
+                            </div>
+                            <div style="display: flex">
+                                <h5 class="list-label">Judul Tugas</h5>
+                                <h5>: <% siswa.paket.judultugas %></h5>
+                            </div>
+                        </div>
 
+                        <table class="table" id="nilai">
+                            <thead>
+                                <tr style="height: 35px;">
+                                    <th style="width: 50px;  vertical-align: baseline;"> No. </th>
+                                    <th style="width: 150px;"> Kode </th>
+                                    <th> Kompetensi </th>
+                                    <th style="width: 100px;">Nilai</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in siswa.penilaian">
+                                    <td class="text-center"> <% $index+1 %> </td>
+                                    <td> <% item.kompetensi.kode %> </td>
+                                    <td> <% item.kompetensi.elemen %> </td>
+                                    <td ng-if="siswa.paket.basisnilai" style="width: 100px; text-align:center ">
+                                        <% item.nilai %> </td>
+                                    <td ng-if="!siswa.paket.basisnilai" style="width: 100px; text-align:center ">
+                                        <i style="font-size: 16px;" ng-if="item.kompeten"
+                                            class="mdi mdi-checkbox-marked-outline"></i>
+                                        <i style="font-size: 16px;" ng-if="!item.kompeten"
+                                            class="mdi mdi-checkbox-blank-outline"></i>
+                                    </td>
+
+
+                                </tr>
+                                <tr ng-if="siswa.paket.basisnilai">
+                                    <td class="text-center" style="height: 35px;" colspan="3"> <b>Nilai
+                                            Rata-Rata</b>
+                                    </td>
+                                    <td style="width: 100px; text-align:center "> <b><% rata2.toFixed(2) %></b> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <style>
+                    hr {
+                        margin: 0;
+                        margin-bottom: 5px;
+                        border: 2px solid;
+                        border-radius: 0px;
+                    }
+
+                    th {
+                        vertical-align: middle !important;
+                        text-align: center;
+                    }
+
+                    #nilai tr td,
+                    #nilai tr th {
+                        border: 1px solid;
+                        padding: 0.4rem;
+                        background-color: transparent !important;
+                    }
+                </style>
+            </div>
         </div>
 
 
@@ -381,14 +500,14 @@
 
     }
 
-    .sertifikat .sg {
+    .sg {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         gap: 5px;
-        margin-top: 20px;
-        margin-bottom: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .underline {
@@ -404,11 +523,23 @@
     }
 
     .title {
-        font-size: 18px;
+        font-size: 20px;
+    }
+
+    .title-name {
+        font-size: 30px;
+    }
+
+    .title-nis {
+        font-size: 25px;
     }
 
     .title-english {
         font-style: italic;
-        font-size: 18px;
+        font-size: 20px;
+    }
+
+    .list-label {
+        width: 200px;
     }
 </style>

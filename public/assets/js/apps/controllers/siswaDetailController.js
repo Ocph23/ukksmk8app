@@ -170,13 +170,30 @@ angular
             };
 
             $scope.print = () => {
-                
-                 document.getElementById('paperx').href =
+                if ($scope.rata2) {
+                    if ($scope.rata2 >= 91) {
+                        $scope.kompetensi = "Sangat Kompeten";
+                        $scope.competency = "Very Competent";
+                    } else if ($scope.rata2 >= 75) {
+                        $scope.kompetensi = "Kompeten";
+                        $scope.competency = "Competent";
+                    } else if ($scope.rata2 >= 61) {
+                        $scope.kompetensi = "Cukup Kompeten";
+                        $scope.competency = "Sufficiently Competent";
+                    } else if ($scope.rata2 < 61) {
+                        $scope.kompetensi = "Tidak Kompeten";
+                        $scope.competency = "Not Competent";
+                    }
+                }
+
+                document.getElementById('paperx').href =
                     $scope.siswa.tahunajaran.tahun >= 2025
                         ? '/assets/css/portrait.css'
                         : '/assets/css/landscape.css';
 
-                window.print();
+                setTimeout(() => {
+                    window.print();
+                }, 500);
                 window.onafterprint = function () {
                     $scope.siswa.sertifikat.tanggalcetak = new Date();
                     $scope.updateSertifikat($scope.siswa.sertifikat);
