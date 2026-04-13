@@ -61,18 +61,18 @@ Route::group(['middleware' => ['auth']], function () {
         return Inertia::render('Paket/Detail', ['paketId' => $id]);
     });
 
-    Route::get('/admin/penilaian/{id}', function () {
-        return view('penilaian');
+    Route::get('/admin/penilaian/{id}', function ($id) {
+        return Inertia::render('Penilaian/Index');
     });
 
 
     //laporan
 
     Route::get('/admin/lkelulusan', function () {
-        return view('laporanKelulusan');
+        return Inertia::render('Laporan/Kelulusan');
     });
 
     Route::get('/admin/laksesor', function () {
-        return view('laporanAksesor');
+        return Inertia::render('Laporan/Aksesor');
     });
 });
