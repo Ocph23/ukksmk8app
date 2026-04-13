@@ -17,10 +17,9 @@ class LoginController extends Controller
     {
         $count = User::count();
         if ($count <= 0) {
-            return Redirect::to('/auth/register');
-        } else {
-            return view('/auths/login');
+            return redirect('/auth/register');
         }
+        return redirect('/auth/login');
     }
 
 
@@ -49,10 +48,10 @@ class LoginController extends Controller
 
     /**
      * Handle response after user authenticated
-     * 
+     *
      * @param Request $request
      * @param Auth $user
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     protected function authenticated(Request $request, $user)

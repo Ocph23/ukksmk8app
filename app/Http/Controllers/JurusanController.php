@@ -24,11 +24,6 @@ class JurusanController extends Controller
     }
 
 
-    public function getJurusan(){
-        return view('jurusan',["data"=>Jurusan::all()]);
-    }
-
-
     public function byid($id)
     {
         try {
@@ -49,7 +44,7 @@ class JurusanController extends Controller
     {
 
         try {
-            $validator =Validator::make($req->all(), $this->fieldValidator);
+            $validator = Validator::make($req->all(), $this->fieldValidator);
 
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
@@ -79,9 +74,9 @@ class JurusanController extends Controller
                 if ($Jurusan == null)
                     throw new Error("Data Jurusan tidak ditemukan");
 
-                    $Jurusan->nama = $req->nama;
-                    $Jurusan->kode = $req->kode;
-                    $Jurusan->deskripsi = $req->deskripsi;
+                $Jurusan->nama = $req->nama;
+                $Jurusan->kode = $req->kode;
+                $Jurusan->deskripsi = $req->deskripsi;
                 $Jurusan->save();
                 return response()->json($Jurusan, 200);
             }
