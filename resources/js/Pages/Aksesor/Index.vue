@@ -45,6 +45,16 @@
                                     </TableCell>
                                     <TableCell class="text-right">
                                         <div class="flex items-center justify-end gap-2">
+                                            <Button v-if="item.logo" variant="outline" size="sm"
+                                                @click="viewLogo(item)">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                Logo
+                                            </Button>
                                             <Button variant="outline" size="sm" @click="openDialog(item)">Edit</Button>
                                             <Button variant="destructive" size="sm"
                                                 @click="confirmDelete(item)">Hapus</Button>
@@ -126,6 +136,23 @@
                 </DialogFooter>
             </DialogContent>
         </Dialog>
+
+        <!-- Logo Preview Dialog -->
+        <Dialog :open="logoDialogOpen" @update:open="logoDialogOpen = $event">
+            <DialogContent class="sm:max-w-lg">
+                <DialogHeader>
+                    <DialogTitle>Logo - {{ logoItem?.nama }}</DialogTitle>
+                    <DialogDescription>{{ logoItem?.instansi }}</DialogDescription>
+                </DialogHeader>
+                <div class="flex justify-center py-4">
+                    <img :src="getLogoUrl(logoItem?.logo)" alt="Logo"
+                        class="max-w-full max-h-64 rounded-lg object-contain" />
+                </div>
+                <DialogFooter>
+                    <Button @click="logoDialogOpen = false">Tutup</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     </AdminLayout>
 </template>
 
@@ -150,6 +177,8 @@ const saving = ref(false);
 const deleteDialogOpen = ref(false);
 const deleteItem = ref(null);
 const deleting = ref(false);
+const logoDialogOpen = ref(false);
+const logoItem = ref(null);
 const form = ref({ id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', dataLogo: '', catatan: '' });
 const logoPreview = ref('');
 
@@ -186,6 +215,17 @@ function handleLogoUpload(event) {
         logoPreview.value = e.target?.result || '';
     };
     reader.readAsDataURL(file);
+}
+
+function viewLogo(item) {
+    logoItem.value = item;
+    logoDialogOpen.value = true;
+}
+
+function getLogoUrl(logoFilename) {
+    if (!logoFilename) return '';
+    if (logoFilename.startsWith('data:')) return logoFilename;
+    return `/instansi/${logoFilename}`;
 }
 
 async function save() {
