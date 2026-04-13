@@ -91,8 +91,14 @@
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <Label for="logo">Logo URL</Label>
-                        <Input id="logo" v-model="form.logo" placeholder="https://..." />
+                        <Label for="logo">Logo</Label>
+                        <input id="logo" type="file" accept="image/*" @change="handleLogoUpload"
+                            class="h-10 w-full rounded-md border border-input bg-background px-3 text-sm file:mr-2 file:h-6 file:text-sm file:font-medium file:border-0 file:bg-transparent file:text-foreground" />
+                        <div v-if="form.dataLogo" class="mt-2">
+                            <p class="text-xs text-green-600">✓ Logo dipilih</p>
+                            <img v-if="logoPreview" :src="logoPreview" alt="Preview"
+                                class="w-16 h-16 rounded-md object-cover mt-1" />
+                        </div>
                     </div>
                     <div class="space-y-2">
                         <Label for="catatan">Catatan</Label>
@@ -144,7 +150,8 @@ const saving = ref(false);
 const deleteDialogOpen = ref(false);
 const deleteItem = ref(null);
 const deleting = ref(false);
-const form = ref({ id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', logo: '', catatan: '' });
+const form = ref({ id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', dataLogo: '', catatan: '' });
+const logoPreview = ref('');
 
 async function fetchItems() {
     try {
@@ -159,13 +166,26 @@ function openDialog(item = null) {
         form.value = {
             id: item.id, nama: item.nama, instansi: item.instansi || '',
             jk: item.jk || 'Pria', jenis: item.jenis || 'Internal',
-            logo: item.logo || '', catatan: item.catatan || '',
+            dataLogo: '', catatan: item.catatan || '',
         };
+        logoPreview.value = item.logo ? `/instansi/${item.logo}` : '';
     } else {
         isEdit.value = false;
-        form.value = { id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', logo: '', catatan: '' };
+        form.value = { id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', dataLogo: '', catatan: '' };
+        logoPreview.value = '';
     }
     dialogOpen.value = true;
+}
+
+function handleLogoUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        form.value.dataLogo = e.target?.result?.split(',')[1] || '';
+        logoPreview.value = e.target?.result || '';
+    };
+    reader.readAsDataURL(file);
 }
 
 async function save() {
