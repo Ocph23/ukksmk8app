@@ -26,7 +26,9 @@
                                 <TableRow>
                                     <TableHead>No</TableHead>
                                     <TableHead>Nama</TableHead>
-                                    <TableHead>NIP</TableHead>
+                                    <TableHead>Instansi</TableHead>
+                                    <TableHead>JK</TableHead>
+                                    <TableHead>Jenis</TableHead>
                                     <TableHead class="text-right">Aksi</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -34,11 +36,18 @@
                                 <TableRow v-for="(item, index) in items" :key="item.id">
                                     <TableCell>{{ index + 1 }}</TableCell>
                                     <TableCell class="font-medium">{{ item.nama }}</TableCell>
-                                    <TableCell class="font-mono text-sm">{{ item.nip || '-' }}</TableCell>
+                                    <TableCell>{{ item.instansi || '-' }}</TableCell>
+                                    <TableCell>{{ item.jk || '-' }}</TableCell>
+                                    <TableCell>
+                                        <Badge :variant="item.jenis === 'Eksternal' ? 'default' : 'secondary'">
+                                            {{ item.jenis || '-' }}
+                                        </Badge>
+                                    </TableCell>
                                     <TableCell class="text-right">
                                         <div class="flex items-center justify-end gap-2">
                                             <Button variant="outline" size="sm" @click="openDialog(item)">Edit</Button>
-                                            <Button variant="destructive" size="sm" @click="confirmDelete(item)">Hapus</Button>
+                                            <Button variant="destructive" size="sm"
+                                                @click="confirmDelete(item)">Hapus</Button>
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -53,7 +62,8 @@
             <DialogContent class="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>{{ isEdit ? 'Edit Asesor' : 'Tambah Asesor' }}</DialogTitle>
-                    <DialogDescription>{{ isEdit ? 'Perbarui data asesor' : 'Isi data asesor baru' }}</DialogDescription>
+                    <DialogDescription>{{ isEdit ? 'Perbarui data asesor' : 'Isi data asesor baru' }}
+                    </DialogDescription>
                 </DialogHeader>
                 <form @submit.prevent="save" class="space-y-4">
                     <div class="space-y-2">
@@ -61,8 +71,32 @@
                         <Input id="nama" v-model="form.nama" placeholder="Nama asesor" />
                     </div>
                     <div class="space-y-2">
-                        <Label for="nip">NIP</Label>
-                        <Input id="nip" v-model="form.nip" placeholder="Nomor Induk Pegawai" />
+                        <Label for="instansi">Instansi</Label>
+                        <Input id="instansi" v-model="form.instansi" placeholder="Nama instansi" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-2">
+                            <Label for="jk">Jenis Kelamin</Label>
+                            <AppSelect id="jk" v-model="form.jk">
+                                <option value="Pria">Pria</option>
+                                <option value="Wanita">Wanita</option>
+                            </AppSelect>
+                        </div>
+                        <div class="space-y-2">
+                            <Label for="jenis">Jenis Asesor</Label>
+                            <AppSelect id="jenis" v-model="form.jenis">
+                                <option value="Internal">Internal</option>
+                                <option value="Eksternal">Eksternal</option>
+                            </AppSelect>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="logo">Logo URL</Label>
+                        <Input id="logo" v-model="form.logo" placeholder="https://..." />
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="catatan">Catatan</Label>
+                        <Input id="catatan" v-model="form.catatan" placeholder="Catatan (opsional)" />
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" @click="dialogOpen = false">Batal</Button>
@@ -76,11 +110,13 @@
             <DialogContent class="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Konfirmasi Hapus</DialogTitle>
-                    <DialogDescription>Apakah Anda yakin ingin menghapus asesor "{{ deleteItem?.nama }}"?</DialogDescription>
+                    <DialogDescription>Apakah Anda yakin ingin menghapus asesor "{{ deleteItem?.nama }}"?
+                    </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                     <Button variant="outline" @click="deleteDialogOpen = false">Batal</Button>
-                    <Button variant="destructive" :disabled="deleting" @click="executeDelete">{{ deleting ? 'Menghapus...' : 'Hapus' }}</Button>
+                    <Button variant="destructive" :disabled="deleting" @click="executeDelete">{{ deleting ?
+                        'Menghapus...' : 'Hapus' }}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -96,6 +132,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import AppSelect from '@/Components/ui/AppSelect.vue';
+import { Badge } from '@/components/ui/badge';
 import { useApi } from '@/composables/useApi';
 
 const { loading, get, post, put, del } = useApi();
@@ -106,7 +144,7 @@ const saving = ref(false);
 const deleteDialogOpen = ref(false);
 const deleteItem = ref(null);
 const deleting = ref(false);
-const form = ref({ id: null, nama: '', nip: '' });
+const form = ref({ id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', logo: '', catatan: '' });
 
 async function fetchItems() {
     try {
@@ -118,10 +156,14 @@ async function fetchItems() {
 function openDialog(item = null) {
     if (item) {
         isEdit.value = true;
-        form.value = { id: item.id, nama: item.nama, nip: item.nip || '' };
+        form.value = {
+            id: item.id, nama: item.nama, instansi: item.instansi || '',
+            jk: item.jk || 'Pria', jenis: item.jenis || 'Internal',
+            logo: item.logo || '', catatan: item.catatan || '',
+        };
     } else {
         isEdit.value = false;
-        form.value = { id: null, nama: '', nip: '' };
+        form.value = { id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', logo: '', catatan: '' };
     }
     dialogOpen.value = true;
 }

@@ -26,23 +26,30 @@
                                 <TableRow>
                                     <TableHead>No</TableHead>
                                     <TableHead>Tahun Ajaran</TableHead>
+                                    <TableHead>Kepala Sekolah</TableHead>
+                                    <TableHead>NIP</TableHead>
                                     <TableHead>Status</TableHead>
+                                    <TableHead>Deskripsi</TableHead>
                                     <TableHead class="text-right">Aksi</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 <TableRow v-for="(item, index) in items" :key="item.id">
                                     <TableCell>{{ index + 1 }}</TableCell>
-                                    <TableCell class="font-medium">{{ item.tahunajaran }}</TableCell>
+                                    <TableCell class="font-medium">{{ item.tahun }}</TableCell>
+                                    <TableCell class="font-medium">{{ item.kepala_sekolah }}</TableCell>
+                                    <TableCell class="font-medium">{{ item.nip }}</TableCell>
                                     <TableCell>
-                                        <Badge :variant="item.status === 'aktif' ? 'default' : 'secondary'">
-                                            {{ item.status || 'tidak aktif' }}
+                                        <Badge :variant="item.aktif ? 'default' : 'secondary'">
+                                            {{ item.aktif ? 'aktif' : 'tidak aktif' }}
                                         </Badge>
                                     </TableCell>
+                                    <TableCell>{{ item.deskripsi }}</TableCell>
                                     <TableCell class="text-right">
                                         <div class="flex items-center justify-end gap-2">
                                             <Button variant="outline" size="sm" @click="openDialog(item)">Edit</Button>
-                                            <Button variant="destructive" size="sm" @click="confirmDelete(item)">Hapus</Button>
+                                            <Button variant="destructive" size="sm"
+                                                @click="confirmDelete(item)">Hapus</Button>
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -57,19 +64,32 @@
             <DialogContent class="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>{{ isEdit ? 'Edit Tahun Ajaran' : 'Tambah Tahun Ajaran' }}</DialogTitle>
-                    <DialogDescription>{{ isEdit ? 'Perbarui data tahun ajaran' : 'Isi data tahun ajaran baru' }}</DialogDescription>
+                    <DialogDescription>{{ isEdit ? 'Perbarui data tahun ajaran' : 'Isi data tahun ajaran baru' }}
+                    </DialogDescription>
                 </DialogHeader>
                 <form @submit.prevent="save" class="space-y-4">
                     <div class="space-y-2">
-                        <Label for="tahunajaran">Tahun Ajaran</Label>
-                        <Input id="tahunajaran" v-model="form.tahunajaran" placeholder="Contoh: 2024/2025" />
+                        <Label for="tahun">Tahun Ajaran</Label>
+                        <Input id="tahun" v-model="form.tahun" placeholder="Contoh: 2024/2025" />
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="kepala_sekolah">Kepala Sekolah</Label>
+                        <Input id="kepala_sekolah" v-model="form.kepala_sekolah" placeholder="Nama" />
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="nip">NIP</Label>
+                        <Input id="nip" v-model="form.nip" placeholder="Contoh: 123456789012345678" />
                     </div>
                     <div class="space-y-2">
                         <Label for="status">Status</Label>
                         <AppSelect id="status" v-model="form.status">
-                            <option value="aktif">Aktif</option>
-                            <option value="tidak aktif">Tidak Aktif</option>
+                            <option value="true">Aktif</option>
+                            <option value="false">Tidak Aktif</option>
                         </AppSelect>
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="tahunajaran">Deskripsi</Label>
+                        <Input id="deskripsi" v-model="form.deskripsi" placeholder="" />
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" @click="dialogOpen = false">Batal</Button>
@@ -83,11 +103,13 @@
             <DialogContent class="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Konfirmasi Hapus</DialogTitle>
-                    <DialogDescription>Apakah Anda yakin ingin menghapus tahun ajaran "{{ deleteItem?.tahunajaran }}"?</DialogDescription>
+                    <DialogDescription>Apakah Anda yakin ingin menghapus tahun ajaran "{{ deleteItem?.tahunajaran }}"?
+                    </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                     <Button variant="outline" @click="deleteDialogOpen = false">Batal</Button>
-                    <Button variant="destructive" :disabled="deleting" @click="executeDelete">{{ deleting ? 'Menghapus...' : 'Hapus' }}</Button>
+                    <Button variant="destructive" :disabled="deleting" @click="executeDelete">{{ deleting ?
+                        'Menghapus...' : 'Hapus' }}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -116,7 +138,8 @@ const deleteDialogOpen = ref(false);
 const deleteItem = ref(null);
 const deleting = ref(false);
 
-const form = ref({ id: null, tahunajaran: '', status: 'aktif' });
+const form = ref({ id: null, tahun: 0, aktif: true, kepala_sekolah: '', nip: '', deskripsi: '' });
+
 
 async function fetchItems() {
     try {
@@ -128,10 +151,11 @@ async function fetchItems() {
 function openDialog(item = null) {
     if (item) {
         isEdit.value = true;
-        form.value = { id: item.id, tahunajaran: item.tahunajaran, status: item.status || 'aktif' };
+        form.value = { id: item.id, tahun: item.tahun, aktif: item.aktif, kepala_sekolah: item.kepala_sekolah || '', nip: item.nip || '', deskripsi: item.deskripsi || '' };
     } else {
         isEdit.value = false;
-        form.value = { id: null, tahunajaran: '', status: 'aktif' };
+        form.value = { id: null, tahun: new Date().getFullYear(), aktif: true, kepala_sekolah: '', nip: '', deskripsi: '' };
+
     }
     dialogOpen.value = true;
 }
