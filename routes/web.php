@@ -5,16 +5,17 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome');
 });
 
-Route::get('/link', function () {        
+Route::get('/link', function () {
     Artisan::call('storage:link');
-  });
+});
 
- Route::get('/auth/login', [LoginController::class, 'show'])->name('login');
+Route::get('/auth/login', [LoginController::class, 'show'])->name('login');
 Route::get('/auth/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/auth/login', [LoginController::class, 'login']);
 
@@ -60,7 +61,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     //laporan
-    
+
     Route::get('/admin/lkelulusan', function () {
         return view('laporanKelulusan');
     });
@@ -68,6 +69,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin/laksesor', function () {
         return view('laporanAksesor');
     });
-
-
 });
