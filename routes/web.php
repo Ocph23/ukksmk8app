@@ -30,17 +30,19 @@ Route::post('/auth/register', [RegisterController::class, 'register']);
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/admin', function () {
-        return view('home');
+        return Inertia::render('Dashboard');
     });
 
-    Route::get('/admin/jurusan', [JurusanController::class, 'getJurusan']);
+    Route::get('/admin/jurusan', function () {
+        return Inertia::render('Jurusan/Index');
+    });
 
     Route::get('/admin/tahunajaran', function () {
-        return view('tahunajaran');
+        return Inertia::render('TahunAjaran/Index');
     });
 
     Route::get('/admin/aksesor', function () {
-        return view('aksesor');
+        return Inertia::render('Aksesor/Index');
     });
 
     Route::get('/admin/siswa', function () {
