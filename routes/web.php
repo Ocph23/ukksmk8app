@@ -46,19 +46,19 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::get('/admin/siswa', function () {
-        return view('siswa');
+        return Inertia::render('Siswa/Index');
     })->name('siswa');
 
-    Route::get('/admin/siswa/{id}', function () {
-        return view('siswadetail');
+    Route::get('/admin/siswa/{id}', function ($id) {
+        return Inertia::render('Siswa/Detail', ['siswaId' => $id]);
     })->name('siswadetail');
 
     Route::get('/admin/paket', function () {
-        return view('paket');
+        return Inertia::render('Paket/Index');
     });
 
-    Route::get('/admin/paket/{id}', function () {
-        return view('paketdetail');
+    Route::get('/admin/paket/{id}', function ($id) {
+        return Inertia::render('Paket/Detail', ['paketId' => $id]);
     });
 
     Route::get('/admin/penilaian/{id}', function () {
