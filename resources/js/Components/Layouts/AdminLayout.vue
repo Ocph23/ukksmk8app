@@ -66,10 +66,23 @@
                 <div class="p-4 border-b border-gray-200">
                     <div class="flex items-center gap-3">
                         <img src="/assets/images/faces/face1.jpg" alt="Profile" class="w-10 h-10 rounded-full" />
-                        <div>
-                            <p class="text-sm font-semibold text-gray-800">{{ auth?.user?.name ?? 'Admin' }}</p>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-gray-800 truncate">{{ auth?.user?.name ?? 'Admin' }}</p>
                             <p class="text-xs text-gray-500">Administrator</p>
                         </div>
+                    </div>
+                    <!-- Active Tahun Ajaran Selector -->
+                    <div class="mt-3">
+                        <label class="text-xs text-gray-500 block mb-1">Tahun Ajaran Aktif</label>
+                        <select
+                            v-model="selectedTa"
+                            @change="changeActiveTa"
+                            class="w-full h-8 text-xs rounded-md border border-gray-300 bg-white px-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        >
+                            <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">
+                                {{ ta.nama }}
+                            </option>
+                        </select>
                     </div>
                 </div>
 
@@ -112,13 +125,36 @@
 </template>
 
 <script setup>
-import { Link, usePage } from '@inertiajs/vue3';
-import { computed, ref, markRaw } from 'vue';
+import { Link, usePage, router } from '@inertiajs/vue3';
+import { computed, ref, markRaw, watch, onMounted } from 'vue';
+import axios from 'axios';
 
 const sidebarOpen = ref(false);
 
 const page = usePage();
 const auth = computed(() => page.props.auth);
+const activeTahunAjaran = computed(() => page.props.activeTahunAjaran);
+
+const selectedTa = ref(activeTahunAjaran.value?.id || null);
+const tahunAjaranList = ref([]);
+
+async function fetchTahunAjaran() {
+    try {
+        const { data } = await axios.get('/api/tahunajaran');
+        tahunAjaranList.value = Array.isArray(data) ? data : [];
+    } catch (e) { console.error(e); }
+}
+
+async function changeActiveTa() {
+    if (!selectedTa.value) return;
+    try {
+        await axios.post(`/api/tahunajaran/${selectedTa.value}/setactive`);
+        // Reload page to get fresh shared props
+        router.reload({ only: ['activeTahunAjaran'] });
+    } catch (e) { console.error(e); }
+}
+
+onMounted(fetchTahunAjaran);
 
 const icons = {
     Home: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>' },

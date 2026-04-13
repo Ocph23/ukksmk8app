@@ -40,6 +40,8 @@ Route::delete('siswa/{id}', [SiswaController::class, 'delete']);
 //tahunajaran
 Route::get('tahunajaran', [TahunAjaranController::class, 'index']);
 Route::get('tahunajaran/{id}', [TahunAjaranController::class, 'byid']);
+Route::get('tahunajaran/aktif', [TahunAjaranController::class, 'aktif']);
+Route::post('tahunajaran/{id}/setactive', [TahunAjaranController::class, 'setActive']);
 Route::post('tahunajaran', [TahunAjaranController::class, 'post']);
 Route::put('tahunajaran/{id}', [TahunAjaranController::class, 'put']);
 Route::delete('tahunajaran/{id}', [TahunAjaranController::class, 'delete']);

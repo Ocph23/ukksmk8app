@@ -24,20 +24,19 @@ class Siswa extends Model
         'paket_id',
     ];
 
-    
-    protected $casts=['jurusan_id'=>'int', 'paket_id'=>'int'];
+    protected $casts = ['jurusan_id' => 'int', 'paket_id' => 'int'];
 
-    public function paket():BelongsTo
+    public function paket(): BelongsTo
     {
         return $this->belongsTo(Paket::class);
     }
 
-    public function jurusan():BelongsTo
+    public function jurusan(): BelongsTo
     {
         return $this->belongsTo(Jurusan::class);
     }
 
-    public function tahunajaran():BelongsTo
+    public function tahunajaran(): BelongsTo
     {
         return $this->belongsTo(TahunAjaran::class);
     }
@@ -49,7 +48,6 @@ class Siswa extends Model
 
     public function sertifikat(): HasOne
     {
-        return $this->hasOne(Sertifikat::class,'siswa_id');
+        return $this->hasOne(Sertifikat::class, 'siswa_id');
     }
-
 }

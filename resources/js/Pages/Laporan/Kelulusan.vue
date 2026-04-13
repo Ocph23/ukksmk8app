@@ -86,7 +86,7 @@ import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { useApi } from '@/composables/useApi';
 
-const { loading, get } = useApi();
+const { loading, get, activeTahunAjaranId, fetchActiveTahunAjaran } = useApi();
 const filterTa = ref('');
 const filterJurusan = ref('');
 const report = ref([]);
@@ -106,6 +106,10 @@ async function fetchReport() {
 function printReport() { window.print(); }
 
 onMounted(async () => {
+    await fetchActiveTahunAjaran();
+    if (activeTahunAjaranId.value) {
+        filterTa.value = activeTahunAjaranId.value;
+    }
     try {
         const [ta, jurusan] = await Promise.all([get('/tahunajaran'), get('/jurusan')]);
         tahunAjaranList.value = Array.isArray(ta) ? ta : [];

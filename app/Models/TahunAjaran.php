@@ -14,16 +14,13 @@ class TahunAjaran extends Model
         'deskripsi',
     ];
 
-    protected $appends = [
-        'nama',
-    ];
-    
+    protected $appends = ['nama'];
+
     protected $casts = ['aktif' => 'boolean'];
 
     public function getNamaAttribute()
     {
-        $nama = $this->tahun+1;
+        $nama = $this->tahun + 1;
         return "{$this->tahun}/{$nama}";
     }
-
 }

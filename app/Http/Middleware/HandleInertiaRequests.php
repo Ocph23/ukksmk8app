@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,6 +36,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $activeTa = TahunAjaran::where('aktif', true)->first();
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -44,6 +47,11 @@ class HandleInertiaRequests extends Middleware
                     'email' => $request->user()->email,
                 ] : null,
             ],
+            'activeTahunAjaran' => $activeTa ? [
+                'id' => $activeTa->id,
+                'tahun' => $activeTa->tahun,
+                'nama' => $activeTa->nama,
+            ] : null,
         ];
     }
 }

@@ -48,6 +48,24 @@ class TahunAjaranController extends Controller
         }
     }
 
+    public function setActive($id, Request $req)
+    {
+        try {
+            $ta = TahunAjaran::find($id);
+            if (!$ta) {
+                throw new Error("Data TahunAjaran tidak ditemukan");
+            }
+            // Deactivate all, then activate the selected one
+            TahunAjaran::where('aktif', true)->update(['aktif' => false]);
+            $ta->aktif = true;
+            $ta->save();
+            return response()->json($ta, 200);
+        } catch (\Throwable $th) {
+            $errorMessage["message"] = $th->getMessage();
+            return response()->json($errorMessage, 400);
+        }
+    }
+
     public function post(Request $req)
     {
 

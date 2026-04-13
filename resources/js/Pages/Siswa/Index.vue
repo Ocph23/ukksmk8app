@@ -173,7 +173,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useApi } from '@/composables/useApi';
 
-const { loading, get, post, put, del } = useApi();
+const { loading, get, post, put, del, activeTahunAjaranId, fetchActiveTahunAjaran } = useApi();
 const items = ref([]);
 const search = ref('');
 const filterTahun = ref('');
@@ -257,5 +257,11 @@ async function executeDelete() {
     catch (e) { console.error(e); } finally { deleting.value = false; }
 }
 
-onMounted(fetchItems);
+onMounted(async () => {
+    await fetchActiveTahunAjaran();
+    if (activeTahunAjaranId.value) {
+        filterTahun.value = activeTahunAjaranId.value;
+    }
+    await fetchItems();
+});
 </script>
