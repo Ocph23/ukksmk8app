@@ -20,10 +20,10 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="flex-1">
                             <Label class="text-xs text-gray-500 mb-1">Tahun Ajaran</Label>
-                            <select v-model="filterTahun" @change="fetchItems" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                            <AppSelect v-model="filterTahun" @update:model-value="fetchItems">
                                 <option value="">Semua</option>
                                 <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahunajaran }}</option>
-                            </select>
+                            </AppSelect>
                         </div>
                         <div class="flex-1">
                             <Label class="text-xs text-gray-500 mb-1">Cari NIS / Nama</Label>
@@ -97,10 +97,10 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-2">
                             <Label for="jk">Jenis Kelamin</Label>
-                            <select id="jk" v-model="form.jk" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                            <AppSelect id="jk" v-model="form.jk">
                                 <option value="L">Laki-laki</option>
                                 <option value="P">Perempuan</option>
-                            </select>
+                            </AppSelect>
                         </div>
                         <div class="space-y-2">
                             <Label for="tempatlahir">Tempat Lahir</Label>
@@ -118,24 +118,24 @@
                     <div class="grid grid-cols-3 gap-3">
                         <div class="space-y-2">
                             <Label for="jurusan_id">Jurusan</Label>
-                            <select id="jurusan_id" v-model="form.jurusan_id" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                            <AppSelect id="jurusan_id" v-model="form.jurusan_id">
                                 <option value="">Pilih</option>
                                 <option v-for="j in jurusanList" :key="j.id" :value="j.id">{{ j.nama }}</option>
-                            </select>
+                            </AppSelect>
                         </div>
                         <div class="space-y-2">
                             <Label for="tahunajaran_id">Tahun Ajaran</Label>
-                            <select id="tahunajaran_id" v-model="form.tahunajaran_id" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                            <AppSelect id="tahunajaran_id" v-model="form.tahunajaran_id">
                                 <option value="">Pilih</option>
                                 <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahunajaran }}</option>
-                            </select>
+                            </AppSelect>
                         </div>
                         <div class="space-y-2">
                             <Label for="paket_id">Paket</Label>
-                            <select id="paket_id" v-model="form.paket_id" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                            <AppSelect id="paket_id" v-model="form.paket_id">
                                 <option value="">Pilih</option>
                                 <option v-for="p in paketList" :key="p.id" :value="p.id">{{ p.nama }}</option>
-                            </select>
+                            </AppSelect>
                         </div>
                     </div>
                     <DialogFooter>
@@ -171,6 +171,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import AppSelect from '@/Components/ui/AppSelect.vue';
 import { useApi } from '@/composables/useApi';
 
 const { loading, get, post, put, del, activeTahunAjaranId, fetchActiveTahunAjaran } = useApi();

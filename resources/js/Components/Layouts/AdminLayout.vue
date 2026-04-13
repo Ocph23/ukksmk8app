@@ -77,7 +77,7 @@
                         <select
                             v-model="selectedTa"
                             @change="changeActiveTa"
-                            class="w-full h-8 text-xs rounded-md border border-gray-300 bg-white px-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            class="w-full h-8 text-xs rounded-md border border-input bg-background px-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 outline-none"
                         >
                             <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">
                                 {{ ta.nama }}

@@ -66,10 +66,10 @@
                     </div>
                     <div class="space-y-2">
                         <Label for="status">Status</Label>
-                        <select id="status" v-model="form.status" class="w-full h-10 rounded-md border border-input bg-background px-3">
+                        <AppSelect id="status" v-model="form.status">
                             <option value="aktif">Aktif</option>
                             <option value="tidak aktif">Tidak Aktif</option>
-                        </select>
+                        </AppSelect>
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" @click="dialogOpen = false">Batal</Button>
@@ -104,6 +104,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import AppSelect from '@/Components/ui/AppSelect.vue';
 import { useApi } from '@/composables/useApi';
 
 const { loading, get, post, put, del } = useApi();

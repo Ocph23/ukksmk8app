@@ -40,8 +40,8 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <label class="flex items-center gap-2 text-sm text-gray-600">
-                            <input v-model="form.remember" type="checkbox" class="rounded border-gray-300" />
-                            Keep me signed in
+                            <Checkbox id="remember" v-model:checked="form.remember" />
+                            <span>Keep me signed in</span>
                         </label>
                         <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
                     </div>
@@ -76,6 +76,7 @@ import AuthLayout from '@/Components/Layouts/AuthLayout.vue';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 
 const form = useForm({

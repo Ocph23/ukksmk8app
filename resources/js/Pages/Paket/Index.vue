@@ -20,10 +20,10 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="flex-1">
                             <Label class="text-xs text-gray-500 mb-1">Tahun Ajaran</Label>
-                            <select v-model="filterTahun" @change="fetchItems" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                            <AppSelect v-model="filterTahun" @update:model-value="fetchItems">
                                 <option value="">Semua</option>
                                 <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahunajaran }}</option>
-                            </select>
+                            </AppSelect>
                         </div>
                     </div>
                 </CardContent>
@@ -78,10 +78,10 @@
                     </div>
                     <div class="space-y-2">
                         <Label for="tahunajaran_id">Tahun Ajaran</Label>
-                        <select id="tahunajaran_id" v-model="form.tahunajaran_id" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                        <AppSelect id="tahunajaran_id" v-model="form.tahunajaran_id">
                             <option value="">Pilih</option>
                             <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahunajaran }}</option>
-                        </select>
+                        </AppSelect>
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" @click="dialogOpen = false">Batal</Button>
@@ -115,6 +115,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import AppSelect from '@/Components/ui/AppSelect.vue';
 import { useApi } from '@/composables/useApi';
 
 const { loading, get, post, put, del, activeTahunAjaranId, fetchActiveTahunAjaran } = useApi();

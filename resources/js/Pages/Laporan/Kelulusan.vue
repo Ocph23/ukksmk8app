@@ -12,17 +12,17 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="flex-1">
                             <Label class="text-xs text-gray-500 mb-1">Tahun Ajaran</Label>
-                            <select v-model="filterTa" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                            <AppSelect v-model="filterTa">
                                 <option value="">Pilih</option>
                                 <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahunajaran }}</option>
-                            </select>
+                            </AppSelect>
                         </div>
                         <div class="flex-1">
                             <Label class="text-xs text-gray-500 mb-1">Jurusan</Label>
-                            <select v-model="filterJurusan" class="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                            <AppSelect v-model="filterJurusan">
                                 <option value="">Pilih</option>
                                 <option v-for="j in jurusanList" :key="j.id" :value="j.id">{{ j.nama }}</option>
-                            </select>
+                            </AppSelect>
                         </div>
                         <div class="flex items-end">
                             <Button @click="fetchReport" :disabled="!filterTa || !filterJurusan || loading">
@@ -84,6 +84,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
+import AppSelect from '@/Components/ui/AppSelect.vue';
 import { useApi } from '@/composables/useApi';
 
 const { loading, get, activeTahunAjaranId, fetchActiveTahunAjaran } = useApi();

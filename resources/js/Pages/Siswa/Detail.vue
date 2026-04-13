@@ -4,10 +4,10 @@
         <div v-else-if="!siswa" class="max-w-4xl mx-auto p-8 text-center text-gray-500">Data siswa tidak ditemukan.</div>
         <div v-else class="max-w-4xl mx-auto">
             <!-- Back button -->
-            <button @click="$inertia.visit('/admin/siswa')" class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-6">
+            <Button variant="ghost" @click="$inertia.visit('/admin/siswa')" class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-6 -ml-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                 Kembali ke Daftar Siswa
-            </button>
+            </Button>
 
             <!-- Profile Card -->
             <Card class="mb-6">
@@ -83,6 +83,7 @@ import { ref, onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useApi } from '@/composables/useApi';
 
