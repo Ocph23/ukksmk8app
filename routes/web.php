@@ -15,11 +15,15 @@ Route::get('/link', function () {
     Artisan::call('storage:link');
 });
 
-Route::get('/auth/login', [LoginController::class, 'show'])->name('login');
+Route::get('/auth/login', function () {
+    return Inertia::render('Auth/Login');
+})->name('login');
 Route::get('/auth/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/auth/login', [LoginController::class, 'login']);
 
-Route::get('/auth/register', [RegisterController::class, 'show']);
+Route::get('/auth/register', function () {
+    return Inertia::render('Auth/Register');
+});
 Route::post('/auth/register', [RegisterController::class, 'register']);
 
 
