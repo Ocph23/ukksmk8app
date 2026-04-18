@@ -6,6 +6,7 @@ use App\Http\DatabaseHelper;
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use Error;
+use Inertia\Inertia;
 use PDOException;
 use Validator;
 
@@ -17,6 +18,75 @@ class JurusanController extends Controller
         "kode" => "required",
         "deskripsi" => "required",
     ];
+
+    /**
+     * Inertia page untuk daftar jurusan
+     */
+    public function indexInertia()
+    {
+        $jurusan = Jurusan::orderBy('nama')->get();
+        return Inertia::render('Jurusan/Index', [
+            'jurusan' => $jurusan,
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error'),
+            ],
+        ]);
+    }
+
+    public function store(Request $req)
+    {
+        try {
+            $validator = Validator::make($req->all(), $this->fieldValidator);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $Jurusan = new Jurusan($req->all());
+            $Jurusan->save();
+            return redirect()->route('jurusan')->with('success', 'Data jurusan berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['general' => $th->getMessage()])->withInput();
+        }
+    }
+
+    public function update($id, Request $req)
+    {
+        try {
+            $validator = Validator::make($req->all(), $this->fieldValidator);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $Jurusan = Jurusan::find($id);
+            if (!$Jurusan) {
+                return redirect()->back()->withErrors(['general' => 'Data Jurusan tidak ditemukan']);
+            }
+
+            $Jurusan->nama = $req->nama;
+            $Jurusan->kode = $req->kode;
+            $Jurusan->deskripsi = $req->deskripsi;
+            $Jurusan->save();
+            return redirect()->route('jurusan')->with('success', 'Data jurusan berhasil diperbarui');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['general' => $th->getMessage()])->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $Jurusan = Jurusan::find($id);
+            if (!$Jurusan) {
+                return redirect()->back()->withErrors(['general' => 'Data Jurusan tidak ditemukan']);
+            }
+            $Jurusan->delete();
+            return redirect()->route('jurusan')->with('success', 'Data jurusan berhasil dihapus');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['general' => $th->getMessage()]);
+        }
+    }
+
     public function index()
     {
         $Jurusan = Jurusan::all();

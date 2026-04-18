@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $activeTa = TahunAjaran::where('aktif', true)->first();
+        $tahunAjaranList = TahunAjaran::orderBy('tahun', 'desc')->get();
 
         return [
             ...parent::share($request),
@@ -52,6 +53,11 @@ class HandleInertiaRequests extends Middleware
                 'tahun' => $activeTa->tahun,
                 'nama' => $activeTa->nama,
             ] : null,
+            'tahunAjaranList' => $tahunAjaranList,
+            'flash' => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+            ],
         ];
     }
 }

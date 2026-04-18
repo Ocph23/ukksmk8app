@@ -16,8 +16,7 @@
 
             <Card>
                 <CardContent class="p-0">
-                    <div v-if="loading" class="p-8 text-center text-gray-500">Loading...</div>
-                    <div v-else-if="items.length === 0" class="p-8 text-center text-gray-500">
+                    <div v-if="tahunAjaran.length === 0" class="p-8 text-center text-gray-500">
                         Belum ada data tahun ajaran.
                     </div>
                     <div v-else class="overflow-x-auto">
@@ -34,9 +33,9 @@
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <TableRow v-for="(item, index) in items" :key="item.id">
+                                <TableRow v-for="(item, index) in tahunAjaran" :key="item.id">
                                     <TableCell>{{ index + 1 }}</TableCell>
-                                    <TableCell class="font-medium">{{ item.tahun }}</TableCell>
+                                    <TableCell class="font-medium">{{ item.nama }}</TableCell>
                                     <TableCell class="font-medium">{{ item.kepala_sekolah }}</TableCell>
                                     <TableCell class="font-medium">{{ item.nip }}</TableCell>
                                     <TableCell>
@@ -103,7 +102,7 @@
             <DialogContent class="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Konfirmasi Hapus</DialogTitle>
-                    <DialogDescription>Apakah Anda yakin ingin menghapus tahun ajaran "{{ deleteItem?.tahunajaran }}"?
+                    <DialogDescription>Apakah Anda yakin ingin menghapus tahun ajaran "{{ deleteItem?.nama }}"?
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
@@ -117,7 +116,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch, computed } from 'vue';
+import { router, usePage } from '@inertiajs/vue3';
 import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -127,10 +127,20 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AppSelect from '@/Components/ui/AppSelect.vue';
-import { useApi } from '@/composables/useApi';
+import { success } from '@/composables/useCustomToast';
 
-const { loading, get, post, put, del } = useApi();
-const items = ref([]);
+const page = usePage();
+
+// Safe access to props with fallback
+const tahunAjaran = computed(() => {
+    try {
+        return page.props.tahunAjaran || [];
+    } catch (e) {
+        console.error('Error accessing tahunAjaran prop:', e);
+        return [];
+    }
+});
+
 const dialogOpen = ref(false);
 const isEdit = ref(false);
 const saving = ref(false);
@@ -138,49 +148,73 @@ const deleteDialogOpen = ref(false);
 const deleteItem = ref(null);
 const deleting = ref(false);
 
-const form = ref({ id: null, tahun: 0, aktif: true, kepala_sekolah: '', nip: '', deskripsi: '' });
+const form = ref({ id: null, tahun: 0, aktif: true, kepala_sekolah: '', nip: '', deskripsi: '', status: 'true' });
 
-
-async function fetchItems() {
-    try {
-        const data = await get('/tahunajaran');
-        items.value = Array.isArray(data) ? data : [];
-    } catch (e) { console.error(e); }
-}
+// Watch for flash messages
+watch(() => page.props.flash?.success, (msg) => {
+    if (msg) success('Berhasil', msg);
+});
 
 function openDialog(item = null) {
     if (item) {
         isEdit.value = true;
-        form.value = { id: item.id, tahun: item.tahun, aktif: item.aktif, kepala_sekolah: item.kepala_sekolah || '', nip: item.nip || '', deskripsi: item.deskripsi || '' };
+        form.value = {
+            id: item.id,
+            tahun: item.tahun,
+            aktif: item.aktif,
+            kepala_sekolah: item.kepala_sekolah || '',
+            nip: item.nip || '',
+            deskripsi: item.deskripsi || '',
+            status: item.aktif ? 'true' : 'false'
+        };
     } else {
         isEdit.value = false;
-        form.value = { id: null, tahun: new Date().getFullYear(), aktif: true, kepala_sekolah: '', nip: '', deskripsi: '' };
-
+        form.value = { id: null, tahun: new Date().getFullYear(), aktif: true, kepala_sekolah: '', nip: '', deskripsi: '', status: 'true' };
     }
     dialogOpen.value = true;
 }
 
-async function save() {
+function save() {
     saving.value = true;
-    try {
-        if (isEdit.value) await put(`/tahunajaran/${form.value.id}`, form.value);
-        else await post('/tahunajaran', form.value);
-        dialogOpen.value = false;
-        await fetchItems();
-    } catch (e) { console.error(e); } finally { saving.value = false; }
+    const payload = { ...form.value, aktif: form.value.status === 'true' };
+    delete payload.status;
+
+    if (isEdit.value) {
+        router.put(`/admin/tahunajaran/${form.value.id}`, payload, {
+            preserveScroll: true,
+            onSuccess: () => {
+                dialogOpen.value = false;
+            },
+            onFinish: () => {
+                saving.value = false;
+            }
+        });
+    } else {
+        router.post('/admin/tahunajaran', payload, {
+            preserveScroll: true,
+            onSuccess: () => {
+                dialogOpen.value = false;
+            },
+            onFinish: () => {
+                saving.value = false;
+            }
+        });
+    }
 }
 
 function confirmDelete(item) { deleteItem.value = item; deleteDialogOpen.value = true; }
 
-async function executeDelete() {
+function executeDelete() {
     if (!deleteItem.value) return;
     deleting.value = true;
-    try {
-        await del(`/tahunajaran/${deleteItem.value.id}`);
-        deleteDialogOpen.value = false;
-        await fetchItems();
-    } catch (e) { console.error(e); } finally { deleting.value = false; }
+    router.delete(`/admin/tahunajaran/${deleteItem.value.id}`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            deleteDialogOpen.value = false;
+        },
+        onFinish: () => {
+            deleting.value = false;
+        }
+    });
 }
-
-onMounted(fetchItems);
 </script>

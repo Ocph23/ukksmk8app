@@ -18,8 +18,7 @@
             <!-- Table -->
             <Card>
                 <CardContent class="p-0">
-                    <div v-if="loading" class="p-8 text-center text-gray-500">Loading...</div>
-                    <div v-else-if="items.length === 0" class="p-8 text-center text-gray-500">
+                    <div v-if="jurusan.length === 0" class="p-8 text-center text-gray-500">
                         Belum ada data jurusan.
                     </div>
                     <div v-else class="overflow-x-auto">
@@ -34,7 +33,7 @@
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <TableRow v-for="(item, index) in items" :key="item.id">
+                                <TableRow v-for="(item, index) in jurusan" :key="item.id">
                                     <TableCell>{{ index + 1 }}</TableCell>
                                     <TableCell class="font-mono text-sm">{{ item.kode }}</TableCell>
                                     <TableCell class="font-medium">{{ item.nama }}</TableCell>
@@ -113,7 +112,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
+import { router, usePage } from '@inertiajs/vue3';
 import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -121,11 +121,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { useApi } from '@/composables/useApi';
+import { success } from '@/composables/useCustomToast';
 
-const { loading, get, post, put, del } = useApi();
+const page = usePage();
+const jurusan = ref(page.props.jurusan || []);
 
-const items = ref([]);
 const dialogOpen = ref(false);
 const isEdit = ref(false);
 const saving = ref(false);
@@ -143,14 +143,17 @@ const deleteDialogOpen = ref(false);
 const deleteItem = ref(null);
 const deleting = ref(false);
 
-async function fetchItems() {
-    try {
-        const data = await get('/jurusan');
-        items.value = Array.isArray(data) ? data : [];
-    } catch (e) {
-        console.error('Failed to fetch jurusan:', e);
+// Watch for flash messages
+watch(() => page.props.flash?.success, (msg) => {
+    if (msg) success('Berhasil', msg);
+});
+
+// Watch for validation errors
+watch(() => page.props.errors, (newErrors) => {
+    if (newErrors && Object.keys(newErrors).length > 0) {
+        errors.value = newErrors;
     }
-}
+});
 
 function openDialog(item = null) {
     if (item) {
@@ -164,26 +167,36 @@ function openDialog(item = null) {
     dialogOpen.value = true;
 }
 
-async function save() {
+function save() {
     saving.value = true;
     errors.value = {};
-    try {
-        if (isEdit.value) {
-            await put(`/jurusan/${form.value.id}`, form.value);
-        } else {
-            await post('/jurusan', form.value);
-        }
-        dialogOpen.value = false;
-        await fetchItems();
-    } catch (e) {
-        const msg = e.response?.data?.message;
-        if (msg) {
-            errors.value = { general: msg };
-        } else {
-            errors.value = { general: 'Gagal menyimpan data' };
-        }
-    } finally {
-        saving.value = false;
+
+    if (isEdit.value) {
+        router.put(`/admin/jurusan/${form.value.id}`, form.value, {
+            preserveScroll: true,
+            onError: (errs) => {
+                errors.value = errs;
+            },
+            onSuccess: () => {
+                dialogOpen.value = false;
+            },
+            onFinish: () => {
+                saving.value = false;
+            }
+        });
+    } else {
+        router.post('/admin/jurusan', form.value, {
+            preserveScroll: true,
+            onError: (errs) => {
+                errors.value = errs;
+            },
+            onSuccess: () => {
+                dialogOpen.value = false;
+            },
+            onFinish: () => {
+                saving.value = false;
+            }
+        });
     }
 }
 
@@ -192,19 +205,17 @@ function confirmDelete(item) {
     deleteDialogOpen.value = true;
 }
 
-async function executeDelete() {
+function executeDelete() {
     if (!deleteItem.value) return;
     deleting.value = true;
-    try {
-        await del(`/jurusan/${deleteItem.value.id}`);
-        deleteDialogOpen.value = false;
-        await fetchItems();
-    } catch (e) {
-        console.error('Failed to delete:', e);
-    } finally {
-        deleting.value = false;
-    }
+    router.delete(`/admin/jurusan/${deleteItem.value.id}`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            deleteDialogOpen.value = false;
+        },
+        onFinish: () => {
+            deleting.value = false;
+        }
+    });
 }
-
-onMounted(fetchItems);
 </script>

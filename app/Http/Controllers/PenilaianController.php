@@ -53,13 +53,13 @@ class PenilaianController extends Controller
     public function bysiswaid($id)
     {
         try {
-            $Penilaian = Penilaian::where('siswa_id','=',$id)->first();
+            $Penilaian = Penilaian::where('siswa_id', '=', $id)->first();
             if ($Penilaian == null) {
-               $Penilaian = new Penilaian();
-               $Penilaian->siswa_id=$id;
-               $Penilaian->mulai=new DateTime();
-               $Penilaian->selesai=new DateTime();
-               $Penilaian->save();
+                $Penilaian = new Penilaian();
+                $Penilaian->siswa_id = $id;
+                $Penilaian->mulai = new DateTime();
+                $Penilaian->selesai = new DateTime();
+                $Penilaian->save();
             }
 
 
@@ -94,16 +94,17 @@ class PenilaianController extends Controller
                 $paket->kompetensis;
                 $Penilaian->save();
 
-                $details = new Collection();
+                $details = [];
                 foreach ($paket->kompetensis as $row) {
-                    $details->push([
+                    $details[] = [
                         'penilaian_id' => $Penilaian->id,
+                        'siswa_id' => $Penilaian->siswa_id,
                         'nilai'      => 0,
                         'kompeten'   => false,
                         'kompetensi_id' => $row->id
-                    ]);
+                    ];
                 }
-                DetailPenilaian::insert($details->toArray());
+                DetailPenilaian::insert($details);
                 return response()->json($Penilaian, 200);
             }
         } catch (PDOException $ex) {
@@ -132,8 +133,8 @@ class PenilaianController extends Controller
                 $details = new Collection();
                 foreach ($req->detail as $row) {
                     $data = DetailPenilaian::find($row['id']);
-                    $data->nilai=$row['nilai'];
-                    $data->kompeten=$row['kompeten'];
+                    $data->nilai = $row['nilai'];
+                    $data->kompeten = $row['kompeten'];
                     $data->save();
                 }
                 return response()->json($Penilaian, 200);

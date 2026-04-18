@@ -3,5 +3,10 @@
         <div class="w-full max-w-md">
             <slot />
         </div>
+        <CustomToast />
     </div>
 </template>
+
+<script setup>
+import CustomToast from '@/components/ui/CustomToast.vue';
+</script>

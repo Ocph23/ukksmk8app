@@ -3,7 +3,7 @@
         <Card class="border-0 shadow-lg">
             <CardHeader class="text-center">
                 <div class="flex justify-center mb-4">
-                    <img src="/assets/images/smk8logo.jpeg" alt="Logo" class="w-16 h-16 rounded-full" />
+                    <img src="/assets/images/smk8logo.jpeg" alt="Logo" class="w-16 h-16 " />
                 </div>
                 <CardTitle class="text-xl font-bold text-gray-900">SMK 8 TIK JAYAPURA</CardTitle>
                 <CardDescription class="text-base">APLIKASI UKK</CardDescription>
@@ -13,29 +13,14 @@
                 <form @submit.prevent="submit" class="space-y-4">
                     <div>
                         <Label for="username" class="sr-only">Username</Label>
-                        <Input
-                            id="username"
-                            v-model="form.username"
-                            type="email"
-                            placeholder="Username"
-                            class="h-12"
-                            :class="{ 'border-red-500': form.errors.username }"
-                            autocomplete="email"
-                            autofocus
-                        />
+                        <Input id="username" v-model="form.username" type="email" placeholder="Username" class="h-12"
+                            :class="{ 'border-red-500': form.errors.username }" autocomplete="email" autofocus />
                         <p v-if="form.errors.username" class="text-red-500 text-xs mt-1">{{ form.errors.username }}</p>
                     </div>
                     <div>
                         <Label for="password" class="sr-only">Password</Label>
-                        <Input
-                            id="password"
-                            v-model="form.password"
-                            type="password"
-                            placeholder="Password"
-                            class="h-12"
-                            :class="{ 'border-red-500': form.errors.password }"
-                            autocomplete="current-password"
-                        />
+                        <Input id="password" v-model="form.password" type="password" placeholder="Password" class="h-12"
+                            :class="{ 'border-red-500': form.errors.password }" autocomplete="current-password" />
                         <p v-if="form.errors.password" class="text-red-500 text-xs mt-1">{{ form.errors.password }}</p>
                     </div>
                     <div class="flex items-center justify-between">
@@ -45,20 +30,15 @@
                         </label>
                         <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
                     </div>
-                    <Button
-                        type="submit"
+                    <Button type="submit"
                         class="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium"
-                        :disabled="form.processing"
-                    >
+                        :disabled="form.processing">
                         <span v-if="form.processing">Signing in...</span>
                         <span v-else>SIGN IN</span>
                     </Button>
                 </form>
 
-                <!-- Error Alert -->
-                <div v-if="form.errors.email" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <p class="text-red-700 text-sm">{{ form.errors.email }}</p>
-                </div>
+
             </CardContent>
             <CardFooter class="flex justify-center pb-6">
                 <p class="text-sm text-gray-500">
@@ -72,6 +52,7 @@
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import { errorToast } from '@/composables/useCustomToast';
 import AuthLayout from '@/Components/Layouts/AuthLayout.vue';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -88,7 +69,8 @@ const form = useForm({
 function submit() {
     form.post('/auth/login', {
         onError: (errors) => {
-            console.error('Login error:', errors);
+            const message = errors.email || errors.username || errors.password || 'Login gagal. Periksa kembali data Anda.';
+            errorToast('Login Gagal', message);
         },
     });
 }

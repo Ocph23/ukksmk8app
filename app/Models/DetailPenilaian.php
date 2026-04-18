@@ -19,9 +19,15 @@ class DetailPenilaian extends Model
     ];
 
     public $timestamps = false;
-    protected $casts = ['kompeten' => 'boolean', 'nilai'=>'double'];
-    public function kompetensi():BelongsTo{
+    protected $casts = ['kompeten' => 'boolean', 'nilai' => 'double'];
+
+    public function kompetensi(): BelongsTo
+    {
         return $this->BelongsTo(Kompetensi::class);
     }
 
+    public function siswa(): BelongsTo
+    {
+        return $this->BelongsTo(Siswa::class);
+    }
 }

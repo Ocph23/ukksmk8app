@@ -14,7 +14,7 @@
                             <Label class="text-xs text-gray-500 mb-1">Tahun Ajaran</Label>
                             <AppSelect v-model="filterTa">
                                 <option value="">Pilih</option>
-                                <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahunajaran }}</option>
+                                <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahun }}</option>
                             </AppSelect>
                         </div>
                         <div class="flex items-end">
@@ -27,11 +27,15 @@
             <!-- Report -->
             <Card v-if="report.length > 0">
                 <CardHeader>
-                    <CardTitle>Hasil Laporan</CardTitle>
                     <div class="flex items-center justify-between">
-                        <p class="text-sm text-gray-500">{{ report.length }} asesor terdaftar</p>
+                        <div>
+                            <CardTitle>Hasil Laporan</CardTitle>
+                            <p class="text-sm text-gray-500 mt-1">{{ report.length }} asesor terdaftar</p>
+                        </div>
                         <Button variant="outline" size="sm" @click="printReport">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
                             Cetak
                         </Button>
                     </div>
@@ -64,11 +68,47 @@
                 </CardContent>
             </Card>
         </div>
+
+        <!-- Print Section -->
+        <div id="laporan-aksesor-print">
+            <div class="print-header">
+                <h2>LAPORAN ASESOR UJI KOMPETENSI KEJURUAN</h2>
+                <h3>SMK NEGERI 8 TEKNOLOGI INFORMASI DAN KOMUNIKASI KOTA JAYAPURA</h3>
+                <p>Tahun Ajaran: {{ selectedTaNama }}</p>
+                <hr>
+            </div>
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>L/P</th>
+                        <th>Instansi</th>
+                        <th>Jenis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in report" :key="index">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ item.nama }}</td>
+                        <td>{{ item.jk }}</td>
+                        <td>{{ item.instansi || '-' }}</td>
+                        <td>{{ item.jenis }}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4"><strong>Total Asesor</strong></td>
+                        <td><strong>{{ report.length }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </AdminLayout>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -83,6 +123,8 @@ const filterTa = ref('');
 const report = ref([]);
 const tahunAjaranList = ref([]);
 
+const selectedTaNama = computed(() => tahunAjaranList.value.find(t => t.id == filterTa.value)?.tahunajaran || '');
+
 async function fetchReport() {
     if (!filterTa.value) return;
     try {
@@ -95,12 +137,84 @@ function printReport() { window.print(); }
 
 onMounted(async () => {
     await fetchActiveTahunAjaran();
-    if (activeTahunAjaranId.value) {
-        filterTa.value = activeTahunAjaranId.value;
-    }
+    if (activeTahunAjaranId.value) filterTa.value = activeTahunAjaranId.value;
     try {
         const ta = await get('/tahunajaran');
         tahunAjaranList.value = Array.isArray(ta) ? ta : [];
     } catch (e) { console.error(e); }
 });
 </script>
+
+<style>
+#laporan-aksesor-print {
+    display: none;
+}
+
+@media print {
+    @page { margin: 20mm; }
+
+    body * { visibility: hidden !important; }
+
+    #laporan-aksesor-print,
+    #laporan-aksesor-print * { visibility: visible !important; }
+
+    #laporan-aksesor-print {
+        display: block !important;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        background: white;
+        z-index: 99999;
+    }
+
+    .print-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .print-header h2 {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .print-header h3 {
+        font-size: 13px;
+        margin: 4px 0;
+    }
+
+    .print-header p {
+        font-size: 12px;
+        margin: 6px 0;
+    }
+
+    .print-header hr {
+        border-top: 2px solid #000;
+        margin: 10px 0;
+    }
+
+    .print-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    .print-table th,
+    .print-table td {
+        border: 1px solid #333;
+        padding: 6px 8px;
+        text-align: left;
+    }
+
+    .print-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .print-table tfoot td {
+        font-weight: bold;
+        background-color: #f9f9f9;
+    }
+}
+</style>

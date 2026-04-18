@@ -16,21 +16,7 @@ const props = defineProps<ToasterProps>()
 </script>
 
 <template>
-  <Sonner
-    :class="cn('toaster group', props.class)"
-    :style="{
-      '--normal-bg': 'var(--popover)',
-      '--normal-text': 'var(--popover-foreground)',
-      '--normal-border': 'var(--border)',
-      '--border-radius': 'var(--radius)',
-    }"
-    :toast-options="{
-      classes: {
-        toast: 'rounded-2xl',
-      },
-    }"
-    v-bind="props"
-  >
+  <Sonner :class="cn('toaster group', props.class)" v-bind="props">
     <template #success-icon>
       <CircleCheckIcon class="size-4" />
     </template>

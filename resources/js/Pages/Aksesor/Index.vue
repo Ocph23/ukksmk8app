@@ -16,8 +16,7 @@
 
             <Card>
                 <CardContent class="p-0">
-                    <div v-if="loading" class="p-8 text-center text-gray-500">Loading...</div>
-                    <div v-else-if="items.length === 0" class="p-8 text-center text-gray-500">
+                    <div v-if="asesor.length === 0" class="p-8 text-center text-gray-500">
                         Belum ada data asesor.
                     </div>
                     <div v-else class="overflow-x-auto">
@@ -33,7 +32,7 @@
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <TableRow v-for="(item, index) in items" :key="item.id">
+                                <TableRow v-for="(item, index) in asesor" :key="item.id">
                                     <TableCell>{{ index + 1 }}</TableCell>
                                     <TableCell class="font-medium">{{ item.nama }}</TableCell>
                                     <TableCell>{{ item.instansi || '-' }}</TableCell>
@@ -157,7 +156,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
+import { router, usePage } from '@inertiajs/vue3';
 import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -167,10 +167,11 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AppSelect from '@/Components/ui/AppSelect.vue';
 import { Badge } from '@/components/ui/badge';
-import { useApi } from '@/composables/useApi';
+import { success } from '@/composables/useCustomToast';
 
-const { loading, get, post, put, del } = useApi();
-const items = ref([]);
+const page = usePage();
+const asesor = ref(page.props.asesor || []);
+
 const dialogOpen = ref(false);
 const isEdit = ref(false);
 const saving = ref(false);
@@ -182,12 +183,10 @@ const logoItem = ref(null);
 const form = ref({ id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', dataLogo: '', catatan: '' });
 const logoPreview = ref('');
 
-async function fetchItems() {
-    try {
-        const data = await get('/aksesor');
-        items.value = Array.isArray(data) ? data : [];
-    } catch (e) { console.error(e); }
-}
+// Watch for flash messages
+watch(() => page.props.flash?.success, (msg) => {
+    if (msg) success('Berhasil', msg);
+});
 
 function openDialog(item = null) {
     if (item) {
@@ -225,30 +224,48 @@ function viewLogo(item) {
 function getLogoUrl(logoFilename) {
     if (!logoFilename) return '';
     if (logoFilename.startsWith('data:')) return logoFilename;
-    return `/instansi/${logoFilename}`;
+    return `/storage/instansi/${logoFilename}`;
 }
 
-async function save() {
+function save() {
     saving.value = true;
-    try {
-        if (isEdit.value) await put(`/aksesor/${form.value.id}`, form.value);
-        else await post('/aksesor', form.value);
-        dialogOpen.value = false;
-        await fetchItems();
-    } catch (e) { console.error(e); } finally { saving.value = false; }
+
+    if (isEdit.value) {
+        router.put(`/admin/aksesor/${form.value.id}`, form.value, {
+            preserveScroll: true,
+            onSuccess: () => {
+                dialogOpen.value = false;
+            },
+            onFinish: () => {
+                saving.value = false;
+            }
+        });
+    } else {
+        router.post('/admin/aksesor', form.value, {
+            preserveScroll: true,
+            onSuccess: () => {
+                dialogOpen.value = false;
+            },
+            onFinish: () => {
+                saving.value = false;
+            }
+        });
+    }
 }
 
 function confirmDelete(item) { deleteItem.value = item; deleteDialogOpen.value = true; }
 
-async function executeDelete() {
+function executeDelete() {
     if (!deleteItem.value) return;
     deleting.value = true;
-    try {
-        await del(`/aksesor/${deleteItem.value.id}`);
-        deleteDialogOpen.value = false;
-        await fetchItems();
-    } catch (e) { console.error(e); } finally { deleting.value = false; }
+    router.delete(`/admin/aksesor/${deleteItem.value.id}`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            deleteDialogOpen.value = false;
+        },
+        onFinish: () => {
+            deleting.value = false;
+        }
+    });
 }
-
-onMounted(fetchItems);
 </script>

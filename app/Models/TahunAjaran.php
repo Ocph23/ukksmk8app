@@ -12,6 +12,8 @@ class TahunAjaran extends Model
         'tahun',
         'aktif',
         'deskripsi',
+        'kepala_sekolah',
+        'nip',
     ];
 
     protected $appends = ['nama'];

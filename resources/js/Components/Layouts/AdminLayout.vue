@@ -1,84 +1,85 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen transition-colors">
+
         <!-- Top Navbar -->
-        <nav class="bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-30">
+        <nav
+            class="shadow-sm border-b border-gray-200 dark:border-gray-700 fixed top-0 left-0 right-0 z-30 transition-colors">
             <div class="flex items-center justify-between h-16 px-4">
                 <div class="flex items-center gap-3">
-                    <button
-                        @click="sidebarOpen = !sidebarOpen"
-                        class="p-2 rounded-md text-gray-600 hover:bg-gray-100 lg:hidden"
-                    >
+                    <button @click="sidebarOpen = true"
+                        class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 lg:hidden">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                     <a href="/admin" class="flex items-center gap-2">
                         <img src="/assets/images/smk8logo.jpeg" alt="Logo" class="w-10 h-10 rounded" />
-                        <span class="text-lg font-semibold text-gray-800 hidden sm:block">UKK App</span>
+                        <span class="text-lg font-semibold text-gray-800 dark:text-gray-100 hidden sm:block">SISTEM
+                            INFORMASI UKK</span>
                     </a>
                 </div>
                 <div class="flex items-center gap-4">
-                    <div class="relative group">
-                        <button class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition">
-                            <img src="/assets/images/faces/face1.jpg" alt="Profile" class="w-8 h-8 rounded-full" />
-                            <span class="text-sm font-medium text-gray-700 hidden md:block">{{ auth?.user?.name ?? 'Admin' }}</span>
-                        </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                            <div class="p-3 border-b border-gray-100">
-                                <p class="text-sm font-medium text-gray-800">{{ auth?.user?.name ?? 'Admin' }}</p>
-                                <p class="text-xs text-gray-500">Administrator</p>
-                            </div>
-                            <Link
-                                href="/auth/logout"
-                                method="get"
-                                as="button"
-                                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
-                            >
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                    </svg>
-                                    Sign Out
+                    <!-- Theme Toggle -->
+                    <ThemeToggle />
+
+                    <!-- Profile Dropdown -->
+                    <DropdownMenu>
+                        <DropdownMenuTrigger as-child>
+                            <button
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <Avatar>
+                                    <AvatarImage src="/assets/images/faces/face1.jpg" alt="Profile" />
+                                    <AvatarFallback>{{ auth?.user?.name?.charAt(0) ?? 'A' }}</AvatarFallback>
+                                </Avatar>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-200 hidden md:block">{{
+                                    auth?.user?.name ?? 'Admin' }}</span>
+                            </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent class="w-56" align="end">
+                            <DropdownMenuLabel>
+                                <div>
+                                    <p class="text-sm font-medium">{{ auth?.user?.name ?? 'Admin' }}</p>
+                                    <p class="text-xs text-muted-foreground">Administrator</p>
                                 </div>
-                            </Link>
-                        </div>
-                    </div>
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem as-child>
+                                <Link href="/auth/logout" method="get" as="button"
+                                    class="w-full cursor-pointer text-red-600 focus:text-red-600">
+                                    <LogOut class="mr-2 h-4 w-4" />
+                                    Sign Out
+                                </Link>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
         </nav>
 
-        <!-- Sidebar Overlay (mobile) -->
-        <div
-            v-if="sidebarOpen"
-            class="fixed inset-0 bg-black/50 z-40 lg:hidden"
-            @click="sidebarOpen = false"
-        />
-
-        <!-- Sidebar -->
+        <!-- Sidebar for Desktop -->
         <aside
-            :class="[
-                'fixed top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out',
-                sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-            ]"
-        >
+            class="hidden lg:block fixed top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 border-r border-gray-200 dark:border-gray-700">
             <div class="flex flex-col h-full">
                 <!-- Sidebar Profile -->
-                <div class="p-4 border-b border-gray-200">
+                <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex items-center gap-3">
-                        <img src="/assets/images/faces/face1.jpg" alt="Profile" class="w-10 h-10 rounded-full" />
+                        <Avatar>
+                            <AvatarImage src="/assets/images/faces/face1.jpg" alt="Profile" />
+                            <AvatarFallback>{{ auth?.user?.name?.charAt(0) ?? 'A' }}</AvatarFallback>
+                        </Avatar>
                         <div class="min-w-0">
-                            <p class="text-sm font-semibold text-gray-800 truncate">{{ auth?.user?.name ?? 'Admin' }}</p>
-                            <p class="text-xs text-gray-500">Administrator</p>
+                            <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">{{
+                                auth?.user?.name ?? 'Admin' }}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Administrator</p>
                         </div>
                     </div>
-                    <!-- Active Tahun Ajaran Selector -->
+                    <!-- Active Tahun Ajaran Selector (Filter Only) -->
                     <div class="mt-3">
-                        <label class="text-xs text-gray-500 block mb-1">Tahun Ajaran Aktif</label>
-                        <select
-                            v-model="selectedTa"
-                            @change="changeActiveTa"
-                            class="w-full h-8 text-xs rounded-md border border-input bg-background px-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 outline-none"
-                        >
+                        <label class="text-xs block mb-1">Filter Tahun Ajaran</label>
+                        <select v-model="selectedTa" @change="onFilterChange"
+                            class="w-full h-8 text-xs rounded-md border border-input  px-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 outline-none text-gray-700 dark:text-gray-200">
+                            <option :value="null">Semua</option>
                             <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">
                                 {{ ta.nama }}
                             </option>
@@ -89,16 +90,13 @@
                 <!-- Sidebar Menu -->
                 <nav class="flex-1 overflow-y-auto p-3">
                     <ul class="space-y-1">
-                        <li v-for="item in menuItems" :key="item.href">
-                            <Link
-                                :href="item.href"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition"
-                                :class="[
+                        <li v-for="item in menuItems" :key="item.label">
+                            <Link :href="item.href"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition" :class="[
                                     isActive(item.href)
-                                        ? 'bg-blue-50 text-blue-700 font-medium'
-                                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                                ]"
-                            >
+                                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
+                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100'
+                                ]">
                                 <component :is="item.icon" class="w-5 h-5 flex-shrink-0" />
                                 {{ item.label }}
                             </Link>
@@ -107,11 +105,70 @@
                 </nav>
 
                 <!-- Sidebar Footer -->
-                <div class="p-4 border-t border-gray-200">
-                    <p class="text-xs text-gray-400 text-center">&copy; 2024 UKK App</p>
+                <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-400 dark:text-gray-500 text-center">&copy; 2024 UKK App</p>
                 </div>
             </div>
         </aside>
+
+        <!-- Mobile Sidebar using shadcn Sheet -->
+        <Sheet v-model:open="sidebarOpen">
+            <SheetContent side="left" class="w-64 p-0">
+                <div class="flex flex-col h-full">
+                    <!-- Sidebar Profile -->
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center gap-3">
+                            <Avatar>
+                                <AvatarImage src="/assets/images/faces/face1.jpg" alt="Profile" />
+                                <AvatarFallback>{{ auth?.user?.name?.charAt(0) ?? 'A' }}</AvatarFallback>
+                            </Avatar>
+                            <div class="min-w-0">
+                                <SheetTitle class="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">{{
+                                    auth?.user?.name ?? 'Admin' }}</SheetTitle>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Administrator</p>
+                            </div>
+                        </div>
+                        <!-- Active Tahun Ajaran Selector (Filter Only) -->
+                        <div class="mt-3">
+                            <label class="text-xs text-gray-500 dark:text-gray-400 block mb-1">Filter Tahun
+                                Ajaran</label>
+                            <select v-model="selectedTa" @change="onFilterChange"
+                                class="w-full h-8 text-xs rounded-md border border-input bg-background dark:bg-gray-700 px-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 outline-none text-gray-700 dark:text-gray-200">
+                                <option :value="null">Semua</option>
+                                <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">
+                                    {{ ta.nama }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Menu -->
+                    <nav class="flex-1 overflow-y-auto p-3">
+                        <ul class="space-y-1">
+                            <li v-for="item in menuItems" :key="item.label">
+                                <SheetClose as-child>
+                                    <Link :href="item.href"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition"
+                                        :class="[
+                                            isActive(item.href)
+                                                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
+                                                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100'
+                                        ]">
+                                        <component :is="item.icon" class="w-5 h-5 flex-shrink-0" />
+                                        {{ item.label }}
+                                    </Link>
+                                </SheetClose>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <!-- Sidebar Footer -->
+                    <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+                        <p class="text-xs text-gray-400 dark:text-gray-500 text-center">&copy; 2024 UKK App</p>
+                    </div>
+                </div>
+            </SheetContent>
+        </Sheet>
 
         <!-- Main Content -->
         <div class="lg:ml-64">
@@ -121,64 +178,82 @@
                 </div>
             </main>
         </div>
+        <CustomToast />
     </div>
 </template>
 
 <script setup>
 import { Link, usePage, router } from '@inertiajs/vue3';
-import { computed, ref, markRaw, watch, onMounted } from 'vue';
-import axios from 'axios';
+import { computed, ref, markRaw, watch } from 'vue';
+import CustomToast from '@/components/ui/CustomToast.vue';
+import ThemeToggle from '@/components/ThemeToggle.vue';
+import { LogOut, Home, School, CalendarDays, Users, Package, ClipboardList, GraduationCap, BarChart3 } from 'lucide-vue-next';
+
+// shadcn imports
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetTitle,
+} from '@/components/ui/sheet';
 
 const sidebarOpen = ref(false);
 
 const page = usePage();
 const auth = computed(() => page.props.auth);
 const activeTahunAjaran = computed(() => page.props.activeTahunAjaran);
+const tahunAjaranList = computed(() => page.props.tahunAjaranList || []);
 
-const selectedTa = ref(activeTahunAjaran.value?.id || null);
-const tahunAjaranList = ref([]);
-
-async function fetchTahunAjaran() {
-    try {
-        const { data } = await axios.get('/api/tahunajaran');
-        tahunAjaranList.value = Array.isArray(data) ? data : [];
-    } catch (e) { console.error(e); }
-}
-
-async function changeActiveTa() {
-    if (!selectedTa.value) return;
-    try {
-        await axios.post(`/api/tahunajaran/${selectedTa.value}/setactive`);
-        // Reload page to get fresh shared props
-        router.reload({ only: ['activeTahunAjaran'] });
-    } catch (e) { console.error(e); }
-}
-
-onMounted(fetchTahunAjaran);
-
-const icons = {
-    Home: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>' },
-    Contacts: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>' },
-    Calendar: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>' },
-    Users: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" /></svg>' },
-    Package: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>' },
-    ClipboardList: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>' },
-    GraduationCap: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /></svg>' },
-    ChartBar: { template: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>' },
+// Get current URL query params reactively
+const getQueryParam = (key) => {
+    const url = new URL(window.location.href);
+    const val = url.searchParams.get(key);
+    return val ? parseInt(val) : null;
 };
 
-const menuItems = [
-    { label: 'Dashboard', href: '/admin', icon: markRaw(icons.Home) },
-    { label: 'Jurusan', href: '/admin/jurusan', icon: markRaw(icons.Contacts) },
-    { label: 'Tahun Ajaran', href: '/admin/tahunajaran', icon: markRaw(icons.Calendar) },
-    { label: 'Asesor', href: '/admin/aksesor', icon: markRaw(icons.Users) },
-    { label: 'Paket', href: '/admin/paket', icon: markRaw(icons.Package) },
-    { label: 'Siswa', href: '/admin/siswa', icon: markRaw(icons.ClipboardList) },
-    { label: 'Laporan Kelulusan', href: '/admin/lkelulusan', icon: markRaw(icons.GraduationCap) },
-    { label: 'Laporan Asesor', href: '/admin/laksesor', icon: markRaw(icons.ChartBar) },
-];
+const selectedTa = ref(getQueryParam('tahunajaran_id') ?? activeTahunAjaran.value?.id ?? null);
+
+// Watch for URL changes (when navigating via Inertia)
+watch(() => page.url, () => {
+    selectedTa.value = getQueryParam('tahunajaran_id') ?? activeTahunAjaran.value?.id ?? null;
+});
+
+function onFilterChange() {
+    const currentUrl = new URL(window.location.href);
+    if (selectedTa.value) {
+        currentUrl.searchParams.set('tahunajaran_id', selectedTa.value);
+    } else {
+        currentUrl.searchParams.delete('tahunajaran_id');
+    }
+    router.get(currentUrl.pathname + currentUrl.search, {}, { preserveState: true, preserveScroll: true });
+}
+
+const menuItems = computed(() => {
+    const taParam = selectedTa.value ? `?tahunajaran_id=${selectedTa.value}` : '';
+    return [
+        { label: 'Dashboard', href: '/admin', icon: markRaw(Home) },
+        { label: 'Jurusan', href: '/admin/jurusan', icon: markRaw(School) },
+        { label: 'Tahun Ajaran', href: '/admin/tahunajaran', icon: markRaw(CalendarDays) },
+        { label: 'Asesor', href: '/admin/aksesor', icon: markRaw(Users) },
+        { label: 'Paket', href: `/admin/paket${taParam}`, icon: markRaw(Package) },
+        { label: 'Siswa', href: `/admin/siswa${taParam}`, icon: markRaw(ClipboardList) },
+        { label: 'Laporan Kelulusan', href: `/admin/lkelulusan${taParam}`, icon: markRaw(GraduationCap) },
+        { label: 'Laporan Asesor', href: `/admin/laksesor${taParam}`, icon: markRaw(BarChart3) },
+    ];
+});
 
 function isActive(href) {
-    return page.url === href;
+    // Strip query params for active state matching
+    const hrefPath = href.split('?')[0];
+    return page.url === hrefPath || page.url.startsWith(hrefPath + '?');
 }
 </script>
