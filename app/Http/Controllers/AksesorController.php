@@ -7,6 +7,7 @@ use App\Http\DatabaseHelper;
 use App\Models\Aksesor;
 use Illuminate\Http\Request;
 use Error;
+use Inertia\Inertia;
 use PDOException;
 use Validator;
 use File;
@@ -24,6 +25,73 @@ class AksesorController extends Controller
         "catatan" => "required"
     ];
 
+    /**
+     * Inertia page untuk daftar asesor
+     */
+    public function indexInertia()
+    {
+        $asesor = Aksesor::orderBy('nama')->get();
+        return Inertia::render('Aksesor/Index', [
+            'asesor' => $asesor,
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error'),
+            ],
+        ]);
+    }
+
+    public function store(Request $req)
+    {
+        try {
+            $data = $req->validate($this->fieldValidate);
+            $Aksesor = new Aksesor($data);
+            if ($req->dataLogo) {
+                $logo = $req->dataLogo;
+                $Aksesor->logo = $this->saveFile($logo);
+            }
+            $Aksesor->save();
+            return redirect()->route('aksesor')->with('success', 'Data asesor berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['general' => $th->getMessage()])->withInput();
+        }
+    }
+
+    public function update($id, Request $req)
+    {
+        try {
+            $data = $req->validate($this->fieldValidate);
+            $Aksesor = Aksesor::find($id);
+            if (!$Aksesor) {
+                return redirect()->back()->withErrors(['general' => 'Data Aksesor tidak ditemukan']);
+            }
+
+            $Aksesor->fill($data);
+
+            if ($req->dataLogo) {
+                $logo = $req->dataLogo;
+                $Aksesor->logo = $this->saveFile($logo);
+            }
+
+            $Aksesor->save();
+            return redirect()->route('aksesor')->with('success', 'Data asesor berhasil diperbarui');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['general' => $th->getMessage()])->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $Aksesor = Aksesor::find($id);
+            if (!$Aksesor) {
+                return redirect()->back()->withErrors(['general' => 'Data Aksesor tidak ditemukan']);
+            }
+            $Aksesor->delete();
+            return redirect()->route('aksesor')->with('success', 'Data asesor berhasil dihapus');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['general' => $th->getMessage()]);
+        }
+    }
 
     public function index()
     {

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('tahun')->unique();
             $table->boolean('aktif');
+            $table->string('kepala_sekolah');
+            $table->string('nip');
             $table->string('deskripsi');
             $table->timestamps();
         });

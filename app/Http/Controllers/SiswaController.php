@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\DatabaseHelper;
 use App\Models\DetailPenilaian;
+use App\Models\Jurusan;
+use App\Models\Paket;
 use App\Models\Penilaian;
 use App\Models\Sertifikat;
 use App\Models\Siswa;
+use App\Models\TahunAjaran;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Error;
 use Illuminate\Support\Facades\Date;
+use Inertia\Inertia;
 use PDOException;
 use Validator;
 
@@ -29,6 +33,87 @@ class SiswaController extends Controller
         "tahunajaran_id"  => "required",
         "paket_id"  => "required",
     ];
+
+    /**
+     * Inertia page untuk daftar siswa dengan filter dan pagination
+     */
+    public function indexInertia(Request $request)
+    {
+
+        $activeTa = TahunAjaran::where('aktif', true)->first();
+        $defaultTaId = $activeTa ? $activeTa->id : null;
+
+        // Check if filter is explicitly set in URL (including empty value)
+        $hasTaFilter = $request->has('tahunajaran_id');
+        $filterTa = $hasTaFilter ? ($request->query('tahunajaran_id') ?: null) : $defaultTaId;
+
+        $filterJurusan = $request->query('jurusan_id', '');
+        $search = $request->query('search', '');
+        $perPage = $request->query('per_page', 15);
+
+        // Build query
+        $query = Siswa::with(['jurusan', 'tahunajaran', 'paket']);
+
+        if ($filterTa) {
+            $query->where('tahunajaran_id', $filterTa);
+        }
+
+        if ($filterJurusan) {
+            $query->where('jurusan_id', $filterJurusan);
+        }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nis', 'like', "%{$search}%")
+                    ->orWhere('nama', 'like', "%{$search}%");
+            });
+        }
+
+        $siswa = $query->latest()->paginate($perPage)->withQueryString();
+
+        // Get filter options
+        $tahunAjaranList = TahunAjaran::orderBy('tahun', 'desc')->get();
+        $jurusanList = Jurusan::orderBy('nama')->get();
+
+        // Get paket options based on selected tahun ajaran
+        $paketList = Paket::when($filterTa, function ($q) use ($filterTa) {
+            return $q->where('tahunajaran_id', $filterTa);
+        })
+            ->with('jurusan')
+            ->orderBy('kode')
+            ->get();
+
+        return Inertia::render('Siswa/Index', [
+            'activeTahunAjaran' => $activeTa,
+            'siswa' => $siswa,
+            'tahunAjaranList' => $tahunAjaranList,
+            'jurusanList' => $jurusanList,
+            'paketList' => $paketList->map(fn($p) => [
+                'id' => $p->id,
+                'kode' => $p->kode,
+                'judultugas' => $p->judultugas,
+                'tahunajaran_id' => $p->tahunajaran_id,
+                'jurusan_id' => $p->jurusan_id,
+            ]),
+            'filters' => [
+                'tahunajaran_id' => $filterTa,
+                'jurusan_id' => $filterJurusan,
+                'search' => $search,
+            ],
+        ]);
+    }
+
+    /**
+     * Get all pakets for form dropdown
+     */
+    public function getPaketList()
+    {
+        $pakets = Paket::select('id', 'kode', 'judultugas', 'tahunajaran_id', 'jurusan_id')
+            ->orderBy('kode')
+            ->get();
+        return response()->json($pakets);
+    }
+
     public function index()
     {
         $siswa = Siswa::all();
@@ -39,16 +124,14 @@ class SiswaController extends Controller
     public function byid($id)
     {
         try {
-            $siswa = Siswa::with(['jurusan', 'sertifikat', 'tahunajaran'])->findOrFail($id);
-            if ($siswa == null) {
-                throw new Error("Data Siswa  tidak ditemukan ! ");
-            }
-
-            $siswa->paket->eksternal;
-            foreach ($siswa->penilaian as $key => $value) {
-                # code...
-                $value->kompetensi;
-            }
+            $siswa = Siswa::with([
+                'jurusan',
+                'tahunajaran',
+                'paket.eksternal',
+                'paket.internal',
+                'sertifikat',
+                'penilaian.kompetensi'
+            ])->findOrFail($id);
             return response()->json($siswa, 200);
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
@@ -131,6 +214,9 @@ class SiswaController extends Controller
                     'nomorseri' => "required",
                     'nomor' => "required",
                     'tanggalpenetapan' => "required",
+                    'tanggalcetak' => "required",
+                    'tanggalambil' => "required",
+                    'diambiloleh' => "required",
                     'siswa_id' => "required"
                 ]
             );
@@ -219,6 +305,26 @@ class SiswaController extends Controller
             }
             $siswa->delete();
             return response()->json(true, 200);
+        } catch (PDOException $ex) {
+            return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
+        } catch (\Throwable $th) {
+            $errorMessage["message"] = $th->getMessage();
+            return response()->json($errorMessage, 400);
+        }
+    }
+
+    public function getKompetensiBySiswaId($id)
+    {
+        try {
+            $siswa = Siswa::with(['paket.kompetensis'])->findOrFail($id);
+            if ($siswa == null) {
+                throw new Error("Data Siswa tidak ditemukan ! ");
+            }
+
+            return response()->json([
+                'siswa' => $siswa,
+                'kompetensis' => $siswa->paket->kompetensis
+            ], 200);
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
         } catch (\Throwable $th) {

@@ -1,14 +1,16 @@
 <?php
 
 use App\Http\Controllers\AksesorController;
+use App\Http\Controllers\DetailPenilaianController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\KompetensiController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PaketController;
-use App\Http\Controllers\PenilaianController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\SertifikatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //siswa
 Route::get('siswa', [SiswaController::class, 'index']);
 Route::get('siswa/{id}', [SiswaController::class, 'byid']);
+Route::get('siswa/kompetensi/{id}', [SiswaController::class, 'getKompetensiBySiswaId']);
 Route::get('siswa/bytahunajaran/{id}', [SiswaController::class, 'bytahunajaran']);
 Route::get('siswa/bynis/{nis}', [SiswaController::class, 'bynis']);
 Route::post('siswa', [SiswaController::class, 'post']);
@@ -35,11 +38,21 @@ Route::put('siswa/{id}', [SiswaController::class, 'put']);
 Route::put('siswa/{id}/sertifikat', [SiswaController::class, 'updateSertifikat']);
 Route::delete('siswa/{id}', [SiswaController::class, 'delete']);
 
+// Sertifikat
+Route::get('sertifikat', [SertifikatController::class, 'index']);
+Route::get('sertifikat/{id}', [SertifikatController::class, 'byid']);
+Route::get('sertifikat/siswa/{siswaId}', [SertifikatController::class, 'bySiswa']);
+Route::post('sertifikat', [SertifikatController::class, 'post']);
+Route::put('sertifikat/{id}', [SertifikatController::class, 'put']);
+Route::delete('sertifikat/{id}', [SertifikatController::class, 'delete']);
+
 //
 
 //tahunajaran
 Route::get('tahunajaran', [TahunAjaranController::class, 'index']);
 Route::get('tahunajaran/{id}', [TahunAjaranController::class, 'byid']);
+Route::get('tahunajaran/aktif', [TahunAjaranController::class, 'aktif']);
+Route::post('tahunajaran/{id}/setactive', [TahunAjaranController::class, 'setActive']);
 Route::post('tahunajaran', [TahunAjaranController::class, 'post']);
 Route::put('tahunajaran/{id}', [TahunAjaranController::class, 'put']);
 Route::delete('tahunajaran/{id}', [TahunAjaranController::class, 'delete']);
@@ -71,16 +84,25 @@ Route::put('paket/{id}', [PaketController::class, 'put']);
 Route::put('paket/{id}/detail', [PaketController::class, 'putDetail']);
 Route::delete('paket/{id}', [PaketController::class, 'delete']);
 
+//kompetensi
+Route::get('kompetensi', [KompetensiController::class, 'index']);
+Route::get('kompetensi/{id}', [KompetensiController::class, 'byid']);
+Route::get('kompetensi/paket/{paketId}', [KompetensiController::class, 'bypaket']);
+Route::post('kompetensi', [KompetensiController::class, 'post']);
+Route::put('kompetensi/{id}', [KompetensiController::class, 'put']);
+Route::delete('kompetensi/{id}', [KompetensiController::class, 'delete']);
+Route::post('kompetensi/bulk', [KompetensiController::class, 'bulkPost']);
 
 
 
-//penilaian
-Route::get('penilaian', [PenilaianController::class, 'index']);
-Route::get('penilaian/{id}', [PenilaianController::class, 'byid']);
-Route::get('penilaian/siswa/{id}', [PenilaianController::class, 'bysiswaid']);
-Route::post('penilaian', [PenilaianController::class, 'post']);
-Route::put('penilaian/{id}', [PenilaianController::class, 'put']);
-Route::delete('penilaian/{id}', [PenilaianController::class, 'delete']);
+
+//detail_penilaian (penilaian siswa)
+Route::get('penilaian/siswa/{siswaId}', [DetailPenilaianController::class, 'index']);
+Route::get('penilaian/{id}', [DetailPenilaianController::class, 'byid']);
+Route::post('penilaian', [DetailPenilaianController::class, 'post']);
+Route::put('penilaian/{id}', [DetailPenilaianController::class, 'put']);
+Route::put('penilaian/bulk/siswa/{siswaId}', [DetailPenilaianController::class, 'bulkUpdate']);
+Route::delete('penilaian/{id}', [DetailPenilaianController::class, 'delete']);
 
 //penilaian
 Route::get('laporan/{ta}/{jurusan}', [LaporanController::class, 'laporanKelulusan']);

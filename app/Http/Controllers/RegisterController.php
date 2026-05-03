@@ -6,18 +6,19 @@ use App\Models\User;
 use Error;
 use Illuminate\Http\Request;
 use Validator;
+
 class RegisterController extends Controller
 {
     public function show()
     {
-        return view('/auths/register');
+        return redirect('/auth/register');
     }
 
     /**
      * Handle account registration request
-     * 
+     *
      * @param RegisterRequest $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -39,7 +40,7 @@ class RegisterController extends Controller
             return redirect('/auth/login')->with('success', "Account successfully registered.");
             //code...
         } catch (\Throwable $th) {
-           $err = $th->getMessage();
+            $err = $th->getMessage();
         }
     }
 }

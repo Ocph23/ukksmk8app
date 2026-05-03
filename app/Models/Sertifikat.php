@@ -22,7 +22,16 @@ class Sertifikat extends Model
         'siswa_id',
     ];
 
+    protected $casts = [
+        'tanggalpenetapan' => 'date',
+        'tanggalcetak' => 'date',
+        'tanggalambil' => 'date',
+    ];
+
     public $timestamps = false;
 
-    
+    public function siswa(): BelongsTo
+    {
+        return $this->belongsTo(Siswa::class);
+    }
 }
