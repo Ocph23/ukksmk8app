@@ -6,7 +6,6 @@
                 <p class="text-sm text-gray-500 mt-1">Selamat datang di Sistem Informasi UKK</p>
             </div>
 
-            <!-- Quick Stats -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center gap-3">
@@ -66,34 +65,43 @@
                 </div>
             </div>
 
-            <!-- Active Tahun Ajaran Info -->
-            <div v-if="activeTa" class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <p class="text-sm text-blue-700">
-                    Tahun Ajaran Aktif: <span class="font-semibold">{{ activeTa.nama }}</span>
-                    <span v-if="activeTa.kepala_sekolah"> — Kepala Sekolah: {{ activeTa.kepala_sekolah }}</span>
-                </p>
+            <div v-if="activeTa" class="mt-6 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-sky-50 px-5 py-4 shadow-sm">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-blue-600">Tahun Ajaran Aktif</p>
+                        <p class="text-lg font-bold text-blue-950 leading-tight">{{ activeTa.nama }}</p>
+                    </div>
+                    <div class="text-sm text-blue-800 sm:text-right">
+                        <p class="font-medium">Kepala Sekolah</p>
+                        <p class="text-blue-700">{{ activeTa.kepala_sekolah || '-' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div v-else class="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-amber-800">
+                Belum ada tahun ajaran aktif. Silakan aktifkan salah satu tahun ajaran terlebih dahulu.
             </div>
         </div>
     </AdminLayout>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { useApi } from '@/composables/useApi';
 
 const { get } = useApi();
+const page = usePage();
 const stats = ref({ siswa: null, jurusan: null, paket: null, aksesor: null });
-const activeTa = ref(null);
+const activeTa = computed(() => page.props.activeTahunAjaran || null);
 
 onMounted(async () => {
     try {
-        const [siswa, jurusan, paket, aksesor, ta] = await Promise.all([
+        const [siswa, jurusan, paket, aksesor] = await Promise.all([
             get('/siswa'),
             get('/jurusan'),
             get('/paket'),
             get('/aksesor'),
-            get('/tahunajaran/aktif'),
         ]);
         stats.value = {
             siswa: Array.isArray(siswa) ? siswa.length : 0,
@@ -101,7 +109,6 @@ onMounted(async () => {
             paket: Array.isArray(paket) ? paket.length : 0,
             aksesor: Array.isArray(aksesor) ? aksesor.length : 0,
         };
-        activeTa.value = ta || null;
     } catch (e) {
         console.error(e);
     }

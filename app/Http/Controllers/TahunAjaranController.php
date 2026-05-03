@@ -122,7 +122,7 @@ class TahunAjaranController extends Controller
     {
         try {
             if ($id == "aktif") {
-                $TahunAjaran = TahunAjaran::where('aktif', false)->first();
+                $TahunAjaran = TahunAjaran::where('aktif', true)->first();
             } else {
                 $TahunAjaran = TahunAjaran::find($id);
             }

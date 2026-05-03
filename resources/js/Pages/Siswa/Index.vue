@@ -128,62 +128,60 @@
 
         <!-- Add/Edit Dialog -->
         <Dialog :open="dialogOpen" @update:open="dialogOpen = $event">
-            <DialogContent class="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+            <DialogContent class="sm:max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
                 <DialogHeader>
                     <DialogTitle>{{ isEdit ? 'Edit Siswa' : 'Tambah Siswa' }}</DialogTitle>
                     <DialogDescription>{{ isEdit ? 'Perbarui data siswa' : 'Isi data siswa baru' }}</DialogDescription>
                 </DialogHeader>
-                <form @submit.prevent="save" class="space-y-3">
-                    <div class="grid grid-cols-2 gap-3">
+                <form @submit.prevent="save" class="space-y-4 pr-1 pb-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
                             <Label for="nis">NIS</Label>
-                            <Input id="nis" v-model="form.nis" placeholder="NIS" />
+                            <Input id="nis" v-model="form.nis" placeholder="NIS" class="w-full" />
                         </div>
                         <div class="space-y-2">
                             <Label for="nama">Nama</Label>
-                            <Input id="nama" v-model="form.nama" placeholder="Nama lengkap" />
+                            <Input id="nama" v-model="form.nama" placeholder="Nama lengkap" class="w-full" />
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
                             <Label for="jk">Jenis Kelamin</Label>
-                            <AppSelect id="jk" v-model="form.jk">
+                            <AppSelect id="jk" v-model="form.jk" class="w-full">
                                 <option value="Pria">Laki-laki</option>
                                 <option value="Wanita">Perempuan</option>
                             </AppSelect>
                         </div>
                         <div class="space-y-2">
                             <Label for="tempatlahir">Tempat Lahir</Label>
-                            <Input id="tempatlahir" v-model="form.tempatlahir" placeholder="Tempat lahir" />
+                            <Input id="tempatlahir" v-model="form.tempatlahir" placeholder="Tempat lahir" class="w-full" />
                         </div>
                     </div>
                     <div class="space-y-2">
                         <Label for="tanggallahir">Tanggal Lahir</Label>
-                        <Input id="tanggallahir" v-model="form.tanggallahir" type="date" />
+                        <Input id="tanggallahir" v-model="form.tanggallahir" type="date" class="w-full" />
                     </div>
                     <div class="space-y-2">
                         <Label for="alamat">Alamat</Label>
-                        <textarea id="alamat" v-model="form.alamat" placeholder="Alamat lengkap siswa" rows="3"
-                            class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                        <textarea id="alamat" v-model="form.alamat" placeholder="Alamat lengkap siswa" rows="4"
+                            class="flex min-h-[96px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
                     </div>
-                    <div class="grid grid-cols-3 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
                             <Label for="jurusan_id">Jurusan</Label>
-                            <AppSelect id="jurusan_id" v-model="form.jurusan_id">
-                                <option value="">Pilih</option>
+                            <AppSelect id="jurusan_id" v-model="form.jurusan_id" class="w-full">
+                                <option value="">Pilih jurusan</option>
                                 <option v-for="j in $page.props.jurusanList" :key="j.id" :value="j.id">{{ j.nama }}
                                 </option>
                             </AppSelect>
                         </div>
-
                         <div class="space-y-2">
                             <Label for="paket_id">Paket</Label>
-
-                            <AppSelect id="paket_id" v-model="form.paket_id">
-                                <option value="">Pilih</option>
-                                <option v-for="p in filteredPaketList" :key="p.id" :value="p.id">{{ p.kode }} - {{
-                                    p.judultugas
-                                    }}</option>
+                            <AppSelect id="paket_id" v-model="form.paket_id" class="w-full">
+                                <option value="">Pilih paket</option>
+                                <option v-for="p in filteredPaketList" :key="p.id" :value="p.id">
+                                    {{ p.kode }} - {{ p.judultugas }}
+                                </option>
                             </AppSelect>
                         </div>
                     </div>
@@ -245,8 +243,16 @@ const filterJurusan = ref(urlParams.get('jurusan_id') || page.props.filters.juru
 const search = ref(urlParams.get('search') || page.props.filters.search || '');
 
 const form = ref({
-    id: null, nis: '', nama: '', jk: 'Pria', tempatlahir: '', tanggallahir: '',
-    alamat: '', jurusan_id: '', tahunajaran_id: '', paket_id: '', tahunajaran_id: activeTahunAjaran.id || '',
+    id: null,
+    nis: '',
+    nama: '',
+    jk: 'Pria',
+    tempatlahir: '',
+    tanggallahir: '',
+    alamat: '',
+    jurusan_id: '',
+    tahunajaran_id: activeTahunAjaran.value?.id || '',
+    paket_id: '',
 });
 console.log(page.props.paketList);
 
@@ -330,7 +336,18 @@ function openDialog(item = null) {
         isEdit.value = false;
         // Default to active tahun ajaran or current filter
         const defaultTa = filterTa.value || activeTahunAjaran.value?.id || '';
-        form.value = { id: null, nis: '', nama: '', jk: 'Pria', tempatlahir: '', tanggallahir: '', alamat: '', jurusan_id: '', tahunajaran_id: defaultTa, paket_id: '' };
+        form.value = {
+            id: null,
+            nis: '',
+            nama: '',
+            jk: 'Pria',
+            tempatlahir: '',
+            tanggallahir: '',
+            alamat: '',
+            jurusan_id: '',
+            tahunajaran_id: defaultTa,
+            paket_id: '',
+        };
     }
     dialogOpen.value = true;
 }

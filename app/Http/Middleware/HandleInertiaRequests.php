@@ -52,6 +52,8 @@ class HandleInertiaRequests extends Middleware
                 'id' => $activeTa->id,
                 'tahun' => $activeTa->tahun,
                 'nama' => $activeTa->nama,
+                'kepala_sekolah' => $activeTa->kepala_sekolah,
+                'nip' => $activeTa->nip,
             ] : null,
             'tahunAjaranList' => $tahunAjaranList,
             'flash' => [

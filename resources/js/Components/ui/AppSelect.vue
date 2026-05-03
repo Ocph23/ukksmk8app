@@ -1,13 +1,17 @@
 <template>
-    <div class="space-y-1">
+    <div class="space-y-1 w-full">
         <Label v-if="label" :for="id">{{ label }}</Label>
-        <select :id="id" :value="modelValue"
-            @input="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)" :class="[
-                'h-10 rounded-md border border-input bg-background px-3 text-sm transition-colors',
-                'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3',
+        <select
+            :id="id"
+            :value="modelValue"
+            @input="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
+            :class="[
+                'w-full h-10 rounded-lg border border-input bg-background px-3 text-sm transition-colors outline-none',
+                'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-2',
                 'disabled:pointer-events-none disabled:opacity-50',
                 $props.class
-            ]">
+            ]"
+        >
             <slot />
         </select>
     </div>

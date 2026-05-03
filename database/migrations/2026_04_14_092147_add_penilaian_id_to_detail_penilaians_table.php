@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('penilaians')) {
+            return;
+        }
+
         Schema::table('detail_penilaians', function (Blueprint $table) {
-            $table->unsignedBigInteger('penilaian_id')->nullable()->after('id');
-            $table->foreign('penilaian_id')->references('id')->on('penilaians')->onDelete('cascade');
+            if (!Schema::hasColumn('detail_penilaians', 'penilaian_id')) {
+                $table->unsignedBigInteger('penilaian_id')->nullable()->after('id');
+                $table->foreign('penilaian_id')->references('id')->on('penilaians')->onDelete('cascade');
+            }
         });
     }
 
@@ -22,8 +28,17 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (!Schema::hasColumn('detail_penilaians', 'penilaian_id')) {
+            return;
+        }
+
         Schema::table('detail_penilaians', function (Blueprint $table) {
-            $table->dropForeign(['penilaian_id']);
+            try {
+                $table->dropForeign(['penilaian_id']);
+            } catch (\Throwable $th) {
+                // Column may exist without a foreign key if the migration was partially applied.
+            }
+
             $table->dropColumn('penilaian_id');
         });
     }
