@@ -13,7 +13,6 @@
                     Tambah Asesor
                 </Button>
             </div>
-
             <Card>
                 <CardContent class="p-0">
                     <div v-if="asesor.length === 0" class="p-8 text-center text-gray-500">
@@ -66,7 +65,6 @@
                 </CardContent>
             </Card>
         </div>
-
         <Dialog :open="dialogOpen" @update:open="dialogOpen = $event">
             <DialogContent class="sm:max-w-md">
                 <DialogHeader>
