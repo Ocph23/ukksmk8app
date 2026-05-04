@@ -7,8 +7,8 @@
             <div class="cert-header">
                 <img class="logo-smkn8" src="/assets/images/LOGO_SMKN8.png" alt="Logo SMKN 8">
                 <div class="school-info">
-                    <h2>PEMERINTAH KOTA JAYAPURA</h2>
-                    <h4>DINAS PENDIDIKAN DAN KEBUDAYAAN</h4>
+                    <h2 style="font-size: 25px; font-weight: bold;">PEMERINTAH KOTA JAYAPURA</h2>
+                    <h4 style="font-size: 18px; font-weight: bold;">DINAS PENDIDIKAN DAN KEBUDAYAAN</h4>
                     <h3><b class="cert-blue">SMK NEGERI 8 TEKNOLOGI INFORMASI DAN KOMUNIKASI KOTA JAYAPURA</b></h3>
                     <p class="cert-alamat">
                         Jl. Gelanggang II RT 04 RW 01 Kelurahan Waena, Distrik Heram, Kota Jayapura, Kode Pos 99358
@@ -29,11 +29,10 @@
             <!-- Isi Sertifikat -->
             <div class="cert-content">
                 <div class="nomor-seri">Nomor Seri : {{ siswa?.sertifikat?.nomorseri }}</div>
-
                 <div class="judul-sertifikat">
                     <h3>SERTIFIKAT KOMPETENSI</h3>
-                    <h4>Certificate Of Competency</h4>
-                    <h5>Nomor : {{ sertifikatNomor }}</h5>
+                    <h4 style="font-weight: bold; font-size: 18px; margin-top: 0px;">Certificate Of Competency</h4>
+                    <h3 style="font-weight: bold; font-size: 18px;margin-top: 20px;">Nomor : {{ sertifikatNomor }}</h3>
                 </div>
 
                 <p class="paragraf-pembuka">
@@ -46,7 +45,7 @@
                         <tr>
                             <td class="label">Nama</td>
                             <td class="separator">:</td>
-                            <td class="value">{{ siswa?.nama }}</td>
+                            <td class="value" style="text-transform: uppercase;">{{ siswa?.nama }}</td>
                         </tr>
                         <tr>
                             <td class="label">Tempat, Tanggal Lahir</td>
@@ -94,8 +93,8 @@
         <!-- BACK PAGE - Daftar Kompetensi -->
         <div class="cert-back">
             <div class="back-header">
-                <h3>Kompetensi Keahlian : {{ siswa?.jurusan?.nama }}</h3>
-                <h3>Daftar Kompetensi/Subkompetensi</h3>
+                <h4 style="text-transform: uppercase; font-size: 20px; font-weight: bold;">Kompetensi Keahlian {{ siswa?.jurusan?.nama }}</h4>
+                <h4 style="text-transform: uppercase; font-size: 20px; font-weight: bold;">Daftar Kompetensi/Subkompetensi</h4>
             </div>
 
             <div class="tugas-info">
@@ -234,7 +233,7 @@ const props = defineProps({
 
 .garis-pisah {
     border: none;
-    border-top: 3px solid #000;
+    border-top: 2px solid #484848;
     margin: 0px 0 5px 0;
 }
 
@@ -345,9 +344,8 @@ const props = defineProps({
 }
 
 .ttd-line {
-    border-bottom: 1px solid #000;
     width: 250px;
-    margin: 70px auto 10px auto;
+    margin: 60px auto 10px auto;
 }
 
 .ttd-nama {
@@ -424,7 +422,7 @@ const props = defineProps({
 }
 
 .cert-blue {
-    color: #6696fc;
+    color: #4875d5;
 }
 
 /* Hide print container by default */
@@ -433,6 +431,10 @@ const props = defineProps({
 }
 
 @media print {
+    h2{
+        font-size: 40px;
+    }
+
     @page {
         margin: 0;
         size: auto;
