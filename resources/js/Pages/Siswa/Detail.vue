@@ -400,7 +400,8 @@ const allKompeten = computed(() => {
 const averageNilai = computed(() => {
     if (!penilaian.value?.penilaian || penilaian.value.penilaian.length === 0) return 0;
     const total = penilaian.value.penilaian.reduce((sum, d) => sum + (d.nilai || 0), 0);
-    return Math.round(total / penilaian.value.penilaian.length);
+    console.log(total);
+    return (total / penilaian.value.penilaian.length).toFixed(2);
 });
 
 // Certificate computed properties
