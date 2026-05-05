@@ -39,6 +39,7 @@ Route::put('siswa/{id}/sertifikat', [SiswaController::class, 'updateSertifikat']
 Route::delete('siswa/{id}', [SiswaController::class, 'delete']);
 
 // Sertifikat
+Route::get('sertifikat/verifikasi', [SertifikatController::class, 'verifikasi']);
 Route::get('sertifikat', [SertifikatController::class, 'index']);
 Route::get('sertifikat/{id}', [SertifikatController::class, 'byid']);
 Route::get('sertifikat/siswa/{siswaId}', [SertifikatController::class, 'bySiswa']);

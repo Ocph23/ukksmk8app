@@ -11,6 +11,10 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 });
 
+Route::get('/verifikasi', function () {
+    return Inertia::render('Verifikasi/Index');
+})->name('verifikasi');
+
 Route::get('/link', function () {
     Artisan::call('storage:link');
 });
