@@ -14,7 +14,7 @@ class ChangeAdminPasswordSeeder extends Seeder
     public function run(): void
     {
         $email = env('SEED_ADMIN_EMAIL', 'admin@ukk.smkn8tikjayapura.sch.id');
-        $password = env('SEED_ADMIN_PASSWORD', 'smk8sangatbisa');
+        $password = env('SEED_ADMIN_PASSWORD', 'bisa');
 
         $user = User::where('email', $email)->first();
 
