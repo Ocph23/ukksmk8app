@@ -21,6 +21,29 @@ class SertifikatController extends Controller
         'siswa_id' => 'required|exists:siswas,id',
     ];
 
+    public function verifikasi(Request $req)
+    {
+        try {
+            $nomor = $req->query('nomor');
+            if (!$nomor) {
+                return response()->json(['message' => 'Nomor sertifikat diperlukan'], 400);
+            }
+
+            $sertifikat = Sertifikat::with(['siswa.jurusan', 'siswa.tahunajaran', 'siswa.paket'])
+                ->where('nomorseri', $nomor)
+                ->orWhere('nomor', $nomor)
+                ->first();
+
+            if (!$sertifikat) {
+                return response()->json(['message' => 'Sertifikat tidak ditemukan'], 404);
+            }
+
+            return response()->json($sertifikat);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function index()
     {
         try {

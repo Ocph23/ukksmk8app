@@ -5,40 +5,86 @@
         <div class="cert-front">
             <!-- Header Sekolah -->
             <div class="cert-header">
-                <img class="logo-smkn8" src="/assets/images/LOGO_SMKN8.png" alt="Logo SMKN 8">
+                <img
+                    class="logo-smkn8"
+                    src="/assets/images/LOGO_SMKN8.png"
+                    alt="Logo SMKN 8"
+                />
                 <div class="school-info">
-                    <h2>PEMERINTAH KOTA JAYAPURA</h2>
-                    <h4>DINAS PENDIDIKAN DAN KEBUDAYAAN</h4>
-                    <h3><b class="cert-blue">SMK NEGERI 8 TEKNOLOGI INFORMASI DAN KOMUNIKASI KOTA JAYAPURA</b></h3>
+                    <h2 style="font-size: 25px; font-weight: bold">
+                        PEMERINTAH KOTA JAYAPURA
+                    </h2>
+                    <h4 style="font-size: 18px; font-weight: bold">
+                        DINAS PENDIDIKAN DAN KEBUDAYAAN
+                    </h4>
+                    <h3>
+                        <b class="cert-blue"
+                            >SMK NEGERI 8 TEKNOLOGI, INFORMASI DAN KOMUNIKASI
+                            KOTA JAYAPURA</b
+                        >
+                    </h3>
                     <p class="cert-alamat">
-                        Jl. Gelanggang II RT 04 RW 01 Kelurahan Waena, Distrik Heram, Kota Jayapura, Kode Pos 99358
+                        Jl. Gelanggang II RT 04 RW 01 Kelurahan Waena, Distrik
+                        Heram, Kota Jayapura, Kode Pos 99358
                     </p>
-                    <p class="cert-kontak">
-                        <i> (0967) 5170108</i> |
-                        <i> smkn8.kotajayapura@gmail.com</i> |
-                        <i> https://smkn8tikjayapura.sch.id</i>
+                    <p class="cert-kontak flex justify-center gap-2 ">
+                        <i class="flex gap-1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .9 2.9a2 2 0 0 1-.5 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.4a2 2 0 0 1 2.1-.5c.9.5 1.9.8 2.9.9A2 2 0 0 1 22 16.9z"/>
+                            </svg> (0967) 5170108;</i>
+                        <i class="flex gap-1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="5" width="18" height="14" rx="2"/>
+                            <path d="M3 7l9 6 9-6"/>
+                            </svg> smkn8.kotajayapura@gmail.com;</i>
+                        <i class="flex gap-1">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M2 12h20"/>
+                            <path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20z"/>
+                            </svg> https://smkn8tikjayapura.sch.id</i>
                     </p>
                 </div>
-                <img v-if="siswa?.paket?.eksternal?.logo" class="logo-instansi"
-                    :src="`/storage/instansi/${siswa.paket.eksternal.logo}`" alt="Logo Instansi">
-                <div v-else style="width:90px;height:90px;"></div>
+                <img
+                    v-if="siswa?.paket?.eksternal?.logo"
+                    class="logo-instansi"
+                    :src="`/storage/instansi/${siswa.paket.eksternal.logo}`"
+                    alt="Logo Instansi"
+                />
+                <div v-else style="width: 90px; height: 90px"></div>
             </div>
 
-            <hr class="garis-pisah">
+            <hr class="garis-pisah" />
 
             <!-- Isi Sertifikat -->
             <div class="cert-content">
-                <div class="nomor-seri">Nomor Seri : {{ siswa?.sertifikat?.nomorseri }}</div>
-
+                <div class="nomor-seri">
+                    Nomor Seri : {{ siswa?.sertifikat?.nomorseri }}
+                </div>
                 <div class="judul-sertifikat">
                     <h3>SERTIFIKAT KOMPETENSI</h3>
-                    <h4>Certificate Of Competency</h4>
-                    <h5>Nomor : {{ sertifikatNomor }}</h5>
+                    <h4
+                        style="
+                            font-weight: bold;
+                            font-size: 18px;
+                            margin-top: 0px;
+                        "
+                    >
+                        Certificate Of Competency
+                    </h4>
+                    <h3
+                        style="
+                            font-weight: bold;
+                            font-size: 18px;
+                            margin-top: 20px;
+                        "
+                    >
+                        Nomor : {{ sertifikatNomor }}
+                    </h3>
                 </div>
 
                 <p class="paragraf-pembuka">
-                    Sertifikasi ini diselenggarakan berdasarkan Pedoman Penyelenggaraan Uji Kompetensi Keahlian Sekolah
-                    Menengah Kejuruan Tahun {{ tahunPenetapan }} menyatakan bahwa :
+                    Sertifikasi ini diselenggarakan berdasarkan Pedoman
+                    Penyelenggaraan Uji Kompetensi Keahlian Sekolah Menengah
+                    Kejuruan Tahun {{ tahunPenetapan }} menyatakan bahwa :
                 </p>
 
                 <table class="tabel-siswa">
@@ -46,17 +92,25 @@
                         <tr>
                             <td class="label">Nama</td>
                             <td class="separator">:</td>
-                            <td class="value">{{ siswa?.nama }}</td>
+                            <td class="value" style="text-transform: uppercase">
+                                {{ siswa?.nama }}
+                            </td>
                         </tr>
                         <tr>
                             <td class="label">Tempat, Tanggal Lahir</td>
                             <td class="separator">:</td>
-                            <td class="value">{{ siswa?.tempatlahir }}, {{ formatTanggal(siswa?.tanggallahir) }}</td>
+                            <td class="value">
+                                {{ siswa?.tempatlahir }},
+                                {{ formatTanggal(siswa?.tanggallahir) }}
+                            </td>
                         </tr>
                         <tr>
                             <td class="label">Sekolah</td>
                             <td class="separator">:</td>
-                            <td class="value">SMK Negeri 8 Teknologi Informasi dan Komunikasi Kota Jayapura</td>
+                            <td class="value">
+                                SMK Negeri 8 Teknologi Informasi dan Komunikasi
+                                Kota Jayapura
+                            </td>
                         </tr>
                         <tr>
                             <td class="label">Jurusan</td>
@@ -67,8 +121,9 @@
                 </table>
 
                 <p class="paragraf-lulus">
-                    Dinyatakan <span class="lulus"><b>LULUS</b></span> Uji Kompetensi Kejuruan dan diakui telah memiliki
-                    kompetensi seperti tercantum di balik sertifikat ini.
+                    Dinyatakan <span class="lulus"><b>LULUS</b></span> Uji
+                    Kompetensi Kejuruan dan diakui telah memiliki kompetensi
+                    seperti tercantum di balik sertifikat ini.
                 </p>
             </div>
 
@@ -76,17 +131,24 @@
             <div class="tanda-tangan">
                 <div class="ttd-kiri">
                     <p>Mengetahui,</p>
-                    <p>Kepala Sekolah</p>
+                    <p>Plt. Kepala Sekolah</p>
                     <div class="ttd-line"></div>
-                    <p class="ttd-nama">{{ siswa?.tahunajaran?.kepala_sekolah }}</p>
+                    <p class="ttd-nama">
+                        {{ siswa?.tahunajaran?.kepala_sekolah }}
+                    </p>
                     <p class="ttd-nip">NIP. {{ siswa?.tahunajaran?.nip }}</p>
                 </div>
                 <div class="ttd-kanan">
-                    <p>Jayapura, {{ formatTanggal(siswa?.sertifikat?.tanggalpenetapan) }}</p>
+                    <p>
+                        Jayapura,
+                        {{ formatTanggal(siswa?.sertifikat?.tanggalpenetapan) }}
+                    </p>
                     <p>Ketua Tim Penguji</p>
                     <div class="ttd-line"></div>
                     <p class="ttd-nama">{{ siswa?.paket?.eksternal?.nama }}</p>
-                    <p class="ttd-instansi">{{ siswa?.paket?.eksternal?.instansi }}</p>
+                    <p class="ttd-instansi">
+                        {{ siswa?.paket?.eksternal?.instansi }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -94,39 +156,68 @@
         <!-- BACK PAGE - Daftar Kompetensi -->
         <div class="cert-back">
             <div class="back-header">
-                <h3>Kompetensi Keahlian : {{ siswa?.jurusan?.nama }}</h3>
-                <h3>Daftar Kompetensi/Subkompetensi</h3>
+                <h4
+                    style="
+                        text-transform: uppercase;
+                        font-size: 20px;
+                        font-weight: bold;
+                    "
+                >
+                    Kompetensi Keahlian {{ siswa?.jurusan?.nama }}
+                </h4>
+                <h4
+                    style="
+                        text-transform: uppercase;
+                        font-size: 20px;
+                        font-weight: bold;
+                    "
+                >
+                    Daftar Kompetensi/Subkompetensi
+                </h4>
             </div>
 
             <div class="tugas-info">
-                <h4><b>Tugas : {{ siswa?.paket?.kode }} - {{ siswa?.paket?.judultugas }}</b></h4>
+                <h4>
+                    <b
+                        >Tugas : {{ siswa?.paket?.kode }} -
+                        {{ siswa?.paket?.judultugas }}</b
+                    >
+                </h4>
             </div>
 
             <table class="tabel-nilai">
                 <thead>
                     <tr>
-                        <th style="width: 50px;">No.</th>
-                        <th style="width: 150px;">Kode</th>
+                        <th style="width: 50px">No.</th>
+                        <th style="width: 150px">Kode</th>
                         <th>Kompetensi</th>
-                        <th style="width: 100px;">Nilai</th>
+                        <th style="width: 100px">Nilai</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in penilaian" :key="item.id">
-                        <td style="text-align:center;">{{ index + 1 }}</td>
+                        <td style="text-align: center">{{ index + 1 }}</td>
                         <td>{{ item.kompetensi?.kode }}</td>
                         <td>{{ item.kompetensi?.elemen }}</td>
-                        <td style="text-align:center;">
-                            <span v-if="siswa?.paket?.basisnilai">{{ item.nilai }}</span>
+                        <td style="text-align: center">
+                            <span v-if="siswa?.paket?.basisnilai">{{
+                                item.nilai
+                            }}</span>
                             <span v-else>
-                                <span v-if="item.kompeten" class="cert-check">✓</span>
+                                <span v-if="item.kompeten" class="cert-check"
+                                    >✓</span
+                                >
                                 <span v-else class="cert-cross">✗</span>
                             </span>
                         </td>
                     </tr>
                     <tr v-if="siswa?.paket?.basisnilai" class="rata-rata">
-                        <td style="text-align:center;" colspan="3"><b>Nilai Rata-Rata</b></td>
-                        <td style="text-align:center;"><b>{{ averageNilai }}</b></td>
+                        <td style="text-align: center" colspan="3">
+                            <b>Nilai Rata-Rata</b>
+                        </td>
+                        <td style="text-align: center">
+                            <b>{{ averageNilai }}</b>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -138,28 +229,28 @@
 const props = defineProps({
     siswa: {
         type: Object,
-        required: true
+        required: true,
     },
     penilaian: {
         type: Array,
-        required: true
+        required: true,
     },
     sertifikatNomor: {
         type: String,
-        required: true
+        required: true,
     },
     tahunPenetapan: {
         type: Number,
-        required: true
+        required: true,
     },
     averageNilai: {
         type: String,
-        required: true
+        required: true,
     },
     formatTanggal: {
         type: Function,
-        required: true
-    }
+        required: true,
+    },
 });
 </script>
 
@@ -173,7 +264,7 @@ const props = defineProps({
     margin: 0px;
     position: relative;
     box-sizing: border-box;
-    background-image: url('/assets/images/certificate2.webp');
+    background-image: url("/assets/images/certificate2.webp");
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -208,7 +299,6 @@ const props = defineProps({
     font-size: 18px;
     margin-top: 30px;
     line-height: 1.3;
-
 }
 
 .school-info h4 {
@@ -234,7 +324,7 @@ const props = defineProps({
 
 .garis-pisah {
     border: none;
-    border-top: 3px solid #000;
+    border-top: 2px solid #484848;
     margin: 0px 0 5px 0;
 }
 
@@ -251,7 +341,7 @@ const props = defineProps({
 }
 
 .judul-sertifikat {
-    margin: 10px 0 ;
+    margin: 10px 0;
     text-align: center;
 }
 
@@ -345,9 +435,8 @@ const props = defineProps({
 }
 
 .ttd-line {
-    border-bottom: 1px solid #000;
     width: 250px;
-    margin: 70px auto 10px auto;
+    margin: 60px auto 10px auto;
 }
 
 .ttd-nama {
@@ -424,7 +513,7 @@ const props = defineProps({
 }
 
 .cert-blue {
-    color: #6696fc;
+    color: #4875d5;
 }
 
 /* Hide print container by default */
@@ -433,6 +522,14 @@ const props = defineProps({
 }
 
 @media print {
+    icon-cop {
+        color: black !important;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
     @page {
         margin: 0;
         size: auto;
