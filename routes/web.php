@@ -21,10 +21,10 @@ Route::get('/auth/login', function () {
 Route::get('/auth/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/auth/login', [LoginController::class, 'login']);
 
-Route::get('/auth/register', function () {
-    return Inertia::render('Auth/Register');
-});
-Route::post('/auth/register', [RegisterController::class, 'register']);
+// Route::get('/auth/register', function () {
+//     return Inertia::render('Auth/Register');
+// });
+// Route::post('/auth/register', [RegisterController::class, 'register']);
 
 
 Route::group(['middleware' => ['auth']], function () {

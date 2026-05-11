@@ -12,12 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
-            'name' => 'admin@ukk.smkn8tikjayapura.sch.id',
-            'email' => 'admin@ukk.smkn8tikjayapura.sch.id',
-            'password' => 'smkbisa8',
-        ]);
+        // \App\Models\User::factory()->create([
+        //     'name' => 'admin@ukk.smkn8tikjayapura.sch.id',
+        //     'email' => 'admin@ukk.smkn8tikjayapura.sch.id',
+        //     'password' => 'smkbisa8',
+        // ]);
+        $this->call(ChangeAdminPasswordSeeder::class);
     }
 }

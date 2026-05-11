@@ -76,11 +76,6 @@
                 </button>
             </form>
 
-            <!-- Footer -->
-            <p class="card-footer">
-                Belum punya akun?
-                <a href="/auth/register" class="register-link">Daftar</a>
-            </p>
         </div>
     </AuthLayout>
 </template>
