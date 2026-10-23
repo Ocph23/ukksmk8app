@@ -206,6 +206,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { NativeSelect } from '@/components/ui/native-select';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useApi } from '@/composables/useApi';
+import { httpError } from '@/composables/useCustomToast';
 
 const { loading, get, post, put, del } = useApi();
 const items = ref([]);
@@ -238,7 +239,7 @@ async function fetchKompetensi() {
         items.value = Array.isArray(data) ? data : [];
     } catch (e) {
         console.error(e);
-        alert('Gagal memuat data kompetensi');
+        httpError(e, 'Gagal memuat data kompetensi');
     }
 }
 
@@ -301,7 +302,7 @@ async function saveKompetensi() {
         await fetchKompetensi();
     } catch (e) {
         console.error(e);
-        alert(e.response?.data?.message || 'Gagal menyimpan kompetensi');
+        httpError(e, 'Gagal menyimpan kompetensi');
     } finally {
         saving.value = false;
     }
@@ -323,7 +324,7 @@ async function confirmDelete() {
         await fetchKompetensi();
     } catch (e) {
         console.error(e);
-        alert(e.response?.data?.message || 'Gagal menghapus kompetensi');
+        httpError(e, 'Gagal menghapus kompetensi');
     } finally {
         deleting.value = false;
     }

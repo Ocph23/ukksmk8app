@@ -1,6 +1,22 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import 'vue-sonner/style.css';
+import { httpError } from './composables/useCustomToast';
+
+router.on('error', (event) => {
+    const errors = event.detail?.errors || {};
+    const response = event.detail?.response;
+
+    if (Object.keys(errors).length > 0) {
+        httpError({ response: { data: { errors } } }, 'Permintaan gagal');
+    } else if (response) {
+        httpError({ response }, 'Permintaan gagal');
+    } else {
+        httpError(null, 'Permintaan gagal. Silakan coba lagi.');
+    }
+});
 
 const appName = import.meta.env.VITE_APP_NAME || 'UKK App';
 

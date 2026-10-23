@@ -435,7 +435,7 @@ async function fetchSiswa() {
         siswa.value = data;
     } catch (e) {
         console.error(e);
-        alert('Gagal memuat data siswa');
+        httpError(e, 'Gagal memuat data siswa');
     }
 }
 
@@ -453,7 +453,7 @@ async function fetchPenilaian() {
         }
     } catch (e) {
         console.error(e);
-        alert('Gagal memuat data penilaian');
+        httpError(e, 'Gagal memuat data penilaian');
     } finally {
         penilaianLoading.value = false;
         creating.value = false;
@@ -475,7 +475,7 @@ async function savePenilaian() {
         success('Berhasil', 'Data penilaian berhasil disimpan');
     } catch (e) {
         console.error(e);
-        alert(e.response?.data?.message || 'Gagal menyimpan penilaian');
+        httpError(e, 'Gagal menyimpan penilaian');
     } finally {
         saving.value = false;
     }
@@ -571,7 +571,7 @@ async function fetchSertifikat() {
         sertifikat.value = data || [];
     } catch (e) {
         console.error(e);
-        httpError('Gagal memuat data sertifikat');
+        httpError(e, 'Gagal memuat data sertifikat');
     } finally {
         sertifikatLoading.value = false;
     }

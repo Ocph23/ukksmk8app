@@ -1,8 +1,9 @@
 <template>
     <AuthLayout>
-        <Card class="border-white/80 bg-white/80 shadow-xl backdrop-blur-xl">
+        <Card class="border-white/80 bg-white/80 shadow-xl backdrop-blur-xl p-10 ">
             <CardHeader class="text-center">
-                <img src="/assets/images/smk8logo.jpeg" alt="Logo SMK 8" class="mx-auto mb-4 size-16 rounded-full object-cover" />
+                <img src="/assets/images/smk8logo.jpeg" alt="Logo SMK 8"
+                    class="mx-auto mb-4 size-16 rounded-full object-cover" />
                 <CardTitle class="text-xl">SMK 8 TIK JAYAPURA</CardTitle>
                 <CardDescription>Masuk untuk melanjutkan</CardDescription>
             </CardHeader>

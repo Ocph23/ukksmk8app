@@ -142,6 +142,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { errorToast } from '@/composables/useCustomToast';
 
 const nomorInput = ref('');
 const loading = ref(false);
@@ -164,8 +165,10 @@ async function verifikasi() {
     } catch (err) {
         if (err.response?.status === 404) {
             notFound.value = true;
+            errorToast('Sertifikat tidak ditemukan', 'Nomor yang dimasukkan tidak terdaftar.');
         } else {
             errorMsg.value = err.response?.data?.message || 'Terjadi kesalahan, coba lagi.';
+            errorToast('Verifikasi gagal', errorMsg.value);
         }
     } finally {
         loading.value = false;

@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import axios from 'axios';
+import { httpError } from './useCustomToast';
 
 export function useApi(baseUrl = '/api') {
     const loading = ref(false);
@@ -18,6 +19,7 @@ export function useApi(baseUrl = '/api') {
             return response.data;
         } catch (err) {
             error.value = err.response?.data?.message || err.message || 'Terjadi kesalahan';
+            httpError(err, error.value);
             throw err;
         } finally {
             loading.value = false;
