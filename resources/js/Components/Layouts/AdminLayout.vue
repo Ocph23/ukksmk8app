@@ -3,16 +3,16 @@
 
         <!-- Top Navbar -->
         <nav
-            class="shadow-sm border-b border-gray-200 dark:border-gray-700 fixed top-0 left-0 right-0 z-30 transition-colors">
+            class="shadow-sm bg-white dark:bg-neutral-900 border-b border-gray-200 dark:border-gray-700 fixed top-0 left-0 right-0 z-30 transition-colors">
             <div class="flex items-center justify-between h-16 px-4">
                 <div class="flex items-center gap-3">
-                    <button @click="sidebarOpen = true"
-                        class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 lg:hidden">
+                    <Button @click="sidebarOpen = true" variant="ghost" size="icon"
+                        class="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 lg:hidden">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
-                    </button>
+                    </Button>
                     <a href="/admin" class="flex items-center gap-2">
                         <img src="/assets/images/smk8logo.jpeg" alt="Logo" class="w-10 h-10 rounded" />
                         <span class="text-lg font-semibold text-gray-800 dark:text-gray-100 hidden sm:block">SISTEM
@@ -26,15 +26,11 @@
                     <!-- Profile Dropdown -->
                     <DropdownMenu>
                         <DropdownMenuTrigger as-child>
-                            <button
-                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                                <Avatar>
-                                    <AvatarImage src="/assets/images/faces/face1.jpg" alt="Profile" />
-                                    <AvatarFallback>{{ auth?.user?.name?.charAt(0) ?? 'A' }}</AvatarFallback>
-                                </Avatar>
+                            <Button variant="ghost"
+                                class="flex h-auto items-center gap-2 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                                 <span class="text-sm font-medium text-gray-700 dark:text-gray-200 hidden md:block">{{
                                     auth?.user?.name ?? 'Admin' }}</span>
-                            </button>
+                            </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent class="w-56" align="end">
                             <DropdownMenuLabel>
@@ -44,6 +40,11 @@
                                 </div>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
+                            <DropdownMenuItem as-child>
+                                <Link href="/admin/password" class="w-full cursor-pointer">
+                                    Ubah Password
+                                </Link>
+                            </DropdownMenuItem>
                             <DropdownMenuItem as-child>
                                 <Link href="/auth/logout" method="get" as="button"
                                     class="w-full cursor-pointer text-red-600 focus:text-red-600">
@@ -64,10 +65,6 @@
                 <!-- Sidebar Profile -->
                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex items-center gap-3">
-                        <Avatar>
-                            <AvatarImage src="/assets/images/faces/face1.jpg" alt="Profile" />
-                            <AvatarFallback>{{ auth?.user?.name?.charAt(0) ?? 'A' }}</AvatarFallback>
-                        </Avatar>
                         <div class="min-w-0">
                             <p class="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">{{
                                 auth?.user?.name ?? 'Admin' }}</p>
@@ -77,13 +74,13 @@
                     <!-- Active Tahun Ajaran Selector (Filter Only) -->
                     <div class="mt-3">
                         <label class="text-xs block mb-1">Filter Tahun Ajaran</label>
-                        <select v-model="selectedTa" @change="onFilterChange"
-                            class="w-full h-8 text-xs rounded-md border border-input  px-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 outline-none text-gray-700 dark:text-gray-200">
+                        <NativeSelect v-model="selectedTa" @change="onFilterChange"
+                            class="w-full text-xs text-gray-700 dark:text-gray-200">
                             <option :value="null">Semua</option>
                             <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">
                                 {{ ta.nama }}
                             </option>
-                        </select>
+                        </NativeSelect>
                     </div>
                 </div>
 
@@ -132,13 +129,13 @@
                         <div class="mt-3">
                             <label class="text-xs text-gray-500 dark:text-gray-400 block mb-1">Filter Tahun
                                 Ajaran</label>
-                            <select v-model="selectedTa" @change="onFilterChange"
-                                class="w-full h-8 text-xs rounded-md border border-input bg-background dark:bg-gray-700 px-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 outline-none text-gray-700 dark:text-gray-200">
+                            <NativeSelect v-model="selectedTa" @change="onFilterChange"
+                                class="w-full text-xs text-gray-700 dark:text-gray-200">
                                 <option :value="null">Semua</option>
                                 <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">
                                     {{ ta.nama }}
                                 </option>
-                            </select>
+                            </NativeSelect>
                         </div>
                     </div>
 
@@ -178,14 +175,16 @@
                 </div>
             </main>
         </div>
-        <CustomToast />
+        <Toaster position="top-right" rich-colors close-button />
     </div>
 </template>
 
 <script setup>
 import { Link, usePage, router } from '@inertiajs/vue3';
 import { computed, ref, markRaw, watch } from 'vue';
-import CustomToast from '@/components/ui/CustomToast.vue';
+import { Toaster } from '@/components/ui/sonner';
+import { NativeSelect } from '@/components/ui/native-select';
+import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import { LogOut, Home, School, CalendarDays, Users, Package, ClipboardList, GraduationCap, BarChart3 } from 'lucide-vue-next';
 
@@ -239,16 +238,24 @@ function onFilterChange() {
 
 const menuItems = computed(() => {
     const taParam = selectedTa.value ? `?tahunajaran_id=${selectedTa.value}` : '';
-    return [
-        { label: 'Dashboard', href: '/admin', icon: markRaw(Home) },
-        { label: 'Jurusan', href: '/admin/jurusan', icon: markRaw(School) },
-        { label: 'Tahun Ajaran', href: '/admin/tahunajaran', icon: markRaw(CalendarDays) },
+    const items = [
+        { label: 'Dashboard', href: `/admin${taParam}`, icon: markRaw(Home) },
+    ];
+    if (auth.value?.user?.role === 'admin') {
+        items.push(
+            { label: 'Pengguna', href: '/admin/pengguna', icon: markRaw(Users) },
+            { label: 'Jurusan', href: '/admin/jurusan', icon: markRaw(School) },
+            { label: 'Tahun Ajaran', href: '/admin/tahunajaran', icon: markRaw(CalendarDays) },
+        );
+    }
+    items.push(
         { label: 'Asesor', href: '/admin/aksesor', icon: markRaw(Users) },
         { label: 'Paket', href: `/admin/paket${taParam}`, icon: markRaw(Package) },
         { label: 'Siswa', href: `/admin/siswa${taParam}`, icon: markRaw(ClipboardList) },
         { label: 'Laporan Kelulusan', href: `/admin/lkelulusan${taParam}`, icon: markRaw(GraduationCap) },
         { label: 'Laporan Asesor', href: `/admin/laksesor${taParam}`, icon: markRaw(BarChart3) },
-    ];
+    );
+    return items;
 });
 
 function isActive(href) {

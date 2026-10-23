@@ -89,36 +89,36 @@
                         </div>
                         <div class="space-y-2">
                             <Label for="basisnilai">Basis Nilai</Label>
-                            <AppSelect id="basisnilai" v-model="form.basisnilai">
+                            <NativeSelect id="basisnilai" v-model="form.basisnilai">
                                 <option value="true">Ya</option>
                                 <option value="false">Tidak</option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-2">
                             <Label for="jurusan_id">Jurusan</Label>
-                            <AppSelect id="jurusan_id" v-model="form.jurusan_id">
+                            <NativeSelect id="jurusan_id" v-model="form.jurusan_id">
                                 <option value="">Pilih</option>
                                 <option v-for="j in jurusanList" :key="j.id" :value="j.id">{{ j.nama }}</option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
 
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-2">
                             <Label for="aksesorinternal">Asesor Internal</Label>
-                            <AppSelect id="aksesorinternal" v-model="form.aksesorinternal">
+                            <NativeSelect id="aksesorinternal" v-model="form.aksesorinternal">
                                 <option value="">Pilih</option>
                                 <option v-for="a in asesorsInternal" :key="a.id" :value="a.id">{{ a.nama }}</option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                         <div class="space-y-2">
                             <Label for="aksesoreksternal">Asesor Eksternal</Label>
-                            <AppSelect id="aksesoreksternal" v-model="form.aksesoreksternal">
+                            <NativeSelect id="aksesoreksternal" v-model="form.aksesoreksternal">
                                 <option value="">Pilih</option>
                                 <option v-for="a in asesorsEksternal" :key="a.id" :value="a.id">{{ a.nama }}</option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                     </div>
                     <DialogFooter>
@@ -156,7 +156,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import AppSelect from '@/Components/ui/AppSelect.vue';
+import { NativeSelect } from '@/components/ui/native-select';
 import { useForm, router } from '@inertiajs/vue3';
 
 

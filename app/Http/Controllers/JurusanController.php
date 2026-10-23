@@ -12,6 +12,10 @@ use Validator;
 
 class JurusanController extends Controller
 {
+    private function ensureAdmin(): void
+    {
+        abort_unless(auth()->user()?->isAdmin(), 403);
+    }
 
     private $fieldValidator = [
         "nama" => "required",
@@ -24,6 +28,7 @@ class JurusanController extends Controller
      */
     public function indexInertia()
     {
+        $this->ensureAdmin();
         $jurusan = Jurusan::orderBy('nama')->get();
         return Inertia::render('Jurusan/Index', [
             'jurusan' => $jurusan,
@@ -36,6 +41,7 @@ class JurusanController extends Controller
 
     public function store(Request $req)
     {
+        $this->ensureAdmin();
         try {
             $validator = Validator::make($req->all(), $this->fieldValidator);
             if ($validator->fails()) {
@@ -52,6 +58,7 @@ class JurusanController extends Controller
 
     public function update($id, Request $req)
     {
+        $this->ensureAdmin();
         try {
             $validator = Validator::make($req->all(), $this->fieldValidator);
             if ($validator->fails()) {
@@ -75,6 +82,7 @@ class JurusanController extends Controller
 
     public function destroy($id)
     {
+        $this->ensureAdmin();
         try {
             $Jurusan = Jurusan::find($id);
             if (!$Jurusan) {
@@ -89,7 +97,9 @@ class JurusanController extends Controller
 
     public function index()
     {
-        $Jurusan = Jurusan::all();
+        $Jurusan = auth()->user()?->isAdmin()
+            ? Jurusan::all()
+            : Jurusan::whereKey(auth()->user()?->jurusan_id)->get();
         return response()->json($Jurusan, 200);
     }
 
@@ -97,6 +107,9 @@ class JurusanController extends Controller
     public function byid($id)
     {
         try {
+            if (!auth()->user()?->isAdmin() && (int) $id !== (int) auth()->user()?->jurusan_id) {
+                abort(403, 'Anda tidak memiliki akses ke jurusan ini.');
+            }
             $Jurusan = Jurusan::find($id);
             if ($Jurusan == null) {
                 throw new Error("Data Jurusan  tidak ditemukan ! ");
@@ -112,6 +125,7 @@ class JurusanController extends Controller
 
     public function post(Request $req)
     {
+        $this->ensureAdmin();
 
         try {
             $validator = Validator::make($req->all(), $this->fieldValidator);
@@ -134,6 +148,7 @@ class JurusanController extends Controller
 
     public function put($id, Request $req)
     {
+        $this->ensureAdmin();
         try {
             $validator = Validator::make($req->all(), $this->fieldValidator);
 
@@ -161,6 +176,7 @@ class JurusanController extends Controller
 
     public function delete($id)
     {
+        $this->ensureAdmin();
         try {
             $Jurusan = Jurusan::find($id);
             if ($Jurusan == null) {

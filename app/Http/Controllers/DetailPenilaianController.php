@@ -14,6 +14,7 @@ use PDOException;
 
 class DetailPenilaianController extends Controller
 {
+    use Concerns\JurusanScoped;
     private $fieldValidator = [
         "siswa_id"  => "required",
     ];
@@ -25,6 +26,7 @@ class DetailPenilaianController extends Controller
     {
         try {
             $siswa = Siswa::findOrFail($siswaId);
+            $this->ensureJurusan($siswa->jurusan_id);
             $detailPenilaian = DetailPenilaian::where('siswa_id', $siswaId)
                 ->with('kompetensi')
                 ->get();
@@ -66,6 +68,7 @@ class DetailPenilaianController extends Controller
     {
         try {
             $detail = DetailPenilaian::with('kompetensi')->findOrFail($id);
+            $this->ensureJurusan($detail->siswa?->jurusan_id ?? Siswa::findOrFail($detail->siswa_id)->jurusan_id);
             if ($detail == null) {
                 throw new Error("Data Penilaian tidak ditemukan ! ");
             }
@@ -94,6 +97,8 @@ class DetailPenilaianController extends Controller
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             }
+
+            $this->ensureJurusan(Siswa::findOrFail($req->siswa_id)->jurusan_id);
 
             // Check if already exists
             $existing = DetailPenilaian::where('siswa_id', $req->siswa_id)
@@ -139,6 +144,7 @@ class DetailPenilaianController extends Controller
             if ($detail == null) {
                 throw new Error("Data Penilaian tidak ditemukan");
             }
+            $this->ensureJurusan(Siswa::findOrFail($detail->siswa_id)->jurusan_id);
 
             $detail->fill($req->only(['nilai', 'kompeten']));
             $detail->save();
@@ -172,6 +178,8 @@ class DetailPenilaianController extends Controller
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
             }
+
+            $this->ensureJurusan(Siswa::findOrFail($siswaId)->jurusan_id);
 
             $updated = [];
             foreach ($req->penilaian as $item) {
@@ -207,6 +215,7 @@ class DetailPenilaianController extends Controller
             if ($detail == null) {
                 throw new Error("Data Penilaian tidak ditemukan ! ");
             }
+            $this->ensureJurusan(Siswa::findOrFail($detail->siswa_id)->jurusan_id);
             $detail->delete();
             return response()->json([
                 'message' => 'Penilaian berhasil dihapus'

@@ -13,17 +13,18 @@
                         <div class="flex gap-2">
                             <div class="flex-1">
                                 <Label class="text-xs text-gray-500 mb-1">Tahun Ajaran</Label>
-                                <AppSelect v-model="filterTa">
+                                <NativeSelect v-model="filterTa">
                                     <option value="">Pilih</option>
-                                    <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahun }}</option>
-                                </AppSelect>
+                                    <option v-for="ta in tahunAjaranList" :key="ta.id" :value="ta.id">{{ ta.tahun }}
+                                    </option>
+                                </NativeSelect>
                             </div>
                             <div class="flex-1">
                                 <Label class="text-xs text-gray-500 mb-1">Jurusan</Label>
-                                <AppSelect v-model="filterJurusan">
+                                <NativeSelect v-model="filterJurusan">
                                     <option value="">Pilih</option>
                                     <option v-for="j in jurusanList" :key="j.id" :value="j.id">{{ j.nama }}</option>
-                                </AppSelect>
+                                </NativeSelect>
                             </div>
                         </div>
                         <div class="flex items-end">
@@ -45,7 +46,8 @@
                         </div>
                         <Button variant="outline" size="sm" @click="printReport">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                             </svg>
                             Cetak
                         </Button>
@@ -59,8 +61,10 @@
                                 <TableHead>NIS</TableHead>
                                 <TableHead>Nama</TableHead>
                                 <TableHead>L/P</TableHead>
-                                <TableHead>Paket</TableHead>
+                                <TableHead>Nomor Sertifikat</TableHead>
+                                <TableHead>Nomor Seri</TableHead>
                                 <TableHead class="text-center">Status</TableHead>
+                                <TableHead class="text-center">Aksi</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -69,11 +73,16 @@
                                 <TableCell class="font-mono text-sm">{{ item.nis }}</TableCell>
                                 <TableCell class="font-medium">{{ item.nama }}</TableCell>
                                 <TableCell>{{ item.jk }}</TableCell>
-                                <TableCell>{{ item.paket }}</TableCell>
+                                <TableCell class="font-mono text-sm">{{ item.nomor || '-' }}</TableCell>
+                                <TableCell class="font-mono text-sm">{{ item.nomorseri || '-' }}</TableCell>
                                 <TableCell class="text-center">
                                     <Badge :variant="item.status === 'Lulus' ? 'default' : 'secondary'">
                                         {{ item.status || 'Belum Lulus' }}
                                     </Badge>
+                                </TableCell>
+                                <TableCell class="font-mono text-sm">
+                                    <Button variant="default" size="sm"
+                                        @click="$inertia.visit(`/admin/siswa/${item.id}`)">Detail</Button>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -87,7 +96,8 @@
             <div class="print-header">
                 <h2>LAPORAN KELULUSAN UJI KOMPETENSI KEJURUAN</h2>
                 <h3>SMK NEGERI 8 TEKNOLOGI INFORMASI DAN KOMUNIKASI KOTA JAYAPURA</h3>
-                <p>Jurusan: {{ selectedJurusanNama }} &nbsp;|&nbsp; Tahun Ajaran: {{ selectedTaNama }}/{{ selectedTaNama+1 }}</p>
+                <p>Jurusan: {{ selectedJurusanNama }} &nbsp;|&nbsp; Tahun Ajaran: {{ selectedTaNama }}/{{
+                    selectedTaNama + 1 }}</p>
                 <hr>
             </div>
             <table class="print-table">
@@ -98,6 +108,8 @@
                         <th>Nama</th>
                         <th>L/P</th>
                         <th>Paket</th>
+                        <th>Nomor Seri</th>
+                        <th>Nomor Sertifikat</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -108,12 +120,14 @@
                         <td>{{ item.nama }}</td>
                         <td>{{ item.jk }}</td>
                         <td>{{ item.paket }}</td>
+                        <td>{{ item.nomorseri || '-' }}</td>
+                        <td>{{ item.nomor || '-' }}</td>
                         <td>{{ item.status || 'Belum Lulus' }}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="5"><strong>Total Lulus</strong></td>
+                        <td colspan="7"><strong>Total Lulus</strong></td>
                         <td><strong>{{ lulusCount }} / {{ report.length }}</strong></td>
                     </tr>
                 </tfoot>
@@ -130,7 +144,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
-import AppSelect from '@/Components/ui/AppSelect.vue';
+import { NativeSelect } from '@/components/ui/native-select';
 import { useApi } from '@/composables/useApi';
 
 const { loading, get, activeTahunAjaranId, fetchActiveTahunAjaran } = useApi();
@@ -171,17 +185,24 @@ onMounted(async () => {
 }
 
 @media print {
-    @page { margin: 20mm; }
+    @page {
+        margin: 20mm;
+    }
 
-    body * { visibility: hidden !important; }
+    body * {
+        visibility: hidden !important;
+    }
 
     #laporan-kelulusan-print,
-    #laporan-kelulusan-print * { visibility: visible !important; }
+    #laporan-kelulusan-print * {
+        visibility: visible !important;
+    }
 
     #laporan-kelulusan-print {
         display: block !important;
         position: fixed;
-        top: 0; left: 0;
+        top: 0;
+        left: 0;
         margin: 0px;
         width: 100%;
         background: white;

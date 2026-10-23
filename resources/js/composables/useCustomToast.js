@@ -1,38 +1,11 @@
-import { ref } from 'vue';
-
-// Global toast state - shared across all components
-const toasts = ref([]);
-let toastId = 0;
+import { toast } from 'vue-sonner';
 
 function showToast(type, title, description = '', duration = 5000) {
-    const id = ++toastId;
-    const progress = ref(100);
-    const toast = { id, type, title, description, duration, progress };
-    toasts.value.push(toast);
-
-    if (duration > 0) {
-        const interval = setInterval(() => {
-            if (toast.progress.value > 0) {
-                toast.progress.value -= 100 / (duration / 100);
-            } else {
-                clearInterval(interval);
-            }
-        }, 100);
-
-        setTimeout(() => {
-            removeToast(id);
-            clearInterval(interval);
-        }, duration);
-    }
-
-    return id;
+    return toast[type](title, { description, duration });
 }
 
 export function removeToast(id) {
-    const index = toasts.value.findIndex(t => t.id === id);
-    if (index > -1) {
-        toasts.value.splice(index, 1);
-    }
+    toast.dismiss(id);
 }
 
 export function success(title, description) {
@@ -75,7 +48,6 @@ export function useToast() {
         info,
         warning,
         httpError,
-        toasts,
         removeToast,
     };
 }

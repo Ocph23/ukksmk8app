@@ -12,11 +12,16 @@ use Validator;
 
 class TahunAjaranController extends Controller
 {
+    private function ensureAdmin(): void
+    {
+        abort_unless(auth()->user()?->isAdmin(), 403);
+    }
     /**
      * Inertia page untuk daftar tahun ajaran
      */
     public function indexInertia()
     {
+        $this->ensureAdmin();
         $tahunAjaran = TahunAjaran::orderBy('tahun', 'desc')->get();
         return Inertia::render('TahunAjaran/Index', [
             'tahunAjaran' => $tahunAjaran,
@@ -28,6 +33,7 @@ class TahunAjaranController extends Controller
      */
     public function store(Request $req)
     {
+        $this->ensureAdmin();
         try {
             $validator = Validator::make($req->all(), [
                 "tahun" => "required",
@@ -64,6 +70,7 @@ class TahunAjaranController extends Controller
      */
     public function update($id, Request $req)
     {
+        $this->ensureAdmin();
         try {
             $validator = Validator::make($req->all(), [
                 "tahun" => "required",
@@ -98,6 +105,7 @@ class TahunAjaranController extends Controller
      */
     public function destroy($id)
     {
+        $this->ensureAdmin();
         try {
             $TahunAjaran = TahunAjaran::find($id);
             if (!$TahunAjaran) {
@@ -150,6 +158,7 @@ class TahunAjaranController extends Controller
 
     public function setActive($id, Request $req)
     {
+        $this->ensureAdmin();
         try {
             $ta = TahunAjaran::find($id);
             if (!$ta) {
@@ -167,6 +176,7 @@ class TahunAjaranController extends Controller
 
     public function post(Request $req)
     {
+        $this->ensureAdmin();
         try {
             $validator = Validator::make($req->all(), [
                 "tahun" => "required",
@@ -198,6 +208,7 @@ class TahunAjaranController extends Controller
 
     public function put($id, Request $req)
     {
+        $this->ensureAdmin();
         try {
             $validator = Validator::make($req->all(), [
                 "tahun" => "required",
@@ -230,6 +241,7 @@ class TahunAjaranController extends Controller
 
     public function delete($id)
     {
+        $this->ensureAdmin();
         try {
             $TahunAjaran = TahunAjaran::find($id);
             if ($TahunAjaran == null) {

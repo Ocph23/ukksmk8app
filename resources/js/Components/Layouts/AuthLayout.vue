@@ -13,12 +13,12 @@
             <slot />
         </div>
 
-        <CustomToast />
+        <Toaster position="top-right" rich-colors close-button />
     </div>
 </template>
 
 <script setup>
-import CustomToast from '@/components/ui/CustomToast.vue';
+import { Toaster } from '@/components/ui/sonner';
 </script>
 
 <style scoped>

@@ -24,16 +24,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="text-sm font-medium text-gray-700 mb-1 block">Pilih Paket</label>
-                            <select 
+                            <NativeSelect
                                 v-model="filterPaketId" 
                                 @change="fetchKompetensi"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="">Semua Paket</option>
                                 <option v-for="paket in paketList" :key="paket.id" :value="paket.id">
                                     {{ paket.kode }} - {{ paket.judultugas }}
                                 </option>
-                            </select>
+                            </NativeSelect>
                         </div>
                     </div>
                 </CardContent>
@@ -116,13 +115,12 @@
                         <label class="text-sm font-medium text-gray-700 mb-1 block">
                             Elemen Kompetensi <span class="text-red-500">*</span>
                         </label>
-                        <textarea 
+                        <Textarea
                             v-model="formData.elemen" 
                             placeholder="Deskripsi elemen kompetensi..."
                             rows="4"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                             required
-                        ></textarea>
+                        />
                     </div>
 
                     <!-- Paket -->
@@ -130,16 +128,15 @@
                         <label class="text-sm font-medium text-gray-700 mb-1 block">
                             Paket <span class="text-red-500">*</span>
                         </label>
-                        <select 
+                        <NativeSelect
                             v-model="formData.paket_id" 
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         >
                             <option value="">Pilih Paket</option>
                             <option v-for="paket in paketList" :key="paket.id" :value="paket.id">
                                 {{ paket.kode }} - {{ paket.judultugas }}
                             </option>
-                        </select>
+                        </NativeSelect>
                     </div>
 
                     <!-- Validation Errors -->
@@ -205,6 +202,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { NativeSelect } from '@/components/ui/native-select';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useApi } from '@/composables/useApi';
 

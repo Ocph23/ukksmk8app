@@ -37,6 +37,14 @@ Route::group(['middleware' => ['auth']], function () {
         return Inertia::render('Dashboard');
     });
 
+    Route::get('/admin/pengguna', [\App\Http\Controllers\UserController::class, 'indexInertia'])->name('pengguna');
+    Route::post('/admin/pengguna', [\App\Http\Controllers\UserController::class, 'store'])->name('pengguna.store');
+    Route::put('/admin/pengguna/{id}', [\App\Http\Controllers\UserController::class, 'update'])->name('pengguna.update');
+    Route::put('/admin/pengguna/{id}/reset-password', [\App\Http\Controllers\UserController::class, 'resetPassword'])->name('pengguna.reset-password');
+    Route::delete('/admin/pengguna/{id}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('pengguna.destroy');
+    Route::get('/admin/password', [\App\Http\Controllers\UserController::class, 'passwordForm'])->name('password.edit');
+    Route::put('/admin/password', [\App\Http\Controllers\UserController::class, 'changePassword'])->name('password.update');
+
     Route::get('/admin/jurusan', [\App\Http\Controllers\JurusanController::class, 'indexInertia'])->name('jurusan');
     Route::post('/admin/jurusan', [\App\Http\Controllers\JurusanController::class, 'store'])->name('jurusan.store');
     Route::put('/admin/jurusan/{id}', [\App\Http\Controllers\JurusanController::class, 'update'])->name('jurusan.update');

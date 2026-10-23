@@ -12,6 +12,7 @@ use PDOException;
 
 class KompetensiController extends Controller
 {
+    use Concerns\JurusanScoped;
     private $fieldValidate = [
         "kode" => "required",
         "elemen" => "required",
@@ -34,6 +35,7 @@ class KompetensiController extends Controller
     {
         try {
             $kompetensi = Kompetensi::with('paket')->findOrFail($id);
+            $this->ensureJurusan($kompetensi->paket?->jurusan_id ?? Paket::findOrFail($kompetensi->paket_id)->jurusan_id);
             if ($kompetensi == null) {
                 throw new Error("Data Kompetensi tidak ditemukan ! ");
             }
@@ -55,6 +57,7 @@ class KompetensiController extends Controller
             $kompetensi = Kompetensi::where('paket_id', $paketId)
                 ->orderBy('kode')
                 ->get();
+            $this->ensureJurusan(Paket::findOrFail($paketId)->jurusan_id);
             
             return response()->json($kompetensi, 200);
         } catch (PDOException $ex) {
@@ -82,6 +85,7 @@ class KompetensiController extends Controller
             if ($paket == null) {
                 throw new Error("Paket tidak ditemukan!");
             }
+            $this->ensureJurusan($paket->jurusan_id);
 
             $kompetensi = new Kompetensi($req->all());
             $kompetensi->save();
@@ -121,6 +125,7 @@ class KompetensiController extends Controller
             if ($paket == null) {
                 throw new Error("Paket tidak ditemukan!");
             }
+            $this->ensureJurusan($paket->jurusan_id);
 
             $kompetensi->fill($req->all());
             $kompetensi->save();
@@ -148,6 +153,7 @@ class KompetensiController extends Controller
             if ($kompetensi == null) {
                 throw new Error("Data Kompetensi tidak ditemukan ! ");
             }
+            $this->ensureJurusan(Paket::findOrFail($kompetensi->paket_id)->jurusan_id);
             
             $kompetensi->delete();
             return response()->json([
@@ -183,6 +189,7 @@ class KompetensiController extends Controller
             if ($paket == null) {
                 throw new Error("Paket tidak ditemukan!");
             }
+            $this->ensureJurusan($paket->jurusan_id);
 
             $created = [];
             foreach ($req->kompetensi as $komp) {

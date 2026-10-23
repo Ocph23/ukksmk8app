@@ -21,6 +21,7 @@ use Validator;
 
 class SiswaController extends Controller
 {
+    use Concerns\JurusanScoped;
 
     private $fieldValidate =  [
         "nis" => "required",
@@ -61,6 +62,7 @@ class SiswaController extends Controller
         if ($filterJurusan) {
             $query->where('jurusan_id', $filterJurusan);
         }
+        $this->scopeJurusan($query);
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -73,7 +75,8 @@ class SiswaController extends Controller
 
         // Get filter options
         $tahunAjaranList = TahunAjaran::orderBy('tahun', 'desc')->get();
-        $jurusanList = Jurusan::orderBy('nama')->get();
+        $jurusanList = Jurusan::when($this->userJurusanId(), fn ($q, $id) => $q->where('id', $id))
+            ->orderBy('nama')->get();
 
         // Get paket options based on selected tahun ajaran
         $paketList = Paket::when($filterTa, function ($q) use ($filterTa) {
@@ -114,9 +117,12 @@ class SiswaController extends Controller
         return response()->json($pakets);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $siswa = Siswa::all();
+        $siswa = $this->scopeJurusan(Siswa::query())->when(
+            $request->query('tahunajaran_id'),
+            fn ($q, $id) => $q->where('tahunajaran_id', $id)
+        )->get();
         return response()->json($siswa, 200);
     }
 
@@ -132,6 +138,7 @@ class SiswaController extends Controller
                 'sertifikat',
                 'penilaian.kompetensi'
             ])->findOrFail($id);
+            $this->ensureJurusan($siswa->jurusan_id);
             return response()->json($siswa, 200);
         } catch (PDOException $ex) {
             return response()->json(DatabaseHelper::GetErrorPDOError($ex), 400);
@@ -145,7 +152,7 @@ class SiswaController extends Controller
     public function bynis($nis)
     {
         try {
-            $siswa = Siswa::where("nis", $nis);
+            $siswa = $this->scopeJurusan(Siswa::where("nis", $nis))->first();
             if ($siswa == null) {
                 throw new Error("Data Siswa NIS :  {$nis} tidak ditemukan ! ");
             }
@@ -162,7 +169,7 @@ class SiswaController extends Controller
     public function bytahunajaran($id)
     {
         try {
-            $data = Siswa::where("tahunajaran_id", $id)->get();
+            $data = $this->scopeJurusan(Siswa::where("tahunajaran_id", $id))->get();
             foreach ($data as $key => $value) {
                 $value->tahunajaran;
                 $value->jurusan;
@@ -187,6 +194,9 @@ class SiswaController extends Controller
                 throw new Error("Periksa Kembali Data Anda");
             } else {
                 $siswa = new Siswa($req->all());
+                if ($jurusanId = $this->userJurusanId()) {
+                    $siswa->jurusan_id = $jurusanId;
+                }
                 // $tgl = new DateTime($siswa->tanggallahir);
                 // $siswa->tanggallahir = $tgl->format('Y-m-d');
                 $siswa->save();
@@ -224,6 +234,7 @@ class SiswaController extends Controller
                 $errors = $validator->errors();
                 throw new Error("Periksa Kembali Data Anda");
             } else {
+                $this->ensureJurusan(Siswa::findOrFail($req->siswa_id)->jurusan_id);
                 if (!$req->id) {
                     $sertifikat = new Sertifikat($req->all());
                     $sertifikat->tanggalpenetapan = Carbon::createFromDate($sertifikat->tanggalpenetapan);
@@ -260,6 +271,8 @@ class SiswaController extends Controller
                 $siswa = Siswa::find($id);
                 if ($siswa == null)
                     throw new Error("Data Siswa tidak ditemukan");
+                $this->ensureJurusan($siswa->jurusan_id);
+                $this->ensureJurusan($req->jurusan_id);
                 $siswa->fill($req->all());
                 // $tgl = new DateTime($siswa->tanggallahir);
                 // $siswa->tanggallahir = $tgl->format('Y-m-d');
@@ -303,6 +316,7 @@ class SiswaController extends Controller
             if ($siswa == null) {
                 throw new Error("Data Siswa  tidak ditemukan ! ");
             }
+            $this->ensureJurusan($siswa->jurusan_id);
             $siswa->delete();
             return response()->json(true, 200);
         } catch (PDOException $ex) {
@@ -317,6 +331,7 @@ class SiswaController extends Controller
     {
         try {
             $siswa = Siswa::with(['paket.kompetensis'])->findOrFail($id);
+            $this->ensureJurusan($siswa->jurusan_id);
             if ($siswa == null) {
                 throw new Error("Data Siswa tidak ditemukan ! ");
             }

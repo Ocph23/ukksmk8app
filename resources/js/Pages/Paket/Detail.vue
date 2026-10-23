@@ -148,13 +148,12 @@
                         <label class="text-sm font-medium text-gray-700 mb-1 block">
                             Elemen Kompetensi <span class="text-red-500">*</span>
                         </label>
-                        <textarea
+                        <Textarea
                             v-model="formData.elemen"
                             placeholder="Deskripsi elemen kompetensi..."
                             rows="5"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                             required
-                        ></textarea>
+                        />
                         <p class="text-xs text-gray-500 mt-1">Jelaskan secara detail apa yang harus dikuasai siswa</p>
                     </div>
 
@@ -232,12 +231,12 @@
                         <label class="text-sm font-medium text-gray-700 mb-1 block">
                             Daftar Kompetensi (satu per baris)
                         </label>
-                        <textarea
+                        <Textarea
                             v-model="bulkData"
                             placeholder="KM-001|Elemen kompetensi pertama&#10;KM-002|Elemen kompetensi kedua&#10;KM-003|Elemen kompetensi ketiga"
                             rows="10"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm resize-none"
-                        ></textarea>
+                            class="font-mono text-sm"
+                        />
                         <p class="text-xs text-gray-500 mt-1">
                             Format: <code class="px-1 bg-gray-100 rounded">KODE|ELEMEN KOMPETENSI</code> (satu kompetensi per baris)
                         </p>
@@ -273,6 +272,7 @@ import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useApi } from '@/composables/useApi';
 

@@ -85,7 +85,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { useApi } from '@/composables/useApi';
@@ -95,22 +95,19 @@ const page = usePage();
 const stats = ref({ siswa: null, jurusan: null, paket: null, aksesor: null });
 const activeTa = computed(() => page.props.activeTahunAjaran || null);
 
-onMounted(async () => {
+const selectedTaId = computed(() => {
+    const params = new URL(page.url, window.location.origin).searchParams;
+    return params.get('tahunajaran_id') || activeTa.value?.id || null;
+});
+
+async function fetchStats() {
     try {
-        const [siswa, jurusan, paket, aksesor] = await Promise.all([
-            get('/siswa'),
-            get('/jurusan'),
-            get('/paket'),
-            get('/aksesor'),
-        ]);
-        stats.value = {
-            siswa: Array.isArray(siswa) ? siswa.length : 0,
-            jurusan: Array.isArray(jurusan) ? jurusan.length : 0,
-            paket: Array.isArray(paket) ? paket.length : 0,
-            aksesor: Array.isArray(aksesor) ? aksesor.length : 0,
-        };
+        const query = selectedTaId.value ? `?tahunajaran_id=${selectedTaId.value}` : '';
+        stats.value = await get(`/dashboard/stats${query}`);
     } catch (e) {
         console.error(e);
     }
-});
+}
+
+watch(selectedTaId, fetchStats, { immediate: true });
 </script>

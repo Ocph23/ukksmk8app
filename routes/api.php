@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AksesorController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailPenilaianController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KompetensiController;
@@ -27,6 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware(['web', 'auth'])->group(function () {
+Route::get('dashboard/stats', [DashboardController::class, 'stats']);
+
 //siswa
 Route::get('siswa', [SiswaController::class, 'index']);
 Route::get('siswa/{id}', [SiswaController::class, 'byid']);
@@ -39,7 +43,9 @@ Route::put('siswa/{id}/sertifikat', [SiswaController::class, 'updateSertifikat']
 Route::delete('siswa/{id}', [SiswaController::class, 'delete']);
 
 // Sertifikat
+});
 Route::get('sertifikat/verifikasi', [SertifikatController::class, 'verifikasi']);
+Route::middleware(['web', 'auth'])->group(function () {
 Route::get('sertifikat', [SertifikatController::class, 'index']);
 Route::get('sertifikat/{id}', [SertifikatController::class, 'byid']);
 Route::get('sertifikat/siswa/{siswaId}', [SertifikatController::class, 'bySiswa']);
@@ -108,3 +114,4 @@ Route::delete('penilaian/{id}', [DetailPenilaianController::class, 'delete']);
 //penilaian
 Route::get('laporan/{ta}/{jurusan}', [LaporanController::class, 'laporanKelulusan']);
 Route::get('laporan/{ta}', [LaporanController::class, 'laporanAksesor']);
+});

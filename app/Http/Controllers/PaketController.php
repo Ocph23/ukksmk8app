@@ -17,6 +17,7 @@ use Validator;
 
 class PaketController extends Controller
 {
+    use Concerns\JurusanScoped;
 
     private $fieldValidator = [
         "kode" => "required",
@@ -29,9 +30,11 @@ class PaketController extends Controller
         "aksesoreksternal" => "required",
     ];
 
-    public function index()
+    public function index(Request $request)
     {
-        $Paket = Paket::with('jurusan')->get();
+        $Paket = $this->scopeJurusan(Paket::with('jurusan'))
+            ->when($request->query('tahunajaran_id'), fn ($q, $id) => $q->where('tahunajaran_id', $id))
+            ->get();
         return response()->json($Paket, 200);
     }
     public function indexInertia(Request $request)
@@ -41,8 +44,10 @@ class PaketController extends Controller
             //Get Tahunan Ajaran Aktif
             $tahunajaran_id = TahunAjaran::where('aktif', true)->first()->id;
         }
-        $Paket = Paket::where('tahunajaran_id', $tahunajaran_id)->with('jurusan', 'internal', 'eksternal')->get();
-        $jurusan = Jurusan::all();
+        $paketQuery = Paket::where('tahunajaran_id', $tahunajaran_id)
+            ->with('jurusan', 'internal', 'eksternal');
+        $Paket = $this->scopeJurusan($paketQuery)->get();
+        $jurusan = Jurusan::when($this->userJurusanId(), fn ($q, $id) => $q->where('id', $id))->get();
         $tahunajaran = TahunAjaran::all();
         $assesors = Aksesor::all();
         return Inertia::render('Paket/Index', [
@@ -62,6 +67,7 @@ class PaketController extends Controller
     {
         try {
             $Paket = Paket::find($id);
+            $this->ensureJurusan($Paket?->jurusan_id);
             $Paket->kompetensis;
             $Paket->eksternal;
             $Paket->internal;
@@ -105,6 +111,9 @@ class PaketController extends Controller
                 $activeTa = TahunAjaran::where('aktif', true)->first();
                 $Paket = new Paket($req->all());
                 $Paket->tahunajaran_id = $activeTa->id;
+                if ($jurusanId = $this->userJurusanId()) {
+                    $Paket->jurusan_id = $jurusanId;
+                }
                 $Paket->save();
                 $items = [];
                 // foreach ($req->kompetensis as $row) {
@@ -137,6 +146,8 @@ class PaketController extends Controller
                 $Paket = Paket::find($id);
                 if ($Paket == null)
                     throw new Error("Data Paket tidak ditemukan");
+                $this->ensureJurusan($Paket->jurusan_id);
+                $this->ensureJurusan($req->jurusan_id);
                 $Paket->fill($req->all());
                 $Paket->save();
                 return response()->json($Paket, 200);
@@ -152,6 +163,7 @@ class PaketController extends Controller
     public function putDetail($id, Request $req)
     {
         try {
+            $this->ensureJurusan(Paket::findOrFail($id)->jurusan_id);
             $validator = Validator::make($req->all(), ['kompetensis' => 'required']);
             if ($validator->fails()) {
                 throw new Error("Periksa Kembali Data Anda");
@@ -201,6 +213,7 @@ class PaketController extends Controller
             if ($Paket == null) {
                 throw new Error("Data Paket  tidak ditemukan ! ");
             }
+            $this->ensureJurusan($Paket->jurusan_id);
             $Paket->delete();
             return response()->json(true, 200);
         } catch (PDOException $ex) {
@@ -226,6 +239,9 @@ class PaketController extends Controller
 
         $Paket = new Paket($validated);
         $Paket->tahunajaran_id = $taActive->id;
+        if ($jurusanId = $this->userJurusanId()) {
+            $Paket->jurusan_id = $jurusanId;
+        }
         $Paket->save();
 
         return redirect()->route('paket')->with('success', 'Data paket berhasil ditambahkan');
@@ -236,6 +252,8 @@ class PaketController extends Controller
         $validated = $request->validate($this->fieldValidator);
 
         $Paket = Paket::findOrFail($id);
+        $this->ensureJurusan($Paket->jurusan_id);
+        $this->ensureJurusan($validated['jurusan_id']);
         $Paket->fill($validated);
         $Paket->save();
 
@@ -245,6 +263,7 @@ class PaketController extends Controller
     public function destroy($id)
     {
         $Paket = Paket::findOrFail($id);
+        $this->ensureJurusan($Paket->jurusan_id);
         $Paket->delete();
 
         return redirect()->route('paket')->with('success', 'Data paket berhasil dihapus');

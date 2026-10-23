@@ -15,6 +15,7 @@ class Aksesor extends Model
         'instansi',
         'logo',
         'jenis',
-        'catatan'
+        'catatan',
+        'jurusan_id',
     ];
 }

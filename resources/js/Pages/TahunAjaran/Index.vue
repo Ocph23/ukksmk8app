@@ -81,10 +81,10 @@
                     </div>
                     <div class="space-y-2">
                         <Label for="status">Status</Label>
-                        <AppSelect id="status" v-model="form.status">
+                        <NativeSelect id="status" v-model="form.status">
                             <option value="true">Aktif</option>
                             <option value="false">Tidak Aktif</option>
-                        </AppSelect>
+                        </NativeSelect>
                     </div>
                     <div class="space-y-2">
                         <Label for="tahunajaran">Deskripsi</Label>
@@ -126,7 +126,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import AppSelect from '@/Components/ui/AppSelect.vue';
+import { NativeSelect } from '@/components/ui/native-select';
 import { success } from '@/composables/useCustomToast';
 
 const page = usePage();

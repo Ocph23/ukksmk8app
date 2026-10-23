@@ -1,0 +1,2 @@
+import{t as f}from"./useForwardExpose-DBHco6qH.js";function c(t,r,s="",o=5e3){return f[t](r,{description:s,duration:o})}function g(t,r){return c("success",t,r)}function n(t,r){return c("error",t,r)}function h(t,r="Terjadi kesalahan"){var e;const s=(e=t==null?void 0:t.response)==null?void 0:e.data,o=s==null?void 0:s.errors,a=(s==null?void 0:s.message)||r;if(o&&typeof o=="object"){const i=Object.values(o).flat().filter(u=>typeof u=="string").join(`
+`);return n("Validasi Gagal",i||a)}else return n("Error",String(a))}export{n as e,h,g as s};

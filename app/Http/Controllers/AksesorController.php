@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\AppHelper;
 use App\Http\DatabaseHelper;
 use App\Models\Aksesor;
+use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use Error;
 use Inertia\Inertia;
@@ -16,13 +17,15 @@ use Image;
 
 class AksesorController extends Controller
 {
+    use Concerns\JurusanScoped;
 
     private $fieldValidate = [
         "nama" => "required",
         "instansi" => "required",
         "jk" => "required",
         "jenis" => "required",
-        "catatan" => "required"
+        "catatan" => "required",
+        "jurusan_id" => "nullable|exists:jurusans,id",
     ];
 
     /**
@@ -30,9 +33,10 @@ class AksesorController extends Controller
      */
     public function indexInertia()
     {
-        $asesor = Aksesor::orderBy('nama')->get();
+        $asesor = $this->scopeJurusan(Aksesor::orderBy('nama'))->get();
         return Inertia::render('Aksesor/Index', [
             'asesor' => $asesor,
+            'jurusanList' => Jurusan::orderBy('nama')->get(['id', 'nama']),
             'flash' => [
                 'success' => session('success'),
                 'error' => session('error'),
@@ -45,6 +49,9 @@ class AksesorController extends Controller
         try {
             $data = $req->validate($this->fieldValidate);
             $Aksesor = new Aksesor($data);
+            if ($jurusanId = $this->userJurusanId()) {
+                $Aksesor->jurusan_id = $jurusanId;
+            }
             if ($req->dataLogo) {
                 $logo = $req->dataLogo;
                 $Aksesor->logo = $this->saveFile($logo);
@@ -63,6 +70,10 @@ class AksesorController extends Controller
             $Aksesor = Aksesor::find($id);
             if (!$Aksesor) {
                 return redirect()->back()->withErrors(['general' => 'Data Aksesor tidak ditemukan']);
+            }
+            $this->ensureJurusan($Aksesor->jurusan_id);
+            if ($jurusanId = $this->userJurusanId()) {
+                $data['jurusan_id'] = $jurusanId;
             }
 
             $Aksesor->fill($data);
@@ -95,7 +106,7 @@ class AksesorController extends Controller
 
     public function index()
     {
-        $Aksesor = Aksesor::all();
+        $Aksesor = $this->scopeJurusan(Aksesor::query())->get();
         return response()->json($Aksesor, 200);
     }
 
@@ -104,6 +115,7 @@ class AksesorController extends Controller
     {
         try {
             $Aksesor = Aksesor::find($id);
+            $this->ensureJurusan($Aksesor?->jurusan_id);
             if ($Aksesor == null) {
                 throw new Error("Data Aksesor  tidak ditemukan ! ");
             }
@@ -121,6 +133,9 @@ class AksesorController extends Controller
         try {
             $data = $req->validate($this->fieldValidate);
             $Aksesor = new Aksesor($data);
+            if ($jurusanId = $this->userJurusanId()) {
+                $Aksesor->jurusan_id = $jurusanId;
+            }
             if ($req->dataLogo) {
                 $logo = $req->dataLogo;
                 $Aksesor->logo = $this->saveFile($logo);
@@ -158,6 +173,10 @@ class AksesorController extends Controller
             $Aksesor = Aksesor::find($id);
             if ($Aksesor == null)
                 throw new Error("Data Aksesor tidak ditemukan");
+            $this->ensureJurusan($Aksesor->jurusan_id);
+            if ($jurusanId = $this->userJurusanId()) {
+                $data['jurusan_id'] = $jurusanId;
+            }
 
             $Aksesor->fill($data);
 
@@ -184,6 +203,7 @@ class AksesorController extends Controller
             if ($Aksesor == null) {
                 throw new Error("Data Aksesor  tidak ditemukan ! ");
             }
+            $this->ensureJurusan($Aksesor->jurusan_id);
             $Aksesor->delete();
             return response()->json(true, 200);
         } catch (PDOException $ex) {

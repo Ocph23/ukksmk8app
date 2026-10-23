@@ -127,61 +127,40 @@
                         </div>
 
                         <!-- Kompetensi List -->
-                        <div class="space-y-4">
-                            <div v-for="(item, index) in penilaian.penilaian" :key="item.id"
-                                class="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                                <div class="flex items-start justify-between mb-3">
-                                    <div class="flex-1">
-                                        <h3 class="font-semibold text-lg">{{ item.kompetensi?.elemen || 'Kompetensi ' +
-                                            (index + 1) }}</h3>
-                                        <p v-if="item.kompetensi?.kode" class="text-sm text-gray-500">Kode: <code
-                                                class="px-2 py-1 bg-gray-100 rounded">{{ item.kompetensi.kode }}</code>
-                                        </p>
-                                    </div>
-                                    <Badge :variant="item.kompeten ? 'default' : 'destructive'" class="ml-2">
-                                        {{ item.kompeten ? 'Kompeten' : 'Belum Kompeten' }}
-                                    </Badge>
-                                </div>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <!-- Nilai Input -->
-                                    <div>
-                                        <Label :for="`nilai-${index}`" class="text-sm font-medium text-gray-700">
-                                            Nilai (0-100)
-                                        </Label>
-                                        <Input :id="`nilai-${index}`" v-model.number="item.nilai" type="number" min="0"
-                                            max="100" placeholder="Masukkan nilai" class="mt-1"
-                                            @input="updateKompeten(item)" />
-                                    </div>
-
-                                    <!-- Status Kompeten Toggle -->
-                                    <div>
-                                        <Label class="text-sm font-medium text-gray-700">Status</Label>
-                                        <div class="flex items-center gap-2 mt-2">
-                                            <input type="checkbox" :checked="item.kompeten" disabled
-                                                @change="item.kompeten = $event.target.checked"
-                                                class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500" />
-                                            <span class="text-sm"
-                                                :class="item.kompeten ? 'text-green-600' : 'text-red-600'">
+                        <div class="w-full">
+                            <Table>
+                                <TableBody>
+                                    <TableRow v-for="(item, index) in penilaian.penilaian" :key="item.id"
+                                        class="flex justify-between p-5">
+                                        <TableCell>
+                                            <div>
+                                                <h3 class="font-semibold text-lg">{{ item.kompetensi?.elemen ||
+                                                    'Kompetensi ' +
+                                                    (index + 1) }}</h3>
+                                                <p v-if="item.kompetensi?.kode" class="text-sm text-gray-500">Kode:
+                                                    <code class="px-2 py-1 ">{{ item.kompetensi.kode }}</code>
+                                                </p>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell class="flex items-center">
+                                            <Input :id="`nilai-${index}`" v-model.number="item.nilai" type="number"
+                                                min="0" max="100" placeholder="Masukkan nilai" class="mt-1"
+                                                @input="updateKompeten(item)" />
+                                            <Badge :variant="item.kompeten ? 'default' : 'destructive'"
+                                                class="ml-2 w-32"
+                                                :class="item.kompeten ? 'bg-green-600' : 'bg-red-600 text-white'">
                                                 {{ item.kompeten ? 'Kompeten' : 'Belum Kompeten' }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                            </Badge>
 
-                                <!-- Progress Bar -->
-                                <div class="mt-3">
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="h-2 rounded-full transition-all"
-                                            :class="item.kompeten ? 'bg-green-500' : 'bg-red-500'"
-                                            :style="{ width: `${item.nilai || 0}%` }"></div>
-                                    </div>
-                                </div>
-                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
                         </div>
 
                         <!-- Summary -->
-                        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-lg">
                             <h4 class="font-semibold text-blue-900 mb-2">Ringkasan Penilaian</h4>
                             <div class="grid grid-cols-2 gap-4 text-sm">
                                 <div>
@@ -220,7 +199,8 @@
                                 </svg>
                                 Cetak Sertifikat
                             </Button>
-                            <Button @click="showSertifikatForm = true" class="flex items-center gap-2">
+                            <Button v-if="!sertifikat" @click="showSertifikatForm = true"
+                                class="flex items-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4v16m8-8H4" />
@@ -341,8 +321,8 @@
             </Card>
         </div>
     </AdminLayout>
-    <CertificatePrint v-if="siswa" :siswa="siswa" :penilaian="penilaian?.penilaian || []" :sertifikat-nomor="sertifikatNomor"
-        :tahun-penetapan="tahunPenetapan" :average-nilai="String(averageNilai)"
+    <CertificatePrint v-if="siswa" :siswa="siswa" :penilaian="penilaian?.penilaian || []"
+        :sertifikat-nomor="sertifikatNomor" :tahun-penetapan="tahunPenetapan" :average-nilai="String(averageNilai)"
         :format-tanggal="formatTanggal" />
 </template>
 
@@ -359,6 +339,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useApi } from '@/composables/useApi';
 import { success, errorToast, httpError } from '@/composables/useCustomToast';
+import { Table } from '@/components/ui/table';
+import TableHead from '@/components/ui/table/TableHead.vue';
+import TableRow from '@/components/ui/table/TableRow.vue';
 
 const page = usePage();
 const siswaId = page.props.siswaId || page.url.split('/').pop();

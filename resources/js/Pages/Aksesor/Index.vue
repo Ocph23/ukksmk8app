@@ -81,26 +81,32 @@
                         <Label for="instansi">Instansi</Label>
                         <Input id="instansi" v-model="form.instansi" placeholder="Nama instansi" />
                     </div>
+                    <div v-if="isAdmin" class="space-y-2">
+                        <Label for="jurusan_id">Jurusan</Label>
+                        <NativeSelect id="jurusan_id" v-model="form.jurusan_id">
+                            <option value="">Tanpa jurusan</option>
+                            <option v-for="jurusan in jurusanList" :key="jurusan.id" :value="jurusan.id">{{ jurusan.nama }}</option>
+                        </NativeSelect>
+                    </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-2">
                             <Label for="jk">Jenis Kelamin</Label>
-                            <AppSelect id="jk" v-model="form.jk">
+                            <NativeSelect id="jk" v-model="form.jk">
                                 <option value="Pria">Pria</option>
                                 <option value="Wanita">Wanita</option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                         <div class="space-y-2">
                             <Label for="jenis">Jenis Asesor</Label>
-                            <AppSelect id="jenis" v-model="form.jenis">
+                            <NativeSelect id="jenis" v-model="form.jenis">
                                 <option value="Internal">Internal</option>
                                 <option value="Eksternal">Eksternal</option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                     </div>
                     <div class="space-y-2">
                         <Label for="logo">Logo</Label>
-                        <input id="logo" type="file" accept="image/*" @change="handleLogoUpload"
-                            class="h-10 w-full rounded-md border border-input bg-background px-3 text-sm file:mr-2 file:h-6 file:text-sm file:font-medium file:border-0 file:bg-transparent file:text-foreground" />
+                        <Input id="logo" type="file" accept="image/*" @change="handleLogoUpload" />
                         <div v-if="form.dataLogo" class="mt-2">
                             <p class="text-xs text-green-600">✓ Logo dipilih</p>
                             <img v-if="logoPreview" :src="logoPreview" alt="Preview"
@@ -154,7 +160,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 import AdminLayout from '@/Components/Layouts/AdminLayout.vue';
 import { Card, CardContent } from '@/components/ui/card';
@@ -163,12 +169,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import AppSelect from '@/Components/ui/AppSelect.vue';
+import { NativeSelect } from '@/components/ui/native-select';
 import { Badge } from '@/components/ui/badge';
 import { success } from '@/composables/useCustomToast';
 
 const page = usePage();
 const asesor = ref(page.props.asesor || []);
+const jurusanList = page.props.jurusanList || [];
+const isAdmin = computed(() => page.props.auth?.user?.role === 'admin');
 
 const dialogOpen = ref(false);
 const isEdit = ref(false);
@@ -178,7 +186,7 @@ const deleteItem = ref(null);
 const deleting = ref(false);
 const logoDialogOpen = ref(false);
 const logoItem = ref(null);
-const form = ref({ id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', dataLogo: '', catatan: '' });
+const form = ref({ id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', dataLogo: '', catatan: '', jurusan_id: '' });
 const logoPreview = ref('');
 
 // Watch for flash messages
@@ -192,12 +200,12 @@ function openDialog(item = null) {
         form.value = {
             id: item.id, nama: item.nama, instansi: item.instansi || '',
             jk: item.jk || 'Pria', jenis: item.jenis || 'Internal',
-            dataLogo: '', catatan: item.catatan || '',
+            dataLogo: '', catatan: item.catatan || '', jurusan_id: item.jurusan_id || '',
         };
         logoPreview.value = item.logo ? `/instansi/${item.logo}` : '';
     } else {
         isEdit.value = false;
-        form.value = { id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', dataLogo: '', catatan: '' };
+        form.value = { id: null, nama: '', instansi: '', jk: 'Pria', jenis: 'Internal', dataLogo: '', catatan: '', jurusan_id: '' };
         logoPreview.value = '';
     }
     dialogOpen.value = true;

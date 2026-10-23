@@ -11,18 +11,26 @@ use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
+    use Concerns\JurusanScoped;
+
     public function laporanKelulusan($ta, $jurusan)
     {
+        if ($userJurusanId = $this->userJurusanId()) {
+            $jurusan = $userJurusanId;
+        }
         $dataSiswa = Siswa::where("tahunajaran_id", $ta)
             ->where("jurusan_id", $jurusan)->get();
         $laporan = [];
         if ($dataSiswa) {
             foreach ($dataSiswa as $key => $value) {
                 $siswa = [
+                    "id" => $value->id,
                     "nis" => $value->nis,
                     "nama" => $value->nama,
                     "jk" => $value->jk,
                     "ttl" => $value->tempatlahir . " ," . (new Carbon($value->tanggallahir))->format('d M Y'),
+                    "nomorseri" => $value->sertifikat?->nomorseri,
+                    "nomor" => $value->sertifikat?->nomor,
                 ];
 
                 $paket = $value->paket;
@@ -45,7 +53,8 @@ class LaporanController extends Controller
     public function laporanAksesor($ta)
     {
 
-        $pakets = Paket::where("tahunajaran_id", $ta)->get();
+        $paketQuery = Paket::where("tahunajaran_id", $ta);
+        $pakets = $this->scopeJurusan($paketQuery)->get();
         $laporan = [];
         if ($pakets) {
             foreach ($pakets as $key => $value) {

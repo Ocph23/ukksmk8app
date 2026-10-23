@@ -21,11 +21,11 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="flex-1">
                             <Label class="text-xs text-gray-500 mb-1">Jurusan</Label>
-                            <AppSelect v-model="filterJurusan" @update:model-value="applyFilter('jurusan_id', $event)">
+                            <NativeSelect v-model="filterJurusan" @update:model-value="applyFilter('jurusan_id', $event)">
                                 <option value="">Semua</option>
                                 <option v-for="j in $page.props.jurusanList" :key="j.id" :value="j.id">{{ j.nama }}
                                 </option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                         <div class="flex-1">
                             <Label class="text-xs text-gray-500 mb-1">Cari NIS / Nama</Label>
@@ -78,10 +78,10 @@
                                     <TableCell class="text-right">
                                         <div class="flex items-center justify-end gap-2">
                                             <Button variant="outline" size="sm" @click="openDialog(item)">Edit</Button>
-                                            <Button variant="default" size="sm"
-                                                @click="$inertia.visit(`/admin/siswa/${item.id}`)">Detail</Button>
                                             <Button variant="destructive" size="sm"
                                                 @click="confirmDelete(item)">Hapus</Button>
+                                            <Button variant="default" size="sm"
+                                                @click="$inertia.visit(`/admin/siswa/${item.id}`)">Detail</Button>
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -147,14 +147,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
                             <Label for="jk">Jenis Kelamin</Label>
-                            <AppSelect id="jk" v-model="form.jk" class="w-full">
+                            <NativeSelect id="jk" v-model="form.jk" class="w-full">
                                 <option value="Pria">Laki-laki</option>
                                 <option value="Wanita">Perempuan</option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                         <div class="space-y-2">
                             <Label for="tempatlahir">Tempat Lahir</Label>
-                            <Input id="tempatlahir" v-model="form.tempatlahir" placeholder="Tempat lahir" class="w-full" />
+                            <Input id="tempatlahir" v-model="form.tempatlahir" placeholder="Tempat lahir"
+                                class="w-full" />
                         </div>
                     </div>
                     <div class="space-y-2">
@@ -163,26 +164,25 @@
                     </div>
                     <div class="space-y-2">
                         <Label for="alamat">Alamat</Label>
-                        <textarea id="alamat" v-model="form.alamat" placeholder="Alamat lengkap siswa" rows="4"
-                            class="flex min-h-[96px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                        <Textarea id="alamat" v-model="form.alamat" placeholder="Alamat lengkap siswa" rows="4" />
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
                             <Label for="jurusan_id">Jurusan</Label>
-                            <AppSelect id="jurusan_id" v-model="form.jurusan_id" class="w-full">
+                            <NativeSelect id="jurusan_id" v-model="form.jurusan_id" class="w-full">
                                 <option value="">Pilih jurusan</option>
                                 <option v-for="j in $page.props.jurusanList" :key="j.id" :value="j.id">{{ j.nama }}
                                 </option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                         <div class="space-y-2">
                             <Label for="paket_id">Paket</Label>
-                            <AppSelect id="paket_id" v-model="form.paket_id" class="w-full">
+                            <NativeSelect id="paket_id" v-model="form.paket_id" class="w-full">
                                 <option value="">Pilih paket</option>
                                 <option v-for="p in filteredPaketList" :key="p.id" :value="p.id">
                                     {{ p.kode }} - {{ p.judultugas }}
                                 </option>
-                            </AppSelect>
+                            </NativeSelect>
                         </div>
                     </div>
                     <DialogFooter>
@@ -221,9 +221,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import AppSelect from '@/Components/ui/AppSelect.vue';
+import { NativeSelect } from '@/components/ui/native-select';
 import { success, httpError } from '@/composables/useCustomToast';
 
 const page = usePage();
